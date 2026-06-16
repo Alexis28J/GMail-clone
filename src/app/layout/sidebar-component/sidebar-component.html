@@ -1,1 +1,27 @@
-<p>sidebar-component works!</p>
+<aside class="sidebar">
+
+    <div>
+    <button class="compose-btn">
+        <mat-icon>edit</mat-icon>
+        <span>Componi</span>
+    </button>
+
+    <nav>
+        @for (item of menuItems; track item.id) {
+        <div class="menu-item">
+            <div class="menu-left">
+                <mat-icon>{{ item.icon }}</mat-icon>
+                <span>{{ item.name }}</span>
+            </div>
+
+            @if (item.count) {
+            <span class="count">{{ item.count }}</span>
+            }
+        </div>
+        
+        }
+
+    </nav>
+    </div>
+
+</aside>

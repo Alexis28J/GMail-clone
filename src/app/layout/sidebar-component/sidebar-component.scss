@@ -1,0 +1,66 @@
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    padding-top: 20px; //per avere un po' di spazio tra il bordo superiore e il contenuto della sidebar
+    background: white;
+
+    display: flex;
+    justify-content: center;
+}
+
+.compose-btn {
+    height: 53px;
+    // margin-left: 20px;
+    margin-bottom: 16px;
+    padding: 0 24px;
+
+    display: flex;
+    align-items: center;
+    align-content: center;
+    gap: 12px;
+
+    border: 3px outset black;
+    border-radius: 8px;
+
+    background-color: #e0e2e2;
+
+    cursor: pointer;
+
+    font-size: 20px;
+    font-weight: 500; //per rendere il testo più leggibile e in evidenza
+}
+
+.compose-btn:hover {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .5); //aggiunge un'ombra al pulsante per farlo risaltare
+}
+
+.menu-item {
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 16px 0 24px; //primo valore: padding-top, secondo valore: padding-right, terzo valore: padding-bottom, quarto valore: padding-left
+
+    border-radius: 8px;
+
+    cursor: pointer;
+}
+
+
+.menu-item:hover {
+    background-color: #f1f3f4;
+}
+
+.menu-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.count {
+    font-size: 12px;
+    font-weight: 500;
+    color: red;
+}
