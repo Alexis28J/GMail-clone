@@ -13,11 +13,16 @@ export class SidebarComponent {
   menuItems = [   
     { id: 1, name: 'Inbox', icon: 'inbox', count: 4 },
     { id: 2, name: 'Special', icon: 'star' },
-    { id: 3, name: 'Sent Mail', icon: 'send' },
+    { id: 3, name: 'Sent', icon: 'send' },
     { id: 4, name: 'Drafts', icon: 'drafts', count: 1 },
     { id: 5, name: 'Spam', icon: 'report', count: 20 },
-    { id: 6, name: 'Important', icon: 'label' },
-    { id: 7, name: 'Purchases', icon: 'shopping_cart' },
-    { id: 8, name: 'Trash', icon: 'delete' },
+    { id: 6, name: 'Important', icon: 'label_important' },
+    { id: 7, name: 'Categories', icon: 'label' },
+    { id: 8, name: 'Snoozed', icon: 'snooze' },
+    { id: 9, name: 'Trash', icon: 'delete' },
   ];
 }
+
+
+//Non ho importato CommonModule perché non utilizzo direttive come ngIf o ngFor in questo componente,
+//mentre ho importato MatIconModule perché utilizzo le icone di Angular Material per rappresentare le voci del menu.
