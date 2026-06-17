@@ -1,0 +1,25 @@
+@if(email){
+
+<div class="email-viewer">
+
+    <div class="emailViewer-header">
+        <h2>{{email.subject}}</h2>
+        <p>Date: {{email.date}}</p>
+        <p class="emailViewer-sender">From: {{email.sender}}</p>
+    </div>
+
+    <div class="emailViewer-body">
+        <p>{{email.body}}</p>
+    </div>
+
+</div>
+
+} @else {
+
+  <div class="emailViewer-empty">
+    <div class="emailViewer-empty-icon">📩</div>
+    <h3>No Email Selected</h3>
+    <p>Please select an email to view its content.</p>
+  </div>
+
+}

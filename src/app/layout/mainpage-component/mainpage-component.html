@@ -1,76 +1,19 @@
-<main class="mail-container">
+<div class="main-page-container">
 
-    <section class="toolbar">
-        <!-- <mat-checkbox></mat-checkbox> -->
+    <app-toolbar-component></app-toolbar-component>
+    
+    <div class="content"> 
+        <!-- Contenitore principale per la lista delle email e il visualizzatore delle email -->
 
-        <button mat-icon-button class="Btn-noBorder">
-            <mat-icon>arrow_back</mat-icon>
-        </button>
+    <div class="mail-list-container">
+        <app-mail-list-component (emailSelected)="selectedEmail = $event"></app-mail-list-component>
+    </div>
 
-        <div class="btn-container">
-        <div class = "btn-group">
-            <button mat-icon-button class="Btn-noBorder">
-                <mat-icon>archive</mat-icon>
-            </button>
+    <div class="mail-viewer-container">
+        <app-mail-viewer-component [email]="selectedEmail"></app-mail-viewer-component>
+        <!-- [email] è una proprietà di input che permette di passare l'email selezionata al componente MailViewerComponent -->
+    </div>
 
-            <button mat-icon-button class="Btn-noBorder">
-                <mat-icon>report</mat-icon>
-            </button>
+    </div>
 
-            <button mat-icon-button class="Btn-noBorder">
-                <mat-icon>delete</mat-icon>
-            </button>
-        </div>
-
-        <div class = "btn-group">
-            <button mat-icon-button class="Btn-noBorder">
-                <mat-icon>mark_email_unread</mat-icon>
-            </button>
-
-            <button mat-icon-button class="Btn-noBorder">
-                <mat-icon>watch_later</mat-icon>
-            </button>
-
-            <button mat-icon-button class="Btn-noBorder">
-                <mat-icon>check_circle</mat-icon>
-            </button>
-        </div>
-
-        <div class = "btn-group" style="border-right: none">
-            <button mat-icon-button class="Btn-noBorder" style="padding-bottom: 3px;">
-                <mat-icon>next_week</mat-icon>
-            </button>
-
-            <button mat-icon-button class="Btn-noBorder">
-                <mat-icon>label</mat-icon>
-            </button>
-
-            <button mat-icon-button class="Btn-noBorder">
-                <mat-icon>more_vert</mat-icon>
-            </button>
-        </div>
-        </div>
-
-        <!-- <button mat-icon-button class="Btn-noBorder">
-            <mat-icon>refresh</mat-icon>
-        </button> -->
-
-        <span class="spacer"></span>
-
-        <button mat-icon-button>
-            <mat-icon>chevron_left</mat-icon>
-        </button>
-
-        <button mat-icon-button>
-            <mat-icon>chevron_right</mat-icon>
-        </button>
-    </section>
-
-
-    <section class="navigation-tab"></section>
-
-    <section class="list"></section>
-
-
-
-</main>
+</div>

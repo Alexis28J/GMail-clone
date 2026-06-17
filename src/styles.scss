@@ -5,6 +5,12 @@
 // custom components at https://material.angular.dev/guide/theming
 @use '@angular/material' as mat;
 
+html, body {
+    overflow: hidden;
+    height: 100%;
+    margin: 0;
+}
+
 html {
   height: 100%;
   @include mat.theme(

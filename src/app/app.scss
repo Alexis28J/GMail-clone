@@ -1,9 +1,10 @@
+
 .layout-container {
   display: flex;
 }
 
 .main-container {
-  flex: 1;
+  flex: 1;  //significa che il contenitore principale occuperà tutto lo spazio disponibile all'interno del contenitore genitore
   display: flex;
   flex-direction: column;
 }

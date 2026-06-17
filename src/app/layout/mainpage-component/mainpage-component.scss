@@ -1,73 +1,34 @@
-.mail-container {
+.main-page-container {
   display: flex;
   flex-direction: column;
 
-  height: calc(100vh - 64px);  // calcola l'altezza del contenitore principale sottraendo l'altezza della barra superiore (64px) dall'altezza totale della finestra (100vh)
+  height: calc(100vh - 64px);  
+  //Calcola l'altezza del contenitore principale sottraendo l'altezza dell'header (64px) dall'altezza totale della finestra (100vh).
+  //Questo permette al contenitore principale di occupare tutto lo spazio disponibile sotto l'header, adattandosi dinamicamente alle dimensioni della finestra del browser.
 
   background: white;
   border-radius: 16px;
   overflow: hidden;
 }
 
-///////////////////////////////////////////////TOOLBAR/////////////////////////////////////////////////////////
-
-.toolbar {
-  height: 48px;
-
+.content {
   display: flex;
-  align-items: center;
-
-  padding: 0 16px;
-
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.Btn-noBorder {
-  border: none;
-  background: none;
-  cursor: pointer;
-}
-
-.Btn-noBorder:hover {
-    background-color: #f1f3f4; // Aggiunge un effetto hover per i pulsanti delle icone
-    border-radius: 50%; // Rende i pulsanti circolari
-}
-
-
-.btn-container {
-  display: flex;
-  gap: 20px; //spazio tra i pulsanti
-  flex-wrap: wrap; //permette ai pulsanti di andare a capo se lo spazio è insufficiente
-  justify-content: space-between; //distribuisce i pulsanti in modo uniforme con spazio tra di loro
-  padding-left: 50px;
-}
-
-.btn-group {
-  display: flex;
-  gap: 20px; //spazio tra i pulsanti all'interno del gruppo
-  border-right: 1px solid #e0e0e0; //linea di separazione tra i gruppi di pulsanti
-  padding-right: 20px; //spazio a destra del gruppo di pulsanti
-  
-}
-////////////////////////////////////////////////NAVIGAZIONE/////////////////////////////////////////////////////////
-
-.navigation-tab {
-  height: 56px;
-
-  display: flex;
-  align-items: center;
-
-  border-bottom: 1px solid #e0e0e0;
-}
-
-////////////////////////////////////////////////LISTA MESSAGGI/////////////////////////////////////////////////////////
-
-.list {
   flex: 1;
+  overflow: hidden;
+}
 
+
+.mail-list-container {
+  width: 40%;  
+  border-right: 1px solid #ddd;
+  overflow-y: auto;  // Aggiunge una barra di scorrimento verticale se il contenuto supera l'altezza del contenitore
+}
+
+.mail-viewer-container {
+  width: 60%;   // Prende il 60% della larghezza del contenitore principale "content"
   overflow-y: auto;
 }
 
-.spacer {
-  flex: 1; //significa che l'elemento occupa tutto lo spazio disponibile, spingendo gli altri elementi verso i bordi del contenitore
-}
+
+
+

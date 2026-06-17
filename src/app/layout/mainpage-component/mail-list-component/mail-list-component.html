@@ -1,0 +1,13 @@
+@for(email of emails; track email.id){
+    <div class="email-item" (click)="selectEmail(email)">
+        <div class="email-subject">{{email.subject}}</div>
+        <div class="email-sender">{{email.sender}}</div>
+        <div class="email-timestamp">{{email.timestamp | date:'short'}}</div>
+    </div>
+} @empty {
+  <div class="empty-state">
+    <div class="icon">📭</div>
+    <h3>No messages to display</h3>
+    <p>Your inbox is empty</p>
+  </div>
+}

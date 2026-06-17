@@ -1,0 +1,35 @@
+.email-viewer {
+    padding: 16px;
+}
+
+.emailViewer-header {
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+}
+
+.emailViewer-sender {
+    color: #5f6368;
+    font-size: 14px;
+}
+
+.emailViewer-body {
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.emailViewer-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #5f6368;
+    text-align: center;
+
+}
+
+.emailViewer-empty-icon{
+    font-size: 48px;
+    margin-bottom: 10px;
+}

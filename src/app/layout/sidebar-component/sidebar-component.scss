@@ -1,6 +1,6 @@
 .sidebar {
     width: 250px;
-    height: 100vh;
+    height: calc(100vh - 64px); 
     padding-top: 20px; //per avere un po' di spazio tra il bordo superiore e il contenuto della sidebar
     background: rgb(248, 240, 240);
 
@@ -49,7 +49,7 @@
 
 
 .menu-item:hover {    //aggiunge un effetto hover al menu-item per farlo risaltare
-    background-color: #d4d6d7;
+    background-color: #cfd0d1;
 }
 
 .menu-left {
