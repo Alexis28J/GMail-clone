@@ -1,48 +1,48 @@
 <section class="toolbar">
 
-    <button mat-icon-button class="Btn-noBorder">
+    <button mat-icon-button class="Btn-noBorder" matTooltip="Back to Inbox" matTooltipPosition="below">
         <mat-icon>arrow_back</mat-icon>
     </button>
 
     <div class="btn-container">
         <div class="btn-group">
-            <button mat-icon-button class="Btn-noBorder">
+            <button mat-icon-button class="Btn-noBorder" matTooltip="Archive" matTooltipPosition="below">
                 <mat-icon>archive</mat-icon>
             </button>
 
-            <button mat-icon-button class="Btn-noBorder">
+            <button mat-icon-button class="Btn-noBorder" matTooltip="Spam" matTooltipPosition="below">
                 <mat-icon>report</mat-icon>
             </button>
 
-            <button mat-icon-button class="Btn-noBorder">
+            <button mat-icon-button class="Btn-noBorder" matTooltip="Delete" matTooltipPosition="below">
                 <mat-icon>delete</mat-icon>
             </button>
         </div>
 
         <div class="btn-group">
-            <button mat-icon-button class="Btn-noBorder">
+            <button mat-icon-button class="Btn-noBorder" matTooltip="Unread" matTooltipPosition="below">
                 <mat-icon>mark_email_unread</mat-icon>
             </button>
 
-            <button mat-icon-button class="Btn-noBorder">
+            <button mat-icon-button class="Btn-noBorder" matTooltip="Snooze" matTooltipPosition="below">
                 <mat-icon>watch_later</mat-icon>
             </button>
 
-            <button mat-icon-button class="Btn-noBorder">
+            <button mat-icon-button class="Btn-noBorder" matTooltip="Read" matTooltipPosition="below">
                 <mat-icon>check_circle</mat-icon>
             </button>
         </div>
 
         <div class="btn-group" style="border-right: none">
-            <button mat-icon-button class="Btn-noBorder" style="padding-bottom: 3px;">
+            <button mat-icon-button class="Btn-noBorder" style="padding-bottom: 3px;" matTooltip="Move to" matTooltipPosition="below">
                 <mat-icon>next_week</mat-icon>
             </button>
 
-            <button mat-icon-button class="Btn-noBorder">
+            <button mat-icon-button class="Btn-noBorder" matTooltip="Label" matTooltipPosition="below">
                 <mat-icon>label</mat-icon>
             </button>
 
-            <button mat-icon-button class="Btn-noBorder">
+            <button mat-icon-button class="Btn-noBorder" matTooltip="More" matTooltipPosition="below">
                 <mat-icon>more_vert</mat-icon>
             </button>
         </div>
@@ -50,12 +50,17 @@
 
     <span class="spacer"></span>
 
-    <button mat-icon-button>
+    <button mat-icon-button matTooltip="Previous email" matTooltipPosition="below">
         <mat-icon>chevron_left</mat-icon>
     </button>
 
-    <button mat-icon-button>
+    <button mat-icon-button matTooltip="Next email" matTooltipPosition="below">
         <mat-icon>chevron_right</mat-icon>
     </button>
 
 </section>
+
+
+<!------------------------------ COMENTI --------------------------------->
+
+<!-- In Angular Material, matTooltipPosition è una direttiva che ti permette di definire l'area dello schermo in cui compare il fumetto informativo (tooltip) rispetto all'elemento con cui l'utente interagisce. Essa serve a prevenire sovrapposizioni e garantire che il testo rimanga sempre leggibile. -->

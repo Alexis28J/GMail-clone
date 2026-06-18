@@ -2,14 +2,31 @@
   padding: 10px;
   border-bottom: 1px solid #ccc;
   cursor: pointer;
+  
+  display: flex;
+  align-items: center;
+  padding: 8px;
+
 }
 
 .email-item:hover {
   background-color: #cfd0d1;;
 }
 
+.email-details {
+  flex: 1;
+  cursor: pointer
+}
 
-/////////////////EMAIL DETAILS////////////////////
+
+//////////////CHECKBOX////////////////////
+
+.selected {
+  background-color: #e8f0fe; /* stile Gmail */
+}
+
+
+/////////////////DETTAGLI////////////////////
 
 .email-subject {
   font-weight: bold;
@@ -25,7 +42,7 @@
 }
 
 
-///////////////EMPTY STATE///////////////////
+///////////////STATO VUOTO//////////////////
 
 .empty-state {
   display: flex;
@@ -51,3 +68,11 @@
   font-size: 14px;
 }
 
+
+
+////////////////////////////COMMENTI/////////////////////////////////
+
+
+//.selected è una classe CSS che viene applicata all'elemento .email-item quando l'email è selezionata. 
+//In questo caso, cambia lo sfondo dell'email per indicare visivamente che è stata selezionata.
+//[class.selected] è una sintassi Angular che permette di aggiungere o rimuovere dinamicamente la classe CSS selected in base al risultato della funzione isSelected(email).

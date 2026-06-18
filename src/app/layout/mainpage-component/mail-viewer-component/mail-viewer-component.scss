@@ -3,18 +3,40 @@
 }
 
 .emailViewer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     border-bottom: 1px solid #ddd;
     margin-bottom: 12px;
     padding-bottom: 8px;
 }
 
-.emailViewer-sender {
+.emailViewer-fromTo {
     color: #5f6368;
     font-size: 14px;
 }
 
+.emailViewer-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.emailViewer-actions button {
+    margin-right: 8px;
+    padding: 6px 14px;  
+    border: 2px outset #ccc;
+    background: #f1f3f4;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.emailViewer-actions button:hover {
+    background: #cfd0d1;
+}
+
 .emailViewer-body {
-    font-size: 14px;
+    font-size: 16px;
     line-height: 1.5;
 }
 
@@ -29,7 +51,7 @@
 
 }
 
-.emailViewer-empty-icon{
+.emailViewer-empty-icon {
     font-size: 48px;
     margin-bottom: 10px;
 }

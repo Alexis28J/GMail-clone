@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import {MatIconModule} from "@angular/material/icon";
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-sidebar-component',
-  imports: [MatIconModule],
+  imports: [MatIconModule, MatTooltipModule],
   templateUrl: './sidebar-component.html',
   styleUrls: ['./sidebar-component.scss'],
 })

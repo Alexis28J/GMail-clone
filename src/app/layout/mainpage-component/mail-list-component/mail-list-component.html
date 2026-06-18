@@ -1,13 +1,31 @@
 @for(email of emails; track email.id){
-    <div class="email-item" (click)="selectEmail(email)">
-        <div class="email-subject">{{email.subject}}</div>
-        <div class="email-sender">{{email.sender}}</div>
-        <div class="email-timestamp">{{email.timestamp | date:'short'}}</div>
-    </div>
+
+<div class="email-item" (click)="selectEmail(email)" [class.selected]="isSelected(email)" >
+
+  <input type="checkbox" 
+    (click)="$event.stopPropagation()" 
+    [checked]="isSelected(email)"
+    (change)="toggleSelection(email)" />
+
+<div class="email-details">
+  <div class="email-subject">{{email.subject}}</div>
+  <div class="email-sender">{{email.sender}}</div>
+  <div class="email-timestamp">{{email.timestamp | date:'short'}}</div>
+</div>
+</div>
+
 } @empty {
-  <div class="empty-state">
-    <div class="icon">📭</div>
-    <h3>No messages to display</h3>
-    <p>Your inbox is empty</p>
-  </div>
+
+<div class="empty-state">
+  <div class="icon">📭</div>
+  <h3>No messages to display</h3>
+  <p>Your inbox is empty</p>
+</div>
+
 }
+
+<!------------------------------------------- COMMENTI --------------------------------------------->
+
+<!-- stopPropagation() è un metodo che impedisce la propagazione dell'evento corrente nell'albero del DOM. 
+ In questo caso, impedisce che il clic sul checkbox selezioni anche l'email. 
+ Perché vogliamo che l'email venga selezionata solo quando si clicca direttamente su di essa, non quando si clicca sul checkbox. -->

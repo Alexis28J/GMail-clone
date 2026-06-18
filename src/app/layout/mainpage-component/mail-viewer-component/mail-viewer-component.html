@@ -3,9 +3,12 @@
 <div class="email-viewer">
 
     <div class="emailViewer-header">
+      <div>
         <h2>{{email.subject}}</h2>
-        <p>Date: {{email.date}}</p>
-        <p class="emailViewer-sender">From: {{email.sender}}</p>
+        <p>Date: {{email.timestamp | date:"MMM dd, yyyy 'at' hh:mm a"}}</p>
+        <p class="emailViewer-fromTo">From: {{email.sender}}</p>
+        <p class="emailViewer-fromTo">To: {{email.recipient}}</p>
+    </div>
     </div>
 
     <div class="emailViewer-body">
@@ -13,6 +16,11 @@
     </div>
 
 </div>
+
+    <div class="emailViewer-actions">
+      <button (click) = "onReply()">↩ Reply</button>
+      <button (click) = "onForward()">➡ Forward</button>
+    </div>
 
 } @else {
 

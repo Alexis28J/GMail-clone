@@ -10,7 +10,10 @@
     </div>
 
     <div class="mail-viewer-container">
-        <app-mail-viewer-component [email]="selectedEmail"></app-mail-viewer-component>
+        <app-mail-viewer-component 
+        [email]="selectedEmail"
+        (reply)="onReply($event)"
+        (forward)="onForward($event)"></app-mail-viewer-component>
         <!-- [email] è una proprietà di input che permette di passare l'email selezionata al componente MailViewerComponent -->
     </div>
 
