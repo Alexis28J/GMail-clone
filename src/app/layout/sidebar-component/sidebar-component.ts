@@ -25,5 +25,13 @@ export class SidebarComponent {
 }
 
 
+
+////////////////////////////////////////////COMMENTI//////////////////////////////////////////////////////////////////////////////
+
 //Non ho importato CommonModule perché non utilizzo direttive come ngIf o ngFor in questo componente,
 //mentre ho importato MatIconModule perché utilizzo le icone di Angular Material per rappresentare le voci del menu.
+
+// export class SidebarComponent {  menuItems = [....] }
+// menuItems è un array di oggetti che rappresentano le voci del menu laterale. 
+// lo inseriamo qui per poterlo utilizzare nel template HTML del componente.
+   

@@ -61,7 +61,7 @@
 
     padding: 4px 16px; // 4px verticale, 16px orizzontale
 
-    background-color: #f1f3f4;
+    background-color: #f7e8e795;
 
     border-radius: 24px;
     border: 2px solid black;
@@ -108,7 +108,7 @@
 }
 
 .icon-btn:hover {
-    background-color: #cfd0d1; // Aggiunge un effetto hover per i pulsanti delle icone
+    background-color: rgb(248, 221, 221); // Aggiunge un effetto hover per i pulsanti delle icone
 }
 
 .user-avatar {
@@ -118,7 +118,7 @@
     border-radius: 50%;
     border: 2px solid #000000;
 
-    background-color: #4484fa9c;
+    background-color: rgb(221, 200, 200);
 
     display: flex;
     align-items: center;

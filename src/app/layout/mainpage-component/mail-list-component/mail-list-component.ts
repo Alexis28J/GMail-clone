@@ -17,7 +17,9 @@ export class MailListComponent {
       recipient: 'Jordy Trebejo <jordy.trebejo@dgsspa.com>',
       subject: 'Meeting Reminder',
       body: 'Don\'t forget about our meeting tomorrow at 9 AM. Please be on time.',
-      timestamp: new Date('2026-06-01T09:00:00'),
+      timestamp: new Date('2026-06-14T09:00:00'),
+      starred: false,       
+      label: 'Work'         
     },
     {
       id: 2,
@@ -26,6 +28,8 @@ export class MailListComponent {
       subject: 'Medical Appointment',
       body: 'Your medical appointment is scheduled for June 19 at 15:50 PM. Please arrive 10 minutes early.',
       timestamp: new Date('2026-06-15T08:50:00'),
+      starred: true,  
+      label: 'Personal'
     },
     {
       id: 3,
@@ -34,6 +38,8 @@ export class MailListComponent {
       subject: 'Document Submission',
       body: 'Please submit the required documents by June 10th. Failure to do so may result in delays.',
       timestamp: new Date('2026-06-10T11:15:00'),
+      starred: false,
+      label: 'Important'
     },
     {
       id: 4,
@@ -42,6 +48,8 @@ export class MailListComponent {
       subject: 'Account Verification',
       body: 'Please verify your account by clicking the link in the email. This is necessary to access all features.',
       timestamp: new Date('2026-06-04T14:30:00'),
+      starred: true,
+      label: 'Work'
     },
     {
       id: 5,
@@ -50,6 +58,8 @@ export class MailListComponent {
       subject: 'Citizen Service Update',
       body: 'You have a new citizen service update from Comune di Genova. Please review it at your earliest convenience.',
       timestamp: new Date('2026-06-05T10:45:00'),
+      starred: false,
+      label: 'Personal'
     },
     {
       id: 6,
@@ -58,6 +68,8 @@ export class MailListComponent {
       subject: 'Order Confirmation',
       body: 'Your order has been confirmed and will be shipped soon. Thank you for shopping with us!',
       timestamp: new Date('2026-06-06T16:20:00'),
+      starred: true,
+      label: 'Important'
     },
     {
       id: 7,
@@ -66,6 +78,8 @@ export class MailListComponent {
       subject: 'Object Sold',
       body: 'Your item has been sold on eBay. Please proceed with the shipping process.',
       timestamp: new Date('2026-06-07T12:00:00'),
+      starred: false,
+      label: 'Work'
     },
     {
       id: 8,
@@ -74,6 +88,8 @@ export class MailListComponent {
       subject: 'Subscription Renewal',
       body: 'Your subscription has been renewed successfully. Enjoy your streaming experience!',
       timestamp: new Date('2026-06-08T09:00:00'),
+      starred: true,
+      label: 'Personal'
     },
     {
       id: 9,
@@ -82,6 +98,8 @@ export class MailListComponent {
       subject: 'Software Update',
       body: 'A new software update is available for your device. Please install it at your earliest convenience.',
       timestamp: new Date('2026-06-09T14:00:00'),
+      starred: false,
+      label: 'Important'
     },
     {
       id: 10,
@@ -90,11 +108,16 @@ export class MailListComponent {
       subject: 'New Movie Release',
       body: 'A new movie has been released on Netflix. Check it out!',
       timestamp: new Date('2026-06-10T18:30:00'),
+      starred: true,
+      label: 'Personal'
     },
   ];
 
   //emails: any[] = []; 
 
+
+  ///////////////////////////SELEZIONE EMAIL///////////////////////////////////////////////
+  
 
   @Output() emailSelected = new EventEmitter<any>();
 
@@ -124,8 +147,18 @@ isSelected(email: any): boolean {
 }
 
 
+///////////////////////////////////STELLA///////////////////////////////////////////////
+
+
+toggleStar(email: any) {
+    email.starred = !email.starred;
+  }
+
+  getAllEmails(): any[] {
+  return this.emails;
 }
 
+}
 
 
 
@@ -137,8 +170,8 @@ isSelected(email: any): boolean {
 // In questo caso, ho commentato la dichiarazione di emails come array vuoto perché ho già inizializzato l'array emails con un set di dati fittizi. Se vuoi utilizzare dati reali, puoi decommentare questa riga e popolare l'array emails con i dati appropriati.
 
 
-//@Output() è un decoratore che indica che la proprietà emailSelected è un evento che può essere emesso dal componente. In questo caso, l'evento viene emesso quando un'email viene selezionata.
-//emailSelected è un'istanza di EventEmitter, che è una classe fornita da Angular per gestire eventi personalizzati. In questo caso, l'evento emesso conterrà i dati dell'email selezionata.
+// @Output() è un decoratore che indica che la proprietà emailSelected è un evento che può essere emesso dal componente. In questo caso, l'evento viene emesso quando un'email viene selezionata.
+// emailSelected è un'istanza di EventEmitter, che è una classe fornita da Angular per gestire eventi personalizzati. In questo caso, l'evento emesso conterrà i dati dell'email selezionata.
 
 
 //selectedEmails: any[] = [];
@@ -170,3 +203,6 @@ isSelected(email: any): boolean {
 // Questa riga utilizza il metodo some per verificare se esiste un'email nell'array selectedEmails con lo stesso id dell'email passata come argomento. 
 // Se viene trovata una corrispondenza, some restituisce true, indicando che l'email è selezionata; altrimenti, restituisce false.
 // (e è un parametro che rappresenta ogni elemento dell'array selectedEmails durante l'iterazione.)
+
+
+// Si può usare label tipo: "work", "personal", "important" per categorizzare le email in base alla loro natura o priorità.

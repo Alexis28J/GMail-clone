@@ -1,7 +1,7 @@
 .sidebar {
     width: 250px;
     height: calc(100vh - 64px); 
-    padding-top: 20px; //per avere un po' di spazio tra il bordo superiore e il contenuto della sidebar
+    padding-top: 20px; 
     background: rgb(248, 240, 240);
 
     display: flex;
@@ -21,16 +21,17 @@
     border: 3px outset black;
     border-radius: 8px;
 
-    background-color: #e0e2e2;
+    background-color: rgb(221, 200, 200);
 
     cursor: pointer;
 
     font-size: 20px;
-    font-weight: 500; //per rendere il testo più leggibile e in evidenza
+    font-weight: 500; 
 }
 
 .compose-btn:hover {
-    box-shadow: 0 1px 3px rgba(0, 0, 0, .5); //aggiunge un'ombra al pulsante per farlo risaltare
+    box-shadow: 0 1px 3px rgb(222, 175, 175); 
+    background-color: rgb(248, 221, 221); 
 }
 
 .menu-item {
@@ -40,7 +41,7 @@
     align-items: center;
     justify-content: space-between;
 
-    padding: 0 16px 0 24px; //primo valore: padding-top, secondo valore: padding-right, terzo valore: padding-bottom, quarto valore: padding-left
+    padding: 0 16px 0 24px; 
 
     border-radius: 8px;
 
@@ -48,8 +49,8 @@
 }
 
 
-.menu-item:hover {    //aggiunge un effetto hover al menu-item per farlo risaltare
-    background-color: #cfd0d1;
+.menu-item:hover {    
+    background-color: rgb(248, 221, 221);
 }
 
 .menu-left {
@@ -63,3 +64,22 @@
     font-weight: 600;
     color: black;
 }
+
+
+
+////////////////////////////////////////////////COMMENTI//////////////////////////////////////////////////////////////////////////////////////////////
+/// 
+/// .compose-btn { font-weight: 500; }
+///Per rendere il testo più leggibile e in evidenza
+/// 
+/// 
+/// compose-btn:hover {box-shadow: 0 1px 3px rgb(222, 175, 175);}
+/// Aggiunge un'ombra al pulsante per farlo risaltare
+/// 
+/// 
+///  padding: 0 16px 0 24px; 
+///  Primo valore: padding-top, secondo valore: padding-right, terzo valore: padding-bottom, quarto valore: padding-left
+/// 
+/// 
+/// .menu-item:hover {  background-color: rgb(248, 221, 221);}
+/// Aggiunge un effetto hover al menu-item per farlo risaltare

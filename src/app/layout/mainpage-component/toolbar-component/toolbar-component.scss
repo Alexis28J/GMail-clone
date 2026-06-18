@@ -7,6 +7,8 @@
   padding: 0 16px;
 
   border-bottom: 1px solid #e0e0e0;
+
+  background: rgb(248, 240, 240);
 }
 
 .Btn-noBorder {
@@ -16,27 +18,78 @@
 }
 
 .Btn-noBorder:hover {
-    background-color: #cfd0d1; // Aggiunge un effetto hover per i pulsanti delle icone
-    border-radius: 50%; // Rende i pulsanti circolari
+    background-color: rgb(248, 221, 221); 
+    border-radius: 50%; 
 }
 
 
 .btn-container {
   display: flex;
-  gap: 20px; //spazio tra i pulsanti
-  flex-wrap: wrap; //permette ai pulsanti di andare a capo se lo spazio è insufficiente
-  justify-content: space-between; //distribuisce i pulsanti in modo uniforme con spazio tra di loro
+  gap: 20px;
+  flex-wrap: wrap; 
+  justify-content: space-between; 
   padding-left: 50px;
 }
 
 .btn-group {
   display: flex;
-  gap: 20px; //spazio tra i pulsanti all'interno del gruppo
-  border-right: 1px solid #e0e0e0; //linea di separazione tra i gruppi di pulsanti
-  padding-right: 20px; //spazio a destra del gruppo di pulsanti
+  gap: 20px; 
+  border-right: 1px solid #e0e0e0; 
+  padding-right: 20px; 
   
 }
 
 .spacer {
-  flex: 1; //significa che l'elemento occupa tutto lo spazio disponibile, spingendo gli altri elementi verso i bordi del contenitore
+  flex: 1; 
 }
+
+.previous-next-btn{
+  background-color: rgb(221, 200, 200);
+  border-radius: 4px;
+}
+
+.previous-next-btn:hover {
+  background-color: rgb(248, 221, 221); 
+  border-radius: 4px; 
+}
+
+
+
+///////////////////////////////////////////COMMENTI////////////////////////////////////////////////////////
+/// 
+/// 
+/// //.Btn-noBorder:hover 
+/// // Aggiunge un effetto hover per i pulsanti delle icone
+/// 
+/// //border-radius: 50%; 
+/// // Rende i pulsanti circolari
+/// 
+/// 
+/// .btn-container { gap: 20px; 
+/// //spazio tra i pulsanti
+/// 
+/// 
+/// flex-wrap: wrap; 
+/// //permette ai pulsanti di andare a capo se lo spazio è insufficiente
+/// 
+/// 
+/// justify-content: space-between; 
+/// //distribuisce i pulsanti in modo uniforme con spazio tra di loro
+/// 
+/// 
+/// .btn-group {gap: 20px; 
+/// //spazio tra i pulsanti all'interno del gruppo
+/// 
+/// 
+/// border-right: 1px solid #e0e0e0; 
+/// //linea di separazione tra i gruppi di pulsanti
+/// 
+/// 
+/// padding-right: 20px; //
+/// spazio a destra del gruppo di pulsanti
+/// 
+/// 
+/// 
+/// .spacer {flex: 1; 
+/// //significa che l'elemento occupa tutto lo spazio disponibile, spingendo gli altri elementi verso i bordi del contenitore
+

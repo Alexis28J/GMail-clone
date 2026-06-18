@@ -4,7 +4,13 @@
 }
 
 .main-container {
-  flex: 1;  //significa che il contenitore principale occuperà tutto lo spazio disponibile all'interno del contenitore genitore
+  flex: 1;  
   display: flex;
   flex-direction: column;
 }
+
+
+////////////////////////////////////////////////COMMENTI//////////////////////////////////////////////////////////////////////
+
+// .main-container {flex: 1;}  
+// Significa che il contenitore principale occuperà tutto lo spazio disponibile all'interno del contenitore genitore

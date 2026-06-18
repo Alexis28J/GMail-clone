@@ -3,7 +3,6 @@
     <app-toolbar-component></app-toolbar-component>
     
     <div class="content"> 
-        <!-- Contenitore principale per la lista delle email e il visualizzatore delle email -->
 
     <div class="mail-list-container">
         <app-mail-list-component (emailSelected)="selectedEmail = $event"></app-mail-list-component>
@@ -14,9 +13,18 @@
         [email]="selectedEmail"
         (reply)="onReply($event)"
         (forward)="onForward($event)"></app-mail-viewer-component>
-        <!-- [email] è una proprietà di input che permette di passare l'email selezionata al componente MailViewerComponent -->
     </div>
 
     </div>
 
 </div>
+
+
+
+<!------------------------ COMMENTI --------------------------------->
+
+  <!-- <div class="content">  -->
+  <!-- Contenitore principale per la lista delle email e il visualizzatore delle email -->
+
+
+ <!-- [email] è una proprietà di input che permette di passare l'email selezionata al componente MailViewerComponent -->

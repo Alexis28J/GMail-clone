@@ -1,17 +1,30 @@
 @for(email of emails; track email.id){
 
-<div class="email-item" (click)="selectEmail(email)" [class.selected]="isSelected(email)" >
+<div class="email-item" (click)="selectEmail(email)" [class.selected]="isSelected(email)">
 
-  <input type="checkbox" 
-    (click)="$event.stopPropagation()" 
-    [checked]="isSelected(email)"
+  <input type="checkbox" (click)="$event.stopPropagation()" [checked]="isSelected(email)"
     (change)="toggleSelection(email)" />
 
-<div class="email-details">
-  <div class="email-subject">{{email.subject}}</div>
-  <div class="email-sender">{{email.sender}}</div>
-  <div class="email-timestamp">{{email.timestamp | date:'short'}}</div>
-</div>
+  <div class="email-details">
+    <div class="email-subject">{{email.subject}}</div>
+    <div class="email-sender">{{email.sender}}</div>
+    <div class="email-timestamp">{{email.timestamp | date:'short'}}</div>
+  </div>
+
+  <!------------------------------- STELLA ---------------------------------------------->
+
+  <div class = "star-label-group">
+    <span class="star" (click)="toggleStar(email); $event.stopPropagation()">
+      {{ email.starred ? '⭐' : '☆' }}
+    </span>
+
+    <span class="label">
+      {{ email.label }}
+    </span>
+
+  </div>
+
+  <!-- ------------------------ MESSAGGI VUOTI -------------------------------->
 </div>
 
 } @empty {
@@ -23,6 +36,8 @@
 </div>
 
 }
+
+
 
 <!------------------------------------------- COMMENTI --------------------------------------------->
 
