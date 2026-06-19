@@ -51,11 +51,11 @@
 
     <span class="spacer"></span>
 
-    <button mat-icon-button matTooltip="Previous email" matTooltipPosition="below" class="previous-next-btn">
+    <button mat-icon-button matTooltip="Previous email" matTooltipPosition="below" class="previous-next-btn" (click)="onPrev()">
         <mat-icon>chevron_left</mat-icon>
     </button>
 
-    <button mat-icon-button matTooltip="Next email" matTooltipPosition="below" class="previous-next-btn">
+    <button mat-icon-button matTooltip="Next email" matTooltipPosition="below" class="previous-next-btn" (click)="onNext()">
         <mat-icon>chevron_right</mat-icon>
     </button>
 
@@ -65,4 +65,7 @@
 
 <!------------------------------ COMENTI --------------------------------->
 
-<!-- In Angular Material, matTooltipPosition è una direttiva che ti permette di definire l'area dello schermo in cui compare il fumetto informativo (tooltip) rispetto all'elemento con cui l'utente interagisce. Essa serve a prevenire sovrapposizioni e garantire che il testo rimanga sempre leggibile. -->
+<!-- In Angular Material, matTooltipPosition è una direttiva che ti permette di definire l'area dello schermo in cui compare il fumetto informativo (tooltip) rispetto all'elemento con cui l'utente interagisce. 
+ Essa serve a prevenire sovrapposizioni e garantire che il testo rimanga sempre leggibile. -->
+
+ 

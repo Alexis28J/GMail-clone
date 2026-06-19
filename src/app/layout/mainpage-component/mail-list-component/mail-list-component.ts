@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { DatePipe } from '@angular/common';
+import { Input } from '@angular/core';
+import { EmailInterface } from '../../../interface/email-interface';
 
 @Component({
   selector: 'app-mail-list-component',
@@ -9,200 +11,80 @@ import { DatePipe } from '@angular/common';
 })
 export class MailListComponent {
 
-
-  emails = [
-    {
-      id: 1,
-      sender: 'Carlo Bonamico',
-      recipient: 'Jordy Trebejo <jordy.trebejo@dgsspa.com>',
-      subject: 'Meeting Reminder',
-      body: 'Don\'t forget about our meeting tomorrow at 9 AM. Please be on time.',
-      timestamp: new Date('2026-06-14T09:00:00'),
-      starred: false,       
-      label: 'Work'         
-    },
-    {
-      id: 2,
-      sender: 'Lione Melania',
-      recipient: 'Jordy Trebejo <jordy.trebejo@dgsspa.com>',
-      subject: 'Medical Appointment',
-      body: 'Your medical appointment is scheduled for June 19 at 15:50 PM. Please arrive 10 minutes early.',
-      timestamp: new Date('2026-06-15T08:50:00'),
-      starred: true,  
-      label: 'Personal'
-    },
-    {
-      id: 3,
-      sender: 'HR Department',
-      recipient: 'Jordy Alexis <jordy2806@hotmail.com>',
-      subject: 'Document Submission',
-      body: 'Please submit the required documents by June 10th. Failure to do so may result in delays.',
-      timestamp: new Date('2026-06-10T11:15:00'),
-      starred: false,
-      label: 'Important'
-    },
-    {
-      id: 4,
-      sender: 'Github Support',
-      recipient: 'Jordy Alexis <jordy2806@hotmail.com>',
-      subject: 'Account Verification',
-      body: 'Please verify your account by clicking the link in the email. This is necessary to access all features.',
-      timestamp: new Date('2026-06-04T14:30:00'),
-      starred: true,
-      label: 'Work'
-    },
-    {
-      id: 5,
-      sender: 'Comune di Genova',
-      recipient: 'Jordy Alexis <jordy2806@hotmail.com>',
-      subject: 'Citizen Service Update',
-      body: 'You have a new citizen service update from Comune di Genova. Please review it at your earliest convenience.',
-      timestamp: new Date('2026-06-05T10:45:00'),
-      starred: false,
-      label: 'Personal'
-    },
-    {
-      id: 6,
-      sender: 'Amazon',
-      recipient: 'Jordy Alexis <jordy2806@hotmail.com>',
-      subject: 'Order Confirmation',
-      body: 'Your order has been confirmed and will be shipped soon. Thank you for shopping with us!',
-      timestamp: new Date('2026-06-06T16:20:00'),
-      starred: true,
-      label: 'Important'
-    },
-    {
-      id: 7,
-      sender: 'eBay',
-      recipient: 'Jordy Alexis <jordy2806@hotmail.com>',
-      subject: 'Object Sold',
-      body: 'Your item has been sold on eBay. Please proceed with the shipping process.',
-      timestamp: new Date('2026-06-07T12:00:00'),
-      starred: false,
-      label: 'Work'
-    },
-    {
-      id: 8,
-      sender: 'Prime Video',
-      recipient: 'Jordy Alexis <jordy2806@hotmail.com>',
-      subject: 'Subscription Renewal',
-      body: 'Your subscription has been renewed successfully. Enjoy your streaming experience!',
-      timestamp: new Date('2026-06-08T09:00:00'),
-      starred: true,
-      label: 'Personal'
-    },
-    {
-      id: 9,
-      sender: 'Microsoft',
-      recipient: 'Jordy Trebejo <jordy.trebejo@dgsspa.com>',
-      subject: 'Software Update',
-      body: 'A new software update is available for your device. Please install it at your earliest convenience.',
-      timestamp: new Date('2026-06-09T14:00:00'),
-      starred: false,
-      label: 'Important'
-    },
-    {
-      id: 10,
-      sender: 'Netflix',
-      recipient: 'Jordy Alexis <jordy2806@hotmail.com>',
-      subject: 'New Movie Release',
-      body: 'A new movie has been released on Netflix. Check it out!',
-      timestamp: new Date('2026-06-10T18:30:00'),
-      starred: true,
-      label: 'Personal'
-    },
-  ];
-
-  //emails: any[] = []; 
-
+  @Input() emails: EmailInterface[] = [];
 
   ///////////////////////////SELEZIONE EMAIL///////////////////////////////////////////////
-  
-
-  @Output() emailSelected = new EventEmitter<any>();
 
 
-  selectEmail(email: any) {
-    //console.log('CLICK!', email); // DEBUG
+  @Output() emailSelected = new EventEmitter<EmailInterface>();
+
+
+  selectEmail(email: EmailInterface) {
     this.emailSelected.emit(email);
   }
 
 
-selectedEmails: any[] = [];
+  selectedEmails: EmailInterface[] = [];
 
-toggleSelection(email: any) {
-  const index = this.selectedEmails.findIndex(e => e.id === email.id);
+  toggleSelection(email: EmailInterface) {
+    const index = this.selectedEmails.findIndex(e => e.id === email.id);
 
-  if (index > -1) {
-    this.selectedEmails.splice(index, 1);
-  } else {
-    this.selectedEmails.push(email);
+    if (index > -1) {
+      this.selectedEmails.splice(index, 1);
+    } else {
+      this.selectedEmails.push(email);
+    }
   }
 
-  console.log('Selected:', this.selectedEmails);
-}
-
-isSelected(email: any): boolean {
-  return this.selectedEmails.some(e => e.id === email.id);
-}
+  isSelected(email: EmailInterface): boolean {
+    return this.selectedEmails.some(e => e.id === email.id);
+  }
 
 
-///////////////////////////////////STELLA///////////////////////////////////////////////
+  ///////////////////////////////////PREFERITI///////////////////////////////////////////////
 
 
-toggleStar(email: any) {
+  toggleStar(email: EmailInterface) {
     email.starred = !email.starred;
   }
 
-  getAllEmails(): any[] {
-  return this.emails;
-}
+  getAllEmails(): EmailInterface[] {
+    return this.emails;
+  }
 
 }
 
 
 
 
-//////////////////////////////////////////////COMMENTI///////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////COMMENTI////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// emails: any[] = [];  
-// Questa riga dichiara una proprietà emails come un array vuoto di tipo any. In questo caso, ho commentato la dichiarazione di emails come array vuoto perché ho già inizializzato l'array emails con un set di dati fittizi. Se vuoi utilizzare dati reali, puoi decommentare questa riga e popolare l'array emails con i dati appropriati.
-// In questo caso, ho commentato la dichiarazione di emails come array vuoto perché ho già inizializzato l'array emails con un set di dati fittizi. Se vuoi utilizzare dati reali, puoi decommentare questa riga e popolare l'array emails con i dati appropriati.
 
+// DatePipe è una classe fornita da Angular che consente di formattare le date in base a un formato specifico. In questo caso, viene importata e utilizzata nel componente per formattare la data di invio delle email.
+
+// @Input() è un decoratore che indica che la proprietà emails può ricevere dati da un componente genitore. In questo caso, il componente genitore può passare un array di email al componente MailListComponent tramite la proprietà emails.
+
+// EmailInterface è un'interfaccia che definisce la struttura dei dati delle email. In questo caso, viene importata e utilizzata per tipizzare le proprietà e i parametri del componente, garantendo che le email gestite dal componente abbiano una struttura coerente e prevedibile.
+
+
+/////////////////////////////////////////////////////SELEZIONE EMAIL/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // @Output() è un decoratore che indica che la proprietà emailSelected è un evento che può essere emesso dal componente. In questo caso, l'evento viene emesso quando un'email viene selezionata.
 // emailSelected è un'istanza di EventEmitter, che è una classe fornita da Angular per gestire eventi personalizzati. In questo caso, l'evento emesso conterrà i dati dell'email selezionata.
 
+// EventEmitter consente al componente di comunicare con altri componenti o servizi, emettendo eventi che possono essere ascoltati e gestiti da altri componenti o servizi che si iscrivono a questi eventi.
 
-//selectedEmails: any[] = [];
-// Questa riga dichiara una proprietà selectedEmails come un array vuoto di tipo any. 
-// Questo array viene utilizzato per tenere traccia delle email attualmente selezionate dall'utente. 
-// Quando un'email viene selezionata o deselezionata, viene aggiunta o rimossa da questo array, consentendo al componente di gestire lo stato di selezione delle email.
+// selectEmail(email: EmailInterface) è un metodo che viene chiamato quando un'email viene selezionata. In questo caso, il metodo emette l'evento emailSelected con i dati dell'email selezionata, consentendo ad altri componenti o servizi di reagire a questa selezione.
 
-// toggleSelection(email: any)
-// Questa funzione gestisce la selezione e la deselezione delle email.
+// selectedEmails è un array che tiene traccia delle email attualmente selezionate. Viene utilizzato per gestire la selezione multipla delle email.
 
-// const index = this.selectedEmails.findIndex(e => e.id === email.id);
-// Questa riga cerca l'indice dell'email selezionata nell'array selectedEmails utilizzando il metodo findIndex.
-// Il metodo findIndex restituisce l'indice dell'elemento che soddisfa la condizione specificata (in questo caso, l'email con lo stesso id). 
-// Se l'email non viene trovata, findIndex restituisce -1.
+// toggleSelection(email: EmailInterface) è un metodo che viene chiamato quando un'email viene cliccata per essere selezionata o deselezionata. Il metodo verifica se l'email è già presente nell'array selectedEmails e, in base a questo, la aggiunge o la rimuove dall'array.
 
-// if (index > -1) {this.selectedEmails.splice(index, 1);}
-// Se l'email è già selezionata (index > -1), viene rimossa dall'array selectedEmails utilizzando il metodo splice. 
-// Il metodo splice rimuove l'elemento all'indice specificato (index) dall'array selectedEmails.
-
-// else {this.selectedEmails.push(email);}
-// Altrimenti, se l'email non è selezionata, viene aggiunta all'array selectedEmails utilizzando il metodo push.
+// isSelected(email: EmailInterface): boolean è un metodo che verifica se un'email specifica è attualmente selezionata, restituendo true se l'email è presente nell'array selectedEmails e false altrimenti.
 
 
-// isSelected(email: any): boolean {
-// Funzione che verifica se un'email è attualmente selezionata.
-// Restituisce true se l'email è presente nell'array selectedEmails, altrimenti restituisce false.
+/////////////////////////////////////////////////////PREFERITI/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// return this.selectedEmails.some(e => e.id === email.id);
-// Questa riga utilizza il metodo some per verificare se esiste un'email nell'array selectedEmails con lo stesso id dell'email passata come argomento. 
-// Se viene trovata una corrispondenza, some restituisce true, indicando che l'email è selezionata; altrimenti, restituisce false.
-// (e è un parametro che rappresenta ogni elemento dell'array selectedEmails durante l'iterazione.)
+// toggleStar(email: EmailInterface) è un metodo che viene chiamato quando l'utente clicca sull'icona a forma di stella per contrassegnare o rimuovere un'email come preferita. Il metodo inverte il valore della proprietà starred dell'email, consentendo all'utente di gestire facilmente le email preferite.
 
-
-// Si può usare label tipo: "work", "personal", "important" per categorizzare le email in base alla loro natura o priorità.
+// getAllEmails(): EmailInterface[] è un metodo che restituisce l'intero array di email gestito dal componente. Questo metodo può essere utilizzato da altri componenti o servizi per accedere alla lista completa delle email, ad esempio per visualizzarle o per eseguire operazioni su di esse.

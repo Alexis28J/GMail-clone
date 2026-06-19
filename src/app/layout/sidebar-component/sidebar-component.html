@@ -1,27 +1,33 @@
 <aside class="sidebar">
 
     <div>
-    <button class="compose-btn" matTooltip="Compose a new email" matTooltipPosition="below">
-        <mat-icon>edit</mat-icon>
-        <span>Compose</span>
-    </button>
+        <button class="compose-btn" matTooltip="Compose a new email" matTooltipPosition="below">
+            <mat-icon>edit</mat-icon>
+            <span>Compose</span>
+        </button>
 
-    <nav>
-        @for (item of menuItems; track item.id) {
-        <div class="menu-item">
-            <div class="menu-left">
-                <mat-icon>{{ item.icon }}</mat-icon>
-                <span>{{ item.name }}</span>
+        <nav>
+            @for (item of menuItems; track item.id) {
+            <div class="menu-item">
+                <div class="menu-left">
+                    <mat-icon>{{ item.icon }}</mat-icon>
+                    <span>{{ item.name }}</span>
+                </div>
+
+                @if (item.count) {
+                <span class="count">{{ item.count }}</span>
+                }
             </div>
 
-            @if (item.count) {
-            <span class="count">{{ item.count }}</span>
             }
-        </div>
-        
-        }
 
-    </nav>
+        </nav>
     </div>
 
 </aside>
+
+
+
+<!------------------------------ COMMENTI --------------------------------->
+
+<!--  Il track nel ciclo for serve a Angular per identificare in modo univoco ogni elemento della lista, migliorando le prestazioni durante il rendering. -->

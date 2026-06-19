@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {MatIconModule} from "@angular/material/icon";
+import { MatIconModule } from "@angular/material/icon";
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
@@ -8,10 +8,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   templateUrl: './sidebar-component.html',
   styleUrls: ['./sidebar-component.scss'],
 })
-export class SidebarComponent {  
-  //menuItems è un array di oggetti che rappresentano le voci del menu laterale. 
-  //lo inseriamo qui per poterlo utilizzare nel template HTML del componente.
-  menuItems = [   
+export class SidebarComponent {
+  menuItems = [
     { id: 1, name: 'Inbox', icon: 'inbox', count: 10 },
     { id: 2, name: 'Special', icon: 'star' },
     { id: 3, name: 'Sent', icon: 'send' },
@@ -33,5 +31,5 @@ export class SidebarComponent {
 
 // export class SidebarComponent {  menuItems = [....] }
 // menuItems è un array di oggetti che rappresentano le voci del menu laterale. 
-// lo inseriamo qui per poterlo utilizzare nel template HTML del componente.
-   
+// Lo inseriamo qui per poterlo utilizzare nel template HTML del componente. 
+// Ad esempio, ogni oggetto ha un id, un nome, un'icona e un conteggio opzionale di elementi associati a quella voce del menu.

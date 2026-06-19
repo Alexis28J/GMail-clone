@@ -11,5 +11,5 @@ import {MatTooltipModule} from "@angular/material/tooltip";
 export class HeaderComponent {}
 
 
-//Non ho importato CommonModule perché non utilizzo direttive come ngIf o ngFor in questo componente,
-//mentre ho importato MatIconModule perché utilizzo le icone di Angular Material per rappresentare le voci del menu.
+
+
