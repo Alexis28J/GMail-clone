@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatIcon } from "@angular/material/icon";
 import { MatTooltipModule } from "@angular/material/tooltip";
 
@@ -11,9 +11,12 @@ import { MatTooltipModule } from "@angular/material/tooltip";
 })
 export class ToolbarComponent {
 
-  @Output() nextMail = new EventEmitter<void>();   
+  @Input() canGoNext = true;
+  @Input() canGoPrev = true;
+
+  @Output() nextMail = new EventEmitter<void>();
   //@Output() nextMail = new EventEmitter<EmailInterface>();
-  
+
   @Output() prevMail = new EventEmitter<void>();
   //@Output() prevMail = new EventEmitter<EmailInterface>();
 
