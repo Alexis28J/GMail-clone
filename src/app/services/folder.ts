@@ -1,66 +1,90 @@
-import { computed, Injectable, Service, signal } from '@angular/core';
+import { computed, Injectable, signal } from '@angular/core';
 import { FolderInterface } from '../interface/folder-interface';
 import { EmailService } from '../services/email'
 import { EmailInterface } from '../interface/email-interface';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
 
 export class Folder {
 
-    constructor(private emailService: EmailService) { }
+  constructor(private emailService: EmailService) { }
 
-    private selectedFolder = signal<string>('Inbox');
+  private selectedFolder = signal<string>('inbox');
 
-    private foldersSignal = signal<FolderInterface[]>(
-        [
-            { id: 'inbox', name: 'Inbox', icon: 'inbox' },
-            { id: 'starred', name: 'Special', icon: 'star' },
-            { id: 'sent', name: 'Sent', icon: 'send' },
-            { id: 'drafts', name: 'Drafts', icon: 'drafts' },
-            { id: 'spam', name: 'Spam', icon: 'report' },
-            { id: 'important', name: 'Important', icon: 'label_important' },
-            { id: 'trash', name: 'Trash', icon: 'delete' },
-        ]
-    );
+  private foldersSignal = signal<FolderInterface[]>(
+    [
+      { id: 'inbox', name: 'Inbox', icon: 'inbox' },
+      { id: 'starred', name: 'Special', icon: 'star' },
+      { id: 'snoozed', name: 'Snoozed', icon: 'watch_later' },
+      { id: 'sent', name: 'Sent', icon: 'send' },
+      { id: 'drafts', name: 'Drafts', icon: 'drafts' },
+      { id: 'spam', name: 'Spam', icon: 'report' },
+      { id: 'important', name: 'Important', icon: 'label_important' },
+      { id: 'personal', name: 'Personal', icon: 'person' },
+      { id: 'archived', name: 'Archived', icon: 'archive' },
+      { id: 'work', name: 'Work', icon: 'work' },
+      { id: 'trash', name: 'Trash', icon: 'delete' },
+    ]
+  );
 
-    getFolders() {
-        return this.foldersSignal;
+  getFolders() {
+    return this.foldersSignal;
+  }
+
+  setSelectedFolder(folderId: string) {
+    this.selectedFolder.set(folderId);
+  }
+
+  getSelectedFolder() {
+    return this.selectedFolder;
+  }
+
+
+  filteredEmails = computed(() => {
+
+    const folder = this.selectedFolder();
+    const emails = this.emailService.getEmails()();
+
+    switch (folder) {
+
+      case 'starred':
+        return emails.filter(e => e.starred && !e.is_deleted);
+
+      case 'important':
+        return emails.filter(e => e.label === 'Important' && !e.is_deleted);
+
+      case 'spam':
+        return emails.filter(e => e.folder === 'spam');
+
+      case 'trash':
+        return emails.filter(e => e.is_deleted === true);
+
+      case 'drafts':
+        return emails.filter(e => e.folder === 'drafts');
+
+      case 'sent':
+        return emails.filter(e => e.folder === 'sent');
+
+      case 'personal':
+        return emails.filter(e => e.label === 'Personal' && !e.is_deleted);
+
+      case 'work':
+        return emails.filter(e => e.label === 'Work' && !e.is_deleted);
+
+      case 'archived':
+        return emails.filter(e => e.folder === 'archived');
+
+      case 'snoozed':
+        return emails.filter(e => e.folder === 'snoozed');
+
+      case 'inbox':
+        return emails.filter(e => !e.is_deleted);
+
+      default: return emails.filter(e => !e.is_deleted);
     }
-
-    setSelectedFolder(folderId: string) {
-        this.selectedFolder.set(folderId);
-    }
-
-    getSelectedFolder() {
-        return this.selectedFolder;
-    }
-
-    filteredEmails = computed<EmailInterface[]>(() => {
-
-        const folder = this.selectedFolder();
-
-        const emails = this.emailService.getEmails()();
-
-        switch (folder) {
-            case 'starred': return emails.filter(e => e.starred);
-
-            case 'important': return emails.filter(e => e.label === 'Important');
-
-            case 'spam': return emails.filter(e => e.subject.toLowerCase().includes('spam'));
-
-            case 'trash': return [];
-
-            case 'drafts': return [];
-
-            case 'sent': return emails.filter(e => e.sender.includes('Jordy'));
-
-            case 'inbox': default: return emails;
-        }
-    }
-)
-
+  });
 }
 
 
@@ -130,22 +154,28 @@ export class Folder {
 
 
 ///// FILTRO EMAIL
-// filteredEmails = computed<EmailInterface[]>(() => { ... });
-// Creo una proprietà pubblica filteredEmails che è un segnale computato contenente un array di oggetti che seguono l'interfaccia EmailInterface. 
-// Questo segnale computato viene utilizzato per filtrare le email in base alla cartella selezionata. 
-// Il tipo <EmailInterface[]> indica che il segnale conterrà solo valori di tipo array di EmailInterface.
+// Creo una proprietà computed filteredEmails che restituisce un array di email filtrate in base alla cartella selezionata.
+// La funzione di filtro utilizza uno switch case per verificare il valore della cartella selezionata (folder) e applica un filtro diverso alle email in base a quel valore. 
+// Il filtro utilizza il metodo filter() per creare un nuovo array di email che soddisfano le condizioni specificate per ogni cartella.
 
-// La funzione passata a computed(), cioè la funzione di callback, viene eseguita ogni volta che il valore del segnale selectedFolder cambia, e restituisce un nuovo array di email filtrate in base alla cartella selezionata. 
-// In questo modo, la proprietà filteredEmails si aggiorna automaticamente quando la cartella selezionata cambia, consentendo all'interfaccia utente di visualizzare le email corrispondenti alla cartella selezionata.
+// CASI:
+// Ad esempio, se la cartella selezionata è 'starred', il filtro restituirà solo le email che sono contrassegnate come starred e che appartengono alla cartella 'inbox'. 
+// Se la cartella selezionata è 'important', il filtro restituirà solo le email che hanno l'etichetta 'important'. 
+// Se la cartella selezionata è 'spam', il filtro restituirà solo le email che appartengono alla cartella 'spam', e così via per le altre cartelle. 
+// Invece se la cartella selezionata è 'inbox', il filtro restituirà tutte le email che non sono contrassegnate come eliminate (is_deleted !== true), indipendentemente dalla cartella a cui appartengono.
+// E nel caso predefinito (default), il filtro restituirà tutte le email che non sono contrassegnate come eliminate e che appartengono alla cartella specificata dal valore di folder.
+// Trash è un caso particolare, in quanto restituisce tutte le email che sono contrassegnate come eliminate (is_deleted === true), indipendentemente dalla cartella a cui appartengono.
+// Alcuni come 'work' ha due condizioni: restituisce le email che hanno l'etichetta 'work' e che non sono contrassegnate come eliminate (is_deleted !== true).
 
-// const emails = this.emailService.getEmails()();
-// All'interno della funzione di callback del segnale computato, utilizzo this.emailService.getEmails()() per ottenere l'array di email dal servizio EmailService. 
-// Il primo set di parentesi () chiama il metodo getEmails() del servizio, che restituisce un segnale contenente l'array di email. 
-// Il secondo set di parentesi () serve a ottenere il valore attuale del segnale, cioè l'array di email, in modo da poterlo filtrare in base alla cartella selezionata. 
-// In questo modo, posso accedere alle email e applicare i filtri necessari per restituire solo le email corrispondenti alla cartella selezionata.
+// Alcuni nomi di cartelle come 'starred', 'important', 'personal' e 'work' si basano su etichette (label) piuttosto che sulla cartella (folder) a cui appartengono le email.
+// Ad esempio, le email contrassegnate come 'starred' o 'important' possono trovarsi in diverse cartelle, ma vengono filtrate in base alla loro etichetta.
+// Altre cartelle come 'inbox', 'sent', 'drafts', 'spam', 'trash', 'archived' e 'snoozed' si basano sulla cartella (folder) a cui appartengono le email, indipendentemente dalle etichette che possono avere.
+// Ad esempio, le email nella cartella 'inbox' possono avere diverse etichette, ma vengono filtrate in base alla loro appartenenza alla cartella 'inbox'.
 
-// switch (folder) { ... }
-// Utilizzo un'istruzione switch per determinare quale filtro applicare alle email in base al valore della cartella selezionata (folder). 
-// Ogni caso del switch corrisponde a una cartella specifica e applica un filtro diverso all'array di email.
-// Ad esempio, se la cartella selezionata è 'starred', restituisco solo le email che hanno la proprietà starred impostata su true.
-// e.starred è una proprietà booleana dell'interfaccia EmailInterface che indica se un'email è stata contrassegnata come speciale o importante dall'utente.
+// Oltre ai casi specifici, il filtro predefinito (default) restituisce tutte le email che non sono contrassegnate come eliminate (is_deleted !== true), indipendentemente dalla cartella a cui appartengono.
+
+// Non è necessario un caso per la cartella 'trash' perché le email eliminate vengono filtrate in base alla proprietà is_deleted, quindi non è necessario spostarle in una cartella specifica.
+// In sintesi, questo filtro consente di visualizzare le email in base alla cartella selezionata, applicando condizioni specifiche per ogni cartella per mostrare solo le email rilevanti per quella cartella.
+
+
+//NB: Ho eliminato computed<EmailInterface[]> perché TypeScript riesce a inferire il tipo di ritorno della funzione in base al tipo di dati restituito, quindi non è necessario specificarlo esplicitamente.

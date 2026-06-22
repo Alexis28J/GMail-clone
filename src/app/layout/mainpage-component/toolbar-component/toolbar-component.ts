@@ -20,12 +20,18 @@ export class ToolbarComponent {
   @Output() prevMail = new EventEmitter<void>();
   //@Output() prevMail = new EventEmitter<EmailInterface>();
 
+  @Output() delete = new EventEmitter<void>();
+
   onNext() {
     this.nextMail.emit();
   }
 
   onPrev() {
     this.prevMail.emit();
+  }
+
+  onDelete(){
+    this.delete.emit();
   }
 }
 
@@ -40,12 +46,24 @@ export class ToolbarComponent {
 //In questo caso, l'evento nextMail e prevMail emettono semplicemente un segnale che indica che l'utente ha richiesto di passare alla prossima o alla precedente email, senza fornire ulteriori informazioni.
 
 
+///// EVENTI PER NAVIGARE TRA LE EMAIL
 // EventEmitter è una classe di Angular che permette di creare eventi personalizzati. In questo caso, nextMail e prevMail emettono eventi senza alcun dato associato (void).
-// Per cambiare il comportamento della toolbar, il componente genitore può ascoltare questi eventi e reagire di conseguenza, ad esempio navigando tra le email.
-
+// Per cambiare il comportamento della toolbar, il componente genitore (che sarebbe MainPageComponent) può ascoltare questi eventi e reagire di conseguenza, ad esempio navigando tra le email.
 
 // I metodi onNext() e onPrev() vengono chiamati quando l'utente clicca sui pulsanti della toolbar. Questi metodi emettono gli eventi nextMail e prevMail rispettivamente, permettendo al componente genitore di reagire a tali azioni.
 // this.nextMail.emit() e this.prevMail.emit() sono le chiamate che effettivamente emettono gli eventi, notificando il componente genitore che l'utente ha richiesto di passare alla prossima o alla precedente email.
 
-
 // In sintesi, ToolbarComponent è un componente riutilizzabile che fornisce funzionalità di navigazione tra le email tramite eventi personalizzati, utilizzando Angular Material per l'interfaccia utente.
+
+// Ho commentato le righe che emettono un oggetto EmailInterface perché non è necessario passare alcun dato specifico quando si naviga tra le email.
+
+
+///// EVENTO PER ELIMINARE LE EMAIL SELEZIONATE
+// @Output() delete = new EventEmitter<void>();
+// Ho aggiunto un nuovo EventEmitter chiamato delete, che emette un evento quando l'utente clicca sul pulsante di eliminazione nella toolbar. 
+// Questo evento può essere ascoltato dal componente genitore (che in questo caso è MainPageComponent) per eseguire l'azione di eliminazione delle email selezionate.
+
+// onDelete() { this.delete.emit(); }
+// Ho aggiunto un nuovo metodo onDelete() che viene chiamato quando l'utente clicca sul pulsante di eliminazione nella toolbar. 
+// Questo metodo emette l'evento delete, notificando il componente genitore che l'utente ha richiesto di eliminare le email selezionate.
+// In questo modo, il componente ToolbarComponent fornisce un'interfaccia per navigare tra le email e per eliminare le email selezionate, delegando la logica effettiva di queste azioni al componente genitore tramite eventi personalizzati.

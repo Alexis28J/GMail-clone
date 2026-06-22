@@ -7,12 +7,14 @@ import { MailListComponent } from "./mail-list-component/mail-list-component";
 import { MailViewerComponent } from "./mail-viewer-component/mail-viewer-component";
 import { EmailService } from "../../services/email";
 import { EmailInterface } from '../../interface/email-interface';
+import { Folder } from '../../services/folder';
 
 
 @Component({
   selector: 'app-mainpage-component',
   standalone: true,
-  imports: [CommonModule, MatCheckboxModule, MatIconModule, ToolbarComponent, MailListComponent, MailViewerComponent],
+  imports: [CommonModule, MatCheckboxModule, MatIconModule,
+    ToolbarComponent, MailListComponent, MailViewerComponent],
   templateUrl: './mainpage-component.html',
   styleUrls: ['./mainpage-component.scss'],
 })
@@ -23,14 +25,23 @@ export class MainpageComponent {
 
   currentIndex = signal<number | null>(null);
 
+
   selectedEmail = computed<EmailInterface | null>(() => {
     const index = this.currentIndex();
     if (index === null) return null;
     return this.allEmails()[index];
   });
 
-  constructor(private emailService: EmailService) {
-    this.allEmails = this.emailService.getEmails();
+  // constructor(private emailService: EmailService) {
+  //   this.allEmails = this.emailService.getEmails();
+  // }
+
+  constructor(
+    private emailService: EmailService,
+    private folderService: Folder) {
+
+    this.allEmails = this.folderService.filteredEmails;
+
   }
 
   onEmailSelected(email: EmailInterface) {
@@ -38,7 +49,7 @@ export class MainpageComponent {
     this.currentIndex.set(index);
   }
 
-  nextEmail() {  
+  nextEmail() {
     const index = this.currentIndex();
 
     if (index !== null && index < this.allEmails().length - 1) {
@@ -61,6 +72,18 @@ export class MainpageComponent {
 
   onReply(email: EmailInterface) {
     console.log('Reply dal MAIN:', email);
+  }
+
+
+  onDeleteSelected() {
+
+    const confirmed = confirm('Are you sure you want to delete this email?');
+
+    if (!confirmed) return;
+
+    this.emailService.deleteSelectedEmails();
+    this.currentIndex.set(null);
+
   }
 
 
@@ -100,14 +123,21 @@ export class MainpageComponent {
 // PROPRIETÀ DEL COMPONENTE:
 
 // allEmails: Signal<EmailInterface[]> - Una proprietà che contiene un segnale (Signal) che rappresenta l'elenco di tutte le email. Viene inizializzata con i dati ottenuti dal servizio EmailService.
+// Signal con maiuscola indica che è un tipo generico che può contenere un array di oggetti che seguono l'interfaccia EmailInterface.
 
 // currentIndex: signal<number | null> - Una proprietà che rappresenta l'indice dell'email attualmente selezionata. Può essere un numero o null se nessuna email è selezionata.
+// signal con minuscola indica che è un segnale reattivo che può essere aggiornato e osservato per i cambiamenti.
 
 // selectedEmail: computed<EmailInterface | null> - Una proprietà calcolata (computed) che restituisce l'email attualmente selezionata in base all'indice corrente. Se non c'è un'email selezionata, restituisce null.
 
 
 // COSTRUTTORE:
 // Il costruttore accetta un'istanza di EmailService come dipendenza. All'interno del costruttore, viene inizializzata la proprietà allEmails chiamando il metodo getEmails() del servizio email per ottenere l'elenco delle email.
+// Ho commentato l'iniezione del servizio EmailService e la chiamata a getEmails() perché ora utilizzo il servizio Folder per ottenere le email filtrate in base alla cartella selezionata.
+// Invece, ho iniettato il servizio Folder e inizializzato allEmails con folderService.filteredEmails, che restituisce le email filtrate in base alla cartella selezionata. 
+// In questo modo, il componente MainpageComponent riceve le email direttamente dal servizio Folder, che gestisce la logica di filtraggio delle email in base alla cartella selezionata.
+// Ho abilitato l'iniezione del servizio EmailService per poter utilizzare il metodo deleteSelectedEmails() quando si desidera eliminare le email selezionate.
+
 
 
 // METODI DEL COMPONENTE:
@@ -122,3 +152,16 @@ export class MainpageComponent {
 // onForward(email: EmailInterface): Questo metodo viene chiamato quando si desidera inoltrare un'email. Attualmente, stampa l'email da inoltrare nella console.
 
 // onReply(email: EmailInterface): Questo metodo viene chiamato quando si desidera rispondere a un'email. Attualmente, stampa l'email a cui rispondere nella console.
+
+// onDeleteSelected(): Questo metodo viene chiamato quando si desidera eliminare le email selezionate. Chiama il metodo deleteSelectedEmails() del servizio EmailService per spostare le email selezionate nella cartella "trash" e deselezionarle. 
+// Dopo aver eliminato le email, imposta currentIndex su null per deselezionare qualsiasi email attualmente visualizzata.
+
+
+
+// PROMPT DI CONFERMA
+// 1)     const confirmed = confirm('Are you sure you want to delete this email?');
+//        if (!confirmed) return;
+// Nel metodo onDeleteSelected(), viene utilizzato il prompt di conferma confirm() per chiedere all'utente se è sicuro di voler eliminare l'email selezionata.
+// Se l'utente conferma l'eliminazione (cliccando su "OK"), il metodo procede con l'eliminazione delle email selezionate. 
+// Se l'utente annulla l'eliminazione (cliccando su "Cancel"), il metodo esce senza eseguire alcuna azione, lasciando le email selezionate intatte.
+// E' un modo semplice per prevenire eliminazioni accidentali, dando all'utente la possibilità di confermare o annullare l'azione di eliminazione.

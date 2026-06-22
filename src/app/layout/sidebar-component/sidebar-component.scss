@@ -34,30 +34,30 @@
     background-color: rgb(248, 221, 221); 
 }
 
-.menu-item {
-    height: 40px;
+// .menu-item {            
+//     height: 40px;
 
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+//     display: flex;
+//     align-items: center;
+//     justify-content: space-between;
 
-    padding: 0 16px 0 24px; 
+//     padding: 0 16px 0 24px; 
 
-    border-radius: 8px;
+//     border-radius: 8px;
 
-    cursor: pointer;
-}
+//     cursor: pointer;
+// }
 
 
-.menu-item:hover {    
-    background-color: rgb(248, 221, 221);
-}
+// .menu-item:hover {    
+//     background-color: rgb(248, 221, 221);
+// }
 
-.menu-left {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-}
+// .menu-left {
+//     display: flex;
+//     align-items: center;
+//     gap: 16px;
+// }
 
 .count {
     font-size: 12px;
@@ -83,3 +83,8 @@
 /// 
 /// .menu-item:hover {  background-color: rgb(248, 221, 221);}
 /// Aggiunge un effetto hover al menu-item per farlo risaltare
+/// 
+/// 
+/// .menu-item e . menu-left 
+/// sono stati commentati perché le proprietà sono state trasferite in folder-list-component.scss per evitare conflitti di stile.            
+/// 

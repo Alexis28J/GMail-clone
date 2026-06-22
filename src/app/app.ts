@@ -50,5 +50,10 @@ export class App {
 //Inizializzazione in TypeScript si riferisce al processo di assegnazione di valori iniziali alle proprietà di una classe o di un oggetto al momento della loro creazione.
 
 
+//protected è un modificatore di accesso in TypeScript che indica che una proprietà o un metodo di una classe può essere accessibile solo all'interno della classe stessa e dalle classi derivate (sottoclassi), ma non da istanze esterne della classe.
 
+// protected readonly title = signal('GMail-clone');: In questo caso, la proprietà title è dichiarata come protected, il che significa che può essere accessibile solo all'interno della classe App e dalle classi derivate.
+// readonly indica che la proprietà non può essere modificata dopo la sua inizializzazione, garantendo che il valore rimanga costante durante il ciclo di vita dell'istanza.
 
+// signal('GMail-clone') è una funzione che crea un segnale reattivo con il valore iniziale 'GMail-clone'.
+// Questo permette alla proprietà title di essere reattiva, il che significa che qualsiasi cambiamento al valore del segnale title causerà un aggiornamento automatico in tutte le parti dell'applicazione che dipendono da questo segnale, come ad esempio il template HTML associato al componente App.                                                                                                                    

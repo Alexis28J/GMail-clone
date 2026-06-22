@@ -1,6 +1,6 @@
 <div class="main-page-container">
 
-    <app-toolbar-component (nextMail)="nextEmail()" (prevMail)="previousEmail()"></app-toolbar-component>
+    <app-toolbar-component (nextMail)="nextEmail()" (prevMail)="previousEmail()" (delete)="onDeleteSelected()"></app-toolbar-component>
 
     <div class="content">
 
@@ -31,3 +31,8 @@
 <!-- [email] è una proprietà di input che permette di passare l'email selezionata al componente MailViewerComponent -->
 
 <!-- (reply) e (forward) sono eventi emessi dal componente MailViewerComponent per rispondere o inoltrare l'email -->
+
+<!-- (delete) è un evento emesso dal componente ToolbarComponent per eliminare le email selezionate.
+ Si usa le parentesi tonde e non le parentesi quadre perché si tratta di un evento e non di un binding di proprietà -->
+
+ 

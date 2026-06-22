@@ -1,9 +1,11 @@
 @for(email of emails; track email.id){
 
-<div class="email-item" (click)="selectEmail(email)" [class.selected]="isSelected(email)">
+<div class="email-item" (click)="selectEmail(email)" [class.selected]="email.selected">
 
-  <input type="checkbox" (click)="$event.stopPropagation()" [checked]="isSelected(email)"
-    (change)="toggleSelection(email)" />
+  <!-- <input type="checkbox" (click)="$event.stopPropagation()" [checked]="isSelected(email)"
+    (change)="toggleSelection(email)" /> -->
+
+    <input type="checkbox" (click)="$event.stopPropagation()" [(ngModel)]="email.selected" />
 
   <div class="email-details">
     <div class="email-subject">{{email.subject}}</div>
@@ -41,14 +43,22 @@
 
 <!------------------------------------------- COMMENTI --------------------------------------------->
 
-<!-- (click) è un evento che viene attivato quando un elemento viene cliccato. -->
+<!-- (click) è un evento che viene attivato quando un elemento viene cliccato. In questo caso, viene utilizzato per selezionare un'email.
+ Quando si clicca su un'email, viene chiamata la funzione selectEmail(email) per aggiornare lo stato di selezione dell'email. -->
 
-<!-- [class.selected] è una direttiva che aggiunge o rimuove la classe CSS "selected" in base al valore booleano dell'espressione. -->
+ 
+<!-- [class.selected] è una direttiva che aggiunge o rimuove la classe CSS "selected" in base al valore booleano dell'espressione.
+  In questo caso, viene utilizzata per applicare la classe "selected" all'email quando la proprietà "selected" dell'email è vera (vedi EmailService). -->
+ 
 
-<!-- [checked] è una direttiva che imposta lo stato del checkbox in base al valore booleano dell'espressione. -->
+<!-- [checked] è una direttiva che imposta lo stato del checkbox in base al valore booleano dell'espressione.
+    In altre parole, se l'espressione è vera, il checkbox sarà selezionato, altrimenti sarà deselezionato. -->
 
 <!-- (change) è un evento che viene attivato quando il valore del checkbox cambia. In questo caso, viene utilizzato per aggiornare lo stato di selezione dell'email. -->
 
 <!-- stopPropagation() è un metodo che impedisce la propagazione dell'evento corrente nell'albero del DOM. 
  In questo caso, impedisce che il clic sul checkbox selezioni anche l'email. 
  Perché vogliamo che l'email venga selezionata solo quando si clicca direttamente su di essa, non quando si clicca sul checkbox. -->
+
+ <!--  Ho commentato il codice del checkbox per utilizzare [(ngModel)] al posto di [checked] e (change). 
+   Perché [(ngModel)] permette di legare direttamente il valore del checkbox alla proprietà "selected" dell'email, semplificando la gestione dello stato di selezione. -->

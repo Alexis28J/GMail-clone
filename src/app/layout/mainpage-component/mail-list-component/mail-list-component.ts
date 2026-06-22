@@ -2,10 +2,11 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { Input } from '@angular/core';
 import { EmailInterface } from '../../../interface/email-interface';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-mail-list-component',
-  imports: [DatePipe],
+  imports: [DatePipe, FormsModule],
   templateUrl: './mail-list-component.html',
   styleUrls: ['./mail-list-component.scss'],
 })
