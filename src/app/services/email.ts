@@ -171,6 +171,28 @@ export class EmailService {
         emails.map(email => email.selected?{...email, is_deleted:false, selected: false}: email)
       );
     }
+
+
+   sendEmail(email: Partial<EmailInterface>){
+
+      const newEmail: EmailInterface = {
+        id: Date.now(),
+        sender: email.sender || 'Me',   
+        recipient: email.recipient || '',
+        subject: email.subject || '',
+        body: email.body || '',
+        timestamp: new Date(),
+        starred: false,
+        label: 'Sent',
+        folder: 'sent',
+        selected: false, 
+        is_deleted: false,
+      };
+      
+      this.emailsSignal.update(emails => [newEmail, ...emails]);
+
+   }
+
 }
 
 
@@ -229,7 +251,8 @@ export class EmailService {
 // effect() è una funzione che permette di eseguire del codice ogni volta che uno o più segnali reattivi cambiano. In questo caso, stiamo salvando le email nel localStorage ogni volta che emailsSignal cambia.
 
 // constructor() { ... } 
-//Ho aggiunto un costruttore alla classe EmailService che contiene l'effetto per salvare le email nel localStorage. Il costruttore viene eseguito quando il servizio viene istanziato, garantendo che l'effetto sia attivo fin dall'inizio.
+// Ho aggiunto un costruttore alla classe EmailService che contiene l'effetto per salvare le email nel localStorage. Il costruttore viene eseguito quando il servizio viene istanziato (es. all'avvio dell'applicazione), garantendo che l'effetto sia attivo fin dall'inizio.
+// In questo modo, ogni volta che lo stato delle email cambia, le modifiche vengono salvate automaticamente nel localStorage, consentendo all'utente di mantenere le email anche dopo aver chiuso e riaperto l'applicazione.
 
 
 // RIPRISTINARE LE EMAIL SELEZIONATE
@@ -238,3 +261,12 @@ export class EmailService {
 // All'interno di questo metodo, utilizziamo this.emailsSignal.update() per aggiornare lo stato del segnale reattivo. 
 // La funzione di aggiornamento prende l'array corrente di email e restituisce un nuovo array in cui le email selezionate (email.selected) vengono modificate per avere is_deleted impostato su false 
 // e selected impostato su false, mentre le altre email rimangono invariate.
+
+
+// INVIARE UNA NUOVA EMAIL
+// sendEmail(email: Partial<EmailInterface>) { ... }
+// Definiamo un metodo pubblico sendEmail() che viene chiamato quando l'utente vuole inviare una nuova email.
+// Il metodo accetta un oggetto email di tipo Partial<EmailInterface>, il che significa che può contenere solo alcune delle proprietà definite nell'interfaccia EmailInterface.
+// All'interno del metodo, creiamo un nuovo oggetto newEmail di tipo EmailInterface, impostando le proprietà necessarie come id, sender, recipient, subject, body, timestamp, starred, label, folder, selected e is_deleted.
+// L'id viene generato utilizzando Date.now(), che restituisce il numero di millisecondi trascorsi dal 1 gennaio 1970. Questo garantisce un identificatore unico per ogni email inviata.
+// Le altre proprietà vengono impostate in base ai valori forniti nell'oggetto email passato al metodo o a valori predefiniti se non sono presenti.

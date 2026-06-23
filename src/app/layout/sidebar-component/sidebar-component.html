@@ -1,7 +1,7 @@
 <aside class="sidebar">
 
     <div>
-        <button class="compose-btn" matTooltip="Compose a new email" matTooltipPosition="below">
+        <button class="compose-btn" matTooltip="Compose a new email" matTooltipPosition="below" (click)="openCompose()">
             <mat-icon>edit</mat-icon>
             <span>Compose</span>
         </button>
@@ -19,9 +19,8 @@
                 }
             </div>
             } -->
-            <app-folder-list-component 
-            [folders] = "folders()"
-            (folderSelected)="onFolderSelected($event)"></app-folder-list-component>
+            <app-folder-list-component [folders]="folders()"
+                (folderSelected)="onFolderSelected($event)"></app-folder-list-component>
 
         </nav>
     </div>
@@ -46,7 +45,7 @@
 <!-- Ho commentato il ciclo for e il codice relativo alle voci del menu statiche perché ora utilizziamo il componente FolderListComponent per visualizzare le cartelle dinamicamente. -->
 
 <!-- [folders] significa che stiamo passando l'array di cartelle dal componente SidebarComponent al componente FolderListComponent tramite il binding delle proprietà. -->
- <!--  Questa sintassi consente al componente figlio di ricevere i dati dal componente genitore e aggiornare la visualizzazione in base a tali dati. 
+<!--  Questa sintassi consente al componente figlio di ricevere i dati dal componente genitore e aggiornare la visualizzazione in base a tali dati. 
        Per questo si usa le parentesi quadre intorno al nome della proprietà. -->
 
 <!-- folders() significa che stiamo chiamando il metodo folders() del componente SidebarComponent per ottenere l'array di cartelle da passare al componente FolderListComponent. -->
@@ -62,7 +61,7 @@
   Le parentesi tonde intorno al nome dell'evento indicano che stiamo effettuando il binding dell'evento dal componente figlio al componente genitore. 
   Invece, le parentesi quadre intorno al nome della proprietà indicano il binding dei dati dal componente genitore al componente figlio. -->
 
-  <!-- onFolderSelected significa che stiamo chiamando il metodo onFolderSelected del componente SidebarComponent quando l'evento folderSelected viene emesso dal componente FolderListComponent.
+<!-- onFolderSelected significa che stiamo chiamando il metodo onFolderSelected del componente SidebarComponent quando l'evento folderSelected viene emesso dal componente FolderListComponent.
    Il parametro $event contiene i dati dell'evento emesso dal componente figlio. -->
 
 <!-- In sintesi, (folderSelected)="onFolderSelected($event)" significa che stiamo ascoltando l'evento folderSelected emesso dal componente FolderListComponent e, quando viene emesso, chiamiamo il metodo onFolderSelected del componente SidebarComponent, passando i dati dell'evento come argomento. -->

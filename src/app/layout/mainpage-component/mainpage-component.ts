@@ -79,15 +79,19 @@ export class MainpageComponent {
 
 
   onDeleteSelected() {
-
     //1) // const confirmed = confirm('Are you sure you want to delete this email?');
     // if (!confirmed) return;
 
+    const hasSelect = this.allEmails().some(email => email.selected);
 
-    //2) 
-    const dialogRef = this.dialog.open(ConfirmDialog, {
+    if(!hasSelect){
+      return;
+    }
+   
+    const dialogRef = this.dialog.open(ConfirmDialog, {   //2) 
+      autoFocus: false,
       data: {
-        message: 'Are you sure to want to delete these mails?'
+        message: 'Are you sure to want to delete these messages?'
       }
     });
 
@@ -98,7 +102,7 @@ export class MainpageComponent {
       }
     });
   }
-  
+
 
   isTrashView = computed(() => {
     return this.folderService.getSelectedFolder()() === 'trash';
@@ -196,6 +200,7 @@ export class MainpageComponent {
 // Viene aperto un dialogo modale con un messaggio personalizzato. L'utente può confermare o annullare l'eliminazione delle email.
 // Dopo che il dialogo viene chiuso, viene verificato il risultato. Se l'utente conferma l'eliminazione (result === true), il metodo procede con l'eliminazione delle email selezionate
 // e deseleziona qualsiasi email attualmente visualizzata impostando currentIndex su null.
+// autoFocus: false - Impedisce che il dialogo acquisisca automaticamente il focus quando viene aperto, migliorando l'esperienza utente.
 
 
 // RIPRISTINO EMAIL SELEZIONATE
@@ -213,3 +218,12 @@ export class MainpageComponent {
 // onRestoreSelected(): Questo metodo viene chiamato quando si desidera ripristinare le email selezionate dalla cartella "trash" alla loro cartella originale.
 // Chiama il metodo restoreSelectedEmails() del servizio EmailService per ripristinare le email selezionate e deselezionarle. 
 // Dopo aver ripristinato le email, imposta currentIndex su null per deselezionare qualsiasi email attualmente visualizzata.
+
+// CONDIZIONE DI SELEZIONE EMAIL
+// const hasSelect = this.allEmails().some(email => email.selected);
+// if(!hasSelect){
+//   return;
+// }
+// Nel metodo onDeleteSelected(), viene verificato se ci sono email selezionate prima di procedere con l'eliminazione.
+// Viene utilizzato il metodo some() per controllare se almeno un'email nell'elenco allEmails ha la proprietà selected impostata su true.
+// Se non ci sono email selezionate (hasSelect è false), il metodo esce senza eseguire alcuna azione, impedendo l'eliminazione accidentale di email non selezionate.

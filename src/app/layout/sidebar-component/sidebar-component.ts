@@ -3,10 +3,14 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Folder } from '../../services/folder';
 import { FolderListComponent } from "../folder-list-component/folder-list-component";
+import { MatDialog } from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ComposeDialog } from '../../shared/compose-dialog/compose-dialog';
 
 @Component({
+  standalone: true,
   selector: 'app-sidebar-component',
-  imports: [MatIconModule, MatTooltipModule, FolderListComponent],
+  imports: [MatIconModule, MatTooltipModule, FolderListComponent, MatDialogModule],
   templateUrl: './sidebar-component.html',
   styleUrls: ['./sidebar-component.scss'],
 })
@@ -25,11 +29,20 @@ export class SidebarComponent {
 
   private folderService = inject(Folder);
 
+  private dialog = inject(MatDialog)
+
   folders = this.folderService.getFolders();
 
-  onFolderSelected(folderId: string){
+  onFolderSelected(folderId: string) {
     this.folderService.setSelectedFolder(folderId);
   }
+
+  openCompose() {
+    this.dialog.open(ComposeDialog, {
+      width: '500px',
+    });
+  }
+
 }
 
 
@@ -55,3 +68,14 @@ export class SidebarComponent {
 // Poi ho definito un metodo onFolderSelected(folderId: string) che viene chiamato quando una cartella viene selezionata.
 // Questo metodo utilizza il servizio Folder per impostare la cartella selezionata, 
 // consentendo al componente genitore (AppComponent) di reagire a questa selezione e aggiornare l'interfaccia utente di conseguenza.
+
+
+
+//////////// AGGIUNTA DELLA FUNZIONALITÀ DI COMPOSIZIONE DELLA MAIL (MODAL DIALOG)
+// Ho importato MatDialog da Angular Material per gestire la finestra di dialogo di composizione della mail.
+// private dialog = inject(MatDialog): ho creato un'istanza del servizio MatDialog utilizzando la funzione inject() di Angular.
+
+// openCompose(): ho definito un metodo openCompose() che viene chiamato quando l'utente fa clic sul pulsante "Componi" nel menu laterale.
+// Questo metodo utilizza il servizio MatDialog per aprire la finestra di dialogo di composizione della mail, 
+// specificando ComposeDialog come componente da visualizzare nella finestra di dialogo. 
+// In questo modo, quando l'utente fa clic su "Componi", viene visualizzata la finestra di dialogo per scrivere una nuova email.

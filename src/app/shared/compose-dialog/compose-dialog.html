@@ -1,0 +1,23 @@
+<div class="compose-container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <span>New Message</span>
+        <button class="close-btn" (click)="close()">✕</button>
+    </div>
+
+    <!-- BODY -->
+    <div class="body">
+        <input placeholder="To" [(ngModel)]='recipient' />
+        <input placeholder="Subject" [(ngModel)]='subject' />
+
+        <textarea placeholder="Write your message..." [(ngModel)]='body'></textarea>
+    </div>
+
+    <!-- FOOTER -->
+    <div class='footer'>
+        <button class="send-btn" (click)="send()">Send</button>
+    </div>
+
+
+</div>

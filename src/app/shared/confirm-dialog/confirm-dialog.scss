@@ -1,0 +1,20 @@
+.confirm-dialog-container {
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(248, 240, 240);
+}
+
+.delete-btn {
+    color: red !important;
+    font-weight: bold;
+}
+
+.delete-btn:hover {
+    background-color: rgb(248, 221, 221);
+}
+
+
+
+//////////////////////COMMENTI//////////////////////////
+/// 
+/// !important significa che questa regola CSS avrà la precedenza su qualsiasi altra regola che potrebbe essere applicata al pulsante, anche se ci sono altre regole che specificano un colore diverso per il testo del pulsante.
