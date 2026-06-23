@@ -164,8 +164,13 @@ export class EmailService {
     effect(() => {
       localStorage.setItem('emails', JSON.stringify(this.emailsSignal()));
     });
+};
 
-}
+    restoreSelectedEmails(){
+      this.emailsSignal.update(emails => 
+        emails.map(email => email.selected?{...email, is_deleted:false, selected: false}: email)
+      );
+    }
 }
 
 
@@ -222,3 +227,14 @@ export class EmailService {
 
 // Ho aggiunto un effetto per salvare le email nel localStorage ogni volta che lo stato del segnale emailsSignal cambia. Questo garantisce che le modifiche alle email vengano persistite tra le sessioni dell'utente.
 // effect() è una funzione che permette di eseguire del codice ogni volta che uno o più segnali reattivi cambiano. In questo caso, stiamo salvando le email nel localStorage ogni volta che emailsSignal cambia.
+
+// constructor() { ... } 
+//Ho aggiunto un costruttore alla classe EmailService che contiene l'effetto per salvare le email nel localStorage. Il costruttore viene eseguito quando il servizio viene istanziato, garantendo che l'effetto sia attivo fin dall'inizio.
+
+
+// RIPRISTINARE LE EMAIL SELEZIONATE
+// restoreSelectedEmails() { ... }
+// Definiamo un metodo pubblico restoreSelectedEmails() che viene chiamato quando l'utente vuole ripristinare le email selezionate dalla cartella "trash".
+// All'interno di questo metodo, utilizziamo this.emailsSignal.update() per aggiornare lo stato del segnale reattivo. 
+// La funzione di aggiornamento prende l'array corrente di email e restituisce un nuovo array in cui le email selezionate (email.selected) vengono modificate per avere is_deleted impostato su false 
+// e selected impostato su false, mentre le altre email rimangono invariate.

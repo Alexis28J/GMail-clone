@@ -13,6 +13,7 @@ export class ToolbarComponent {
 
   @Input() canGoNext = true;
   @Input() canGoPrev = true;
+  @Input() isTrashView = false;
 
   @Output() nextMail = new EventEmitter<void>();
   //@Output() nextMail = new EventEmitter<EmailInterface>();
@@ -21,6 +22,8 @@ export class ToolbarComponent {
   //@Output() prevMail = new EventEmitter<EmailInterface>();
 
   @Output() delete = new EventEmitter<void>();
+
+  @Output() restore = new EventEmitter<void>();
 
   onNext() {
     this.nextMail.emit();
@@ -32,6 +35,10 @@ export class ToolbarComponent {
 
   onDelete(){
     this.delete.emit();
+  }
+
+  onRestore(){
+    this.restore.emit();
   }
 }
 
@@ -67,3 +74,19 @@ export class ToolbarComponent {
 // Ho aggiunto un nuovo metodo onDelete() che viene chiamato quando l'utente clicca sul pulsante di eliminazione nella toolbar. 
 // Questo metodo emette l'evento delete, notificando il componente genitore che l'utente ha richiesto di eliminare le email selezionate.
 // In questo modo, il componente ToolbarComponent fornisce un'interfaccia per navigare tra le email e per eliminare le email selezionate, delegando la logica effettiva di queste azioni al componente genitore tramite eventi personalizzati.
+
+
+///// EVENTO PER RIPRISTINARE LE EMAIL SELEZIONATE
+// @Output() restore = new EventEmitter<void>();
+// Ho aggiunto un nuovo EventEmitter chiamato restore, che emette un evento quando l'utente clicca sul pulsante di ripristino nella toolbar. 
+// Questo evento può essere ascoltato dal componente genitore (che in questo caso è MainPageComponent) per eseguire l'azione di ripristino delle email selezionate.
+
+// onRestore() { this.restore.emit(); }
+// Ho aggiunto un nuovo metodo onRestore() che viene chiamato quando l'utente clicca sul pulsante di ripristino nella toolbar. 
+// Questo metodo emette l'evento restore, notificando il componente genitore che l'utente ha richiesto di ripristinare le email selezionate.
+// In questo modo, il componente ToolbarComponent fornisce un'interfaccia per navigare tra le email, eliminare le email selezionate e ripristinare le email selezionate, delegando la log
+
+// @Input() isTrashView = false;
+// Ho aggiunto una nuova proprietà di input chiamata isTrashView, che indica se la toolbar si trova nella vista del cestino (trash view) o meno. 
+// Questa proprietà può essere utilizzata per modificare il comportamento della toolbar in base al contesto in cui viene utilizzata. 
+// Ad esempio, se isTrashView è true, il pulsante di eliminazione potrebbe essere nascosto o disabilitato, mentre il pulsante di ripristino potrebbe essere abilitato.

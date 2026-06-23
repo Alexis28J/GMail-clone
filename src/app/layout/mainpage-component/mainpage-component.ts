@@ -8,6 +8,8 @@ import { MailViewerComponent } from "./mail-viewer-component/mail-viewer-compone
 import { EmailService } from "../../services/email";
 import { EmailInterface } from '../../interface/email-interface';
 import { Folder } from '../../services/folder';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialog } from '../../shared/confirm-dialog/confirm-dialog';
 
 
 @Component({
@@ -38,7 +40,8 @@ export class MainpageComponent {
 
   constructor(
     private emailService: EmailService,
-    private folderService: Folder) {
+    private folderService: Folder,
+    private dialog: MatDialog) {
 
     this.allEmails = this.folderService.filteredEmails;
 
@@ -77,16 +80,34 @@ export class MainpageComponent {
 
   onDeleteSelected() {
 
-    const confirmed = confirm('Are you sure you want to delete this email?');
+    //1) // const confirmed = confirm('Are you sure you want to delete this email?');
+    // if (!confirmed) return;
 
-    if (!confirmed) return;
 
-    this.emailService.deleteSelectedEmails();
-    this.currentIndex.set(null);
+    //2) 
+    const dialogRef = this.dialog.open(ConfirmDialog, {
+      data: {
+        message: 'Are you sure to want to delete these mails?'
+      }
+    });
 
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === true) {
+        this.emailService.deleteSelectedEmails();
+        this.currentIndex.set(null);
+      }
+    });
   }
+  
 
+  isTrashView = computed(() => {
+    return this.folderService.getSelectedFolder()() === 'trash';
+  })
 
+  onRestoreSelected() {
+    this.emailService.restoreSelectedEmails();
+    this.currentIndex.set(null);
+  }
 }
 
 
@@ -165,3 +186,30 @@ export class MainpageComponent {
 // Se l'utente conferma l'eliminazione (cliccando su "OK"), il metodo procede con l'eliminazione delle email selezionate. 
 // Se l'utente annulla l'eliminazione (cliccando su "Cancel"), il metodo esce senza eseguire alcuna azione, lasciando le email selezionate intatte.
 // E' un modo semplice per prevenire eliminazioni accidentali, dando all'utente la possibilità di confermare o annullare l'azione di eliminazione.
+//
+// 2)     const dialogRef = this.dialog.open(ConfirmDialog, {
+//        data: {
+//          message: 'Are you sure to want to delete these mails?'
+//        }
+//      });
+// In alternativa, viene utilizzato un dialogo di conferma personalizzato (ConfirmDialog) per chiedere all'utente se è sicuro di voler eliminare le email selezionate.
+// Viene aperto un dialogo modale con un messaggio personalizzato. L'utente può confermare o annullare l'eliminazione delle email.
+// Dopo che il dialogo viene chiuso, viene verificato il risultato. Se l'utente conferma l'eliminazione (result === true), il metodo procede con l'eliminazione delle email selezionate
+// e deseleziona qualsiasi email attualmente visualizzata impostando currentIndex su null.
+
+
+// RIPRISTINO EMAIL SELEZIONATE
+//isTrashView: computed(() => {
+//  return this.folderService.getSelectedFolder()() === 'trash';
+//})
+// La proprietà isTrashView è una proprietà calcolata (computed) che restituisce true se la cartella selezionata è "trash" e false altrimenti.
+// Viene utilizzata per determinare se l'utente si trova nella visualizzazione della cartella "trash". 
+// Se isTrashView è true, significa che l'utente sta visualizzando le email nella cartella "trash", altrimenti sta visualizzando le email in un'altra cartella.
+
+// getSelectedFolder()(): Questo metodo viene chiamato per ottenere la cartella attualmente selezionata. Restituisce un segnale (Signal) che rappresenta la cartella selezionata.
+// La doppia chiamata ()() serve per ottenere il valore del segnale restituito da getSelectedFolder(). 
+// In parole semplici, la prima chiamata ottiene il segnale, mentre la seconda chiamata ottiene il valore corrente del segnale.
+
+// onRestoreSelected(): Questo metodo viene chiamato quando si desidera ripristinare le email selezionate dalla cartella "trash" alla loro cartella originale.
+// Chiama il metodo restoreSelectedEmails() del servizio EmailService per ripristinare le email selezionate e deselezionarle. 
+// Dopo aver ripristinato le email, imposta currentIndex su null per deselezionare qualsiasi email attualmente visualizzata.
