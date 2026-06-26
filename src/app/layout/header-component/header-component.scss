@@ -127,12 +127,17 @@
 
 
 .avatar-letter {
-  background: #e46767;
+  background: rgb(241, 133, 133);
   color: white;
   border-radius: 50%;
-  padding: 6px 10px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-weight: bold;
 }
+
 
 
 

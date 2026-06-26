@@ -13,9 +13,14 @@ export class AuthService {
         JSON.parse(localStorage.getItem('currentUser') || 'null')
     );
 
-    private usersSignal = signal<AuthInterface[]>([
-        JSON.parse(localStorage.getItem('users') || '[]')
-    ]);
+
+
+    storedUsers = JSON.parse(localStorage.getItem('users') || '[]');
+
+    private usersSignal = signal<AuthInterface[]>(
+        Array.isArray(this.storedUsers) ? this.storedUsers : []
+    );
+
 
 
     isLoggedIn = computed(() => this.currentUserSignal() !== null);
@@ -31,64 +36,74 @@ export class AuthService {
 
     // FUNZIONE PER REGISTRARE UN NUOVO UTENTE
 
-      register(email: string, password: string): { success: boolean; message?: string } {
+    register(username: string, email: string, password: string): { success: boolean; message?: string } {
 
-          const users = this.usersSignal();
+        const users = this.usersSignal();
 
-          if (!email.includes('@')) {
-              return { success: false, message: 'Invalid email' };
-          }
+        const newUser: AuthInterface = {
+            username: username.trim(),
+            email: email.trim().toLowerCase(),
+            password
+        };
 
-          if (!email.endsWith('.com') && !email.endsWith('.it')) {
-              return { success: false, message: 'Email must end with .com or .it' };
-          }
 
-          if (password.length < 6) {
-              return { success: false, message: 'Password must be at least 6 characters long!' };
-          }
-
-          if (users.find(u => u.email === email)) {
-              return { success: false, message: 'User already exits' }
-          }
-
-          const newUser: AuthInterface = { email, password };
-
-          this.usersSignal.update(u => [...u, newUser]);
-
-          return { success: true };
-
+        if (users.find(u => u.username === newUser.username)) {
+            return { success: false, message: 'Username already taken' };
         }
+
+        if (!email.includes('@')) {
+            return { success: false, message: 'Invalid email' };
+        }
+
+        if (!email.endsWith('.com') && !email.endsWith('.it')) {
+            return { success: false, message: 'Email must end with .com or .it' };
+        }
+
+        if (password.length < 6) {
+            return { success: false, message: 'Password must be at least 6 characters long!' };
+        }
+
+        if (users.find(u => u.email === newUser.email)) {
+            return { success: false, message: 'User already exits' }
+        }
+
+        this.usersSignal.update(u => [...u, newUser]);
+
+        return { success: true };
+
+    }
 
 
     // FUNZIONE PER EFFETTUARE IL LOGIN
 
-      login(email: string, password: string): { success: boolean, message?: string } {
+    login(email: string, password: string): { success: boolean, message?: string } {
 
-          const user = this.usersSignal().find(
-              u => u.email === email && u.password === password
-          );
+        console.log('USERS:', this.usersSignal());
+        const user = this.usersSignal().find(
+            u => u.email === email.trim().toLowerCase() && u.password === password
+        );
 
-          if (!user) {
-              return { success: false, message: 'Invalid email or password' };
-          }
-
-          this.currentUserSignal.set(user);
-
-          return { success: true };
-
+        if (!user) {
+            return { success: false, message: 'Invalid email or password' };
         }
+
+        this.currentUserSignal.set(user);
+
+        return { success: true };
+
+    }
 
 
     // FUNZIONE PER EFFETTUARE IL LOGOUT
 
-       logout() {
-          this.currentUserSignal.set(null);
-       }
+    logout() {
+        this.currentUserSignal.set(null);
+    }
 
 
-       getCurrentUser() {
-          return this.currentUserSignal;
-       }
+    getCurrentUser() {
+        return this.currentUserSignal;
+    }
 
 }
 
@@ -126,15 +141,23 @@ export class AuthService {
 // Questo permette di mantenere lo stato dell'utente corrente e degli utenti anche dopo il refresh della pagina o la chiusura del browser.
 
 
+
 /// PASSO 4: Implementazione della funzione di registrazione
-// Creo una funzione pubblica register che accetta due parametri: email e password.
-// : { success: boolean; message?: string } - La funzione restituisce un oggetto con una proprietà success che indica se la registrazione è avvenuta con successo e una proprietà message opzionale che contiene un messaggio di errore in caso di fallimento.
-// All'interno della funzione, ottengo l'elenco degli utenti memorizzati nel segnale usersSignal.
+// Creo una funzione pubblica register che accetta tre parametri: username, email e password.
+// : { success: boolean; message?: string } - La funzione restituisce un oggetto con una proprietà success che indica se la registrazione è avvenuta con successo 
+// e una proprietà message opzionale che contiene un messaggio di errore in caso di fallimento.
+
+// All'interno della funzione, ottengo l'elenco degli utenti memorizzati nel segnale usersSignal (const users = this.usersSignal()) 
+// e creo un nuovo oggetto AuthInterface con l'username, l'email e la password forniti.
+// newUser: AuthInterface = { username: username.trim(), email: email.trim().toLowerCase(), password } - Creo un nuovo oggetto AuthInterface con l'username, l'email e la password forniti. 
+// Utilizzo il metodo trim() per rimuovere eventuali spazi bianchi all'inizio e alla fine dell'username e dell'email, e il metodo toLowerCase() per convertire l'email in minuscolo.
+
 // Poi eseguo alcune validazioni sull'email e sulla password. 
-// user.find(u => u.email === email) viene utilizzato per verificare se esiste già un utente con la stessa email nell'elenco degli utenti. Se esiste, restituisco un oggetto con success impostato a false e un messaggio di errore.
-// Se tutte le validazioni passano, creo un nuovo oggetto AuthInterface con l'email e la password forniti.
+// user.find(u => u.email === newUser.email) viene utilizzato per verificare se l'email fornita è già presente nell'elenco degli utenti.
+// Se tutte le validazioni passano, creo un nuovo oggetto AuthInterface con l'username, l'email e la password forniti.
 // this.usersSignal.update(u => [...u, newUser]); Poi aggiorno il segnale usersSignal aggiungendo il nuovo utente all'elenco degli utenti esistenti. Utilizzo l'operatore spread (...) per creare un nuovo array che contiene tutti gli utenti esistenti più il nuovo utente.
 // Infine, restituisco un oggetto con success impostato a true per indicare che la registrazione è avvenuta con successo.
+
 
 
 /// PASSO 5: Implementazione della funzione di login

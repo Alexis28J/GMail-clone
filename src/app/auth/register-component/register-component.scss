@@ -1,0 +1,23 @@
+.password-rules {
+  list-style: none;
+  padding: 0;
+  margin-top: 8px;
+}
+
+.password-rules li {
+  color: red;
+  font-size: 13px;
+}
+
+.password-rules li.valid {
+  color: green;
+}
+
+
+.error {
+  color: red;
+}
+
+.success {
+  color: green;
+}

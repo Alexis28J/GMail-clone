@@ -1,0 +1,112 @@
+<div class="login-container">
+
+    <h2>Register</h2>
+
+    <input [(ngModel)]="username" placeholder="Username" />
+
+    <input [(ngModel)]="email" placeholder="Email" />
+
+    <!---------------------- PASSWORD ---------------------->
+
+    <div class="password-field">
+        <input [(ngModel)]="password" [type]="showPassword ? 'text' : 'password'" placeholder="Password" />
+
+
+        <!--------------------  INDICATORE DI FORZA DELLA PASSWORD e DELLE REGOLE  -------------------->
+        <!-- <p>
+            Strength:
+            {{ password.length < 6 ? 'Weak' : 'Strong' }} </p> -->
+
+        @if (password) {
+
+        <ul class="password-rules">
+            <li [class.valid]="hasLowercase()">Lowercase (Minuscola)</li>
+            <li [class.valid]="hasUppercase()">Uppercase (Maiuscola)</li>
+            <li [class.valid]="hasNumber()">Number (Numero)</li>
+            <!-- <li [class.valid]="hasSpecial()">Special character (Simbolo)</li> -->
+            <li [class.valid]="password.length >= 8">Min 8 characters (Min 8 caratteri)</li>
+        </ul>
+
+        <p>
+            Strength:
+            <span [style.color]="getPasswordStrengthColor()">
+                {{ getPasswordStrength() }}
+            </span>
+        </p>
+
+        }
+
+
+        <!---------------------- CONFERMA DELLA PASSWORD ---------------------->
+        <div class="password-field">
+            <input [(ngModel)]="confirmPassword" [type]="showPassword ? 'text' : 'password'"
+                placeholder="Repeat Password" />
+        </div>
+
+
+        <!---------------- MOSTRA ERRORE LIVE --------------------------->
+
+
+        <!-- @if (!username || username.trim().length === 0) {
+        <p class="error">Username is required</p>
+        } -->
+
+
+        @if (username && username.trim().length < 3) { <p class="error">Min 3 characters</p>
+            }
+
+
+            @if (password && confirmPassword && password !== confirmPassword) {
+            <p class="error">Passwords do not match</p>
+            }
+
+
+            <!------------------ VISIBILITÀ DELLA PASSWORD ------------------------>
+            <button type="button" (click)="togglePasswordVisibility()">
+                <!-- {{ showPassword ? '🙈' : '👁️' }} -->
+                <mat-icon>
+                    {{ showPassword ? 'visibility_off' : 'visibility' }}
+                </mat-icon>
+            </button>
+
+    </div>
+
+
+    <!-- DISABILITA IL PULSANTE DI REGISTRAZIONE SE I CAMPI NON SONO COMPLETI -->
+    <button [disabled]="!username || !email || !password || password !== confirmPassword"
+        (click)="onRegister()">Register
+    </button>
+
+
+    <!-- MOSTRA ERRORE O SUCCESSO DOPO IL TENTATIVO DI REGISTRAZIONE -->
+    @if (error()) {
+    <p class="error">{{ error() }}</p>
+    }
+
+    @if(success()){
+    <p class="success">{{ success() }}</p>
+    }
+
+    <p>
+        Hai già un account?
+        <a (click)="goToLogin()">Login</a>
+    </p>
+
+</div>
+
+
+
+<!-------------------------- COMMENTI -------------------------------------------------->
+
+<!-- MOSTRA ERRORE LIVE: serve per mostrare un messaggio di errore in tempo reale quando le password non corrispondono -->
+
+<!-- VISIBILITÀ DELLA PASSWORD: serve per mostrare o nascondere la password. Ho deciso di utilizzare le icone di Material Icons per rappresentare lo stato della visibilità della password -->
+
+<!-- INDICATORE DI FORZA DELLA PASSWORD E DELLE REGOLE: serve per mostrare la forza della password inserita dall'utente. In questo caso, viene considerata "Weak" se la lunghezza della password è inferiore a 6 caratteri e "Strong" altrimenti.
+ Ho commentato la parte precedente e ho aggiunto una nuova implementazione utilizzando i metodi getPasswordStrength() e getPasswordStrengthColor() del componente.
+ In questo modo, la forza della password viene calcolata dinamicamente in base alla lunghezza della password inserita dall'utente.
+ Inoltre, ho aggiunto delle regole visive per indicare se la password soddisfa determinati criteri, come la presenza di lettere maiuscole, minuscole, numeri e caratteri speciali. -->
+
+<!-- DISABILITA IL PULSANTE DI REGISTRAZIONE SE I CAMPI NON SONO COMPLETI: serve per impedire all'utente di registrarsi se non ha compilato tutti i campi obbligatori.
+ [disabled]="!email || !password || !confirmPassword" significa che il pulsante sarà disabilitato finché uno dei campi obbligatori non è compilato.
+ [disabled] è un binding di proprietà in Angular che permette di collegare una proprietà del componente a un attributo HTML. -->

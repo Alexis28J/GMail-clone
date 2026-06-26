@@ -3,30 +3,14 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth';
 import { Router } from '@angular/router';
+import { MatIcon } from "@angular/material/icon";
 
 
 @Component({
   selector: 'app-login-component',
-  imports: [CommonModule, FormsModule],
-  // templateUrl: './login-component.html', 
+  imports: [CommonModule, FormsModule, MatIcon],
+  templateUrl: './login-component.html',
   styleUrls: ['./login-component.scss'],
-  template: `
-  <div class="login-container">
-
-    <h2>Login</h2>
-
-    <input [(ngModel)]="email" placeholder="Email"/> 
-    <input [(ngModel)]="password" type="password" placeholder="Password"/> 
-
-    <button (click)="onLogin()">Login</button>
-    <button (click)="onRegister()">Register</button>
-
-    @if(error()){
-      <p>{{ error() }}</p>
-    }
-
-  </div>
-  `
 })
 
 
@@ -34,37 +18,47 @@ export class LoginComponent {
 
   email = '';
   password = '';
-
   error = signal<string | null>(null)
+  success = signal<string | null>(null);
 
-  constructor(private authService: AuthService, private router: Router) { };
+  constructor(private authService: AuthService, private router: Router) {};
+
+  /// GESTIONE DEL MESSAGGIO DI SUCCESSO DOPO LA REGISTRAZIONE
+  ngOnInit() {
+    //console.log('STATE:', window.history.state);
+    const message = window.history.state?.successMessage;
+
+    if (message) {
+      this.success.set(message);
+    }
+  }
 
 
+  /// GESTIONE DEL LOGIN 
   onLogin() {
 
-  
     const result = this.authService.login(this.email, this.password);
 
     if (!result.success) {
       this.error.set(result.message!);
       return;
     }
-
-    this.router.navigate(['/main']);
+    this.router.navigate(['/app']);
 
   }
 
 
-  onRegister() {
+  // NAVIGAZIONE ALLA PAGINA DI REGISTRAZIONE
+  goToRegister() {
+    this.router.navigate(['/register']);
+  }
 
-    const result = this.authService.register(this.email, this.password);
 
-    if (!result.success) {
-      this.error.set(result.message!);
-      return;
-    }
+  // GESTIONE DELLA VISIBILITÀ DELLA PASSWORD
+  showPassword = false;
 
-    this.error.set('Registration successful! You can now log in.');
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
   }
 
 
@@ -103,11 +97,37 @@ export class LoginComponent {
 // router è un'istanza del Router di Angular, che viene utilizzata per navigare tra le pagine dell'applicazione.
 
 
-/// PASSO 5: Implementazione dei metodi onLogin() e onRegister()
-// Ho implementato due metodi: onLogin() e onRegister(), che vengono chiamati quando l'utente fa clic sui pulsanti di login e registrazione.
-// Il metodo onLogin() chiama il metodo login() del servizio AuthService, passando l'email e la password inserite dall'utente.
-// Se il login ha esito positivo, l'utente viene reindirizzato alla pagina principale dell'applicazione (/main).
-// Se il login fallisce, viene visualizzato un messaggio di errore.
-// Il metodo onRegister() chiama il metodo register() del servizio AuthService, passando l'email e la password inserite dall'utente.
-// Se la registrazione ha esito positivo, viene visualizzato un messaggio di successo. 
-// Se la registrazione fallisce, viene visualizzato un messaggio di errore.
+// PASSO 5: Gestione del messaggio di successo dopo la registrazione
+// Ho implementato il metodo ngOnInit(), che viene chiamato quando il componente viene inizializzato.
+// All'interno del metodo, ho controllato se c'è un messaggio di successo passato come stato della navigazione.
+// Se c'è un messaggio di successo, viene impostato nella signal success, che può essere visualizzata nel template del componente.
+
+// Il metodo ngOnInit() è un hook (gancio) del ciclo di vita del componente in Angular, che viene chiamato dopo che il componente è stato creato e inizializzato.
+// In informatica, un hook (letteralmente "gancio") è un punto di inserimento o una funzione di callback 
+// che permette a un programma di intercettare e modificare il flusso di esecuzione di un'altra applicazione, di un sistema operativo o di un framework, aggiungendo logiche personalizzate senza modificarne il codice sorgente originale
+
+
+/// PASSO 6: Implementazione dei metodi onLogin() 
+// Ho implementato il metodo onLogin(), che viene chiamato quando l'utente fa clic sul pulsante di login.
+// Il metodo chiama il metodo login() del servizio AuthService, passando l'email e la password dell'utente.
+// Se il login non ha successo, viene impostato un messaggio di errore utilizzando la signal error.
+// Se il login ha successo, l'utente viene reindirizzato alla pagina principale dell'applicazione utilizzando il router.
+
+
+/// PASSO 7: Implementazione dei metodi goToRegister()
+// Ho implementato il metodo goToRegister(), che viene chiamato quando l'utente fa clic sul pulsante di registrazione.
+// Il metodo utilizza il router per navigare alla pagina di registrazione dell'applicazione.
+
+
+/// PASSO 8: Implementazione della gestione della visibilità della password
+// Ho implementato una proprietà showPassword, che viene utilizzata per gestire la visibilità della password.
+// Ho anche creato un metodo togglePasswordVisibility(), che viene chiamato quando l'utente fa clic su un pulsante per mostrare o nascondere la password.
+// Il metodo cambia il valore della proprietà showPassword, che può essere utilizzata nel template per modificare il tipo di input della password (password o text).
+
+// Sul template, ho aggiunto un pulsante accanto al campo della password che consente all'utente di alternare la visibilità della password.
+// Ho aggiunto un'icona che cambia in base allo stato della visibilità della password: un'icona "occhio" quando la password è nascosta e un'icona "occhio barrato" quando la password è visibile.
+// [type]="showPassword ? 'text': 'password'" è un binding che cambia dinamicamente il tipo di input della password in base al valore della proprietà showPassword.
+// Si usa le parentesi quadre [] per il binding delle proprietà in Angular, che consente di collegare una proprietà del componente a un attributo dell'elemento HTML.
+// Se avessi usato le parentesi tonde () invece delle quadre, avrei creato un binding per gli eventi, che non è quello che voglio fare in questo caso.
+
+// Ho trasferito il codice del template in un file separato chiamato login-component.html, che viene referenziato nel decoratore @Component tramite la proprietà templateUrl.

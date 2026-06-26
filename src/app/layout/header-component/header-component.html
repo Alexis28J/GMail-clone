@@ -41,7 +41,7 @@
                 <mat-icon fontSet="material-symbols-outlined">person</mat-icon>
                 } @else {
                 <span class="avatar-letter">
-                    {{ currentUser()?.email?.[0]?.toUpperCase() ?? 'U'}}
+                    {{ currentUser()?.username?.[0]?.toUpperCase() ?? 'U'}}
                 </span>
                 }
             </button>
@@ -65,7 +65,10 @@
 
                 <button mat-menu-item disabled>
                     <mat-icon>person</mat-icon>
-                    <span>{{ currentUser()?.email }}</span>
+                    <span>
+                        {{ currentUser()?.username }}<br />
+                        <small>{{ currentUser()?.email }}</small>
+                    </span>
                 </button>
 
                 <button mat-menu-item (click)="logout(); $event.stopPropagation()">
