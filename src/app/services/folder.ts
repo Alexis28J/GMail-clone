@@ -2,6 +2,7 @@ import { computed, Injectable, signal } from '@angular/core';
 import { FolderInterface } from '../interface/folder-interface';
 import { EmailService } from '../services/email'
 import { EmailInterface } from '../interface/email-interface';
+import { AuthService } from './auth';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ import { EmailInterface } from '../interface/email-interface';
 
 export class Folder {
 
-  constructor(private emailService: EmailService) { }
+  constructor(private emailService: EmailService, private authService: AuthService) { }
 
   private selectedFolder = signal<string>('inbox');
 
@@ -43,6 +44,10 @@ export class Folder {
 
 
   filteredEmails = computed(() => {
+
+    if (!this.authService.isLoggedIn()) {
+      return [];
+    }
 
     const folder = this.selectedFolder();
     const emails = this.emailService.getEmails()();
@@ -112,6 +117,7 @@ export class Folder {
 
 // Creo il constructor della classe Folder per iniettare il servizio EmailService. In questo modo, la classe Folder può accedere ai metodi e alle proprietà del servizio EmailService per ottenere le email e gestire le cartelle associate.
 // emailService è un nome che ho scelto io, ma deve essere lo stesso nome della classe che sto importando (per non creare conflitti), in questo caso EmailService.
+// Inoltre, ho aggiunto anche il servizio AuthService per poter verificare se l'utente è autenticato prima di filtrare le email in base alla cartella selezionata.
 
 
 ///// FOLDER SELEZIONATO
@@ -157,6 +163,14 @@ export class Folder {
 // Creo una proprietà computed filteredEmails che restituisce un array di email filtrate in base alla cartella selezionata.
 // La funzione di filtro utilizza uno switch case per verificare il valore della cartella selezionata (folder) e applica un filtro diverso alle email in base a quel valore. 
 // Il filtro utilizza il metodo filter() per creare un nuovo array di email che soddisfano le condizioni specificate per ogni cartella.
+
+// if (!this.authService.isLoggedIn()) {return [];}
+// Prima di applicare il filtro, viene verificato se l'utente è autenticato utilizzando il metodo isLoggedIn() del servizio AuthService.
+// Se l'utente non è autenticato, la funzione restituisce un array vuoto, impedendo l'accesso alle email filtrate. 
+// Questo garantisce che solo gli utenti autenticati possano visualizzare le email filtrate in base alla cartella selezionata.
+
+// .getEmails()() è una funzione che restituisce un array di email. Il primo set di parentesi () chiama il metodo getEmails() del servizio EmailService, mentre il secondo set di parentesi () invoca il segnale reattivo che contiene l'array di email. 
+// In questo modo, otteniamo l'array di email attuale da filtrare in base alla cartella selezionata.
 
 // CASI:
 // Ad esempio, se la cartella selezionata è 'starred', il filtro restituirà solo le email che sono contrassegnate come starred e che appartengono alla cartella 'inbox'. 

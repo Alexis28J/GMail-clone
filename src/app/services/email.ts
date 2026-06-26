@@ -1,6 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { EmailInterface } from '../interface/email-interface';
 import { effect } from '@angular/core';
+import { AuthService } from './auth';
 
 @Injectable({
   providedIn: 'root'
@@ -8,11 +9,15 @@ import { effect } from '@angular/core';
 
 export class EmailService {
     
-   private emailsSignal = signal<EmailInterface[]>(
+  //  private emailsSignal = signal<EmailInterface[]>(
     
-      JSON.parse(localStorage.getItem('emails') || 'null') ||
+  //     JSON.parse(localStorage.getItem('emails') || 'null') ||
 
-    [
+  stored = JSON.parse(localStorage.getItem('emails') || '[]');
+
+  private emailsSignal = signal<EmailInterface[]>(
+  this.stored.length ? this.stored :
+      [
         {
       id: 1,
       sender: 'Carlo Bonamico',
@@ -146,11 +151,14 @@ export class EmailService {
    ] 
   );
 
+
+   //// PRENDERE LE EMAIL
    getEmails() {
     return this.emailsSignal;
    }
    
    
+   /// ELIMINARE LE EMAIL SELEZIONATE
    deleteSelectedEmails(){
 
       this.emailsSignal.update(emails => 
@@ -160,19 +168,28 @@ export class EmailService {
       );
    }
 
+   /// CONSTRUCTOR EFFETTO
+   //constructor( private authService: AuthService) {
    constructor() {
     effect(() => {
+
+      // if(!this.authService.isLoggedIn()){
+      //    this.emailsSignal.set([]);
+      // }
+      
       localStorage.setItem('emails', JSON.stringify(this.emailsSignal()));
     });
 };
 
+   /// RIPRISTINARE LE EMAIL SELEZIONATE
     restoreSelectedEmails(){
       this.emailsSignal.update(emails => 
         emails.map(email => email.selected?{...email, is_deleted:false, selected: false}: email)
       );
     }
 
-
+   
+    /// INVIARE UNA NUOVA EMAIL
    sendEmail(email: Partial<EmailInterface>){
 
       const newEmail: EmailInterface = {
@@ -211,7 +228,6 @@ export class EmailService {
 //export class EmailService { ... }
 //Dichiariamo la classe EmailService, che rappresenta un servizio che gestisce le email. Questa classe conterrà i dati delle email e i metodi per accedervi.
 //export indica che questa classe può essere importata e utilizzata in altri file del progetto.
-    
 
 // private emailsSignal = signal<EmailInterface[]>([ ... ]);
 // Definiamo una proprietà privata emailsSignal che è un segnale reattivo contenente un array di oggetti che seguono l'interfaccia EmailInterface. 
@@ -220,6 +236,10 @@ export class EmailService {
 // JSON.parse(localStorage.getItem('emails') || 'null') || significa che stiamo cercando di recuperare le email salvate nel localStorage (memoria locale) del browser. 
 // Se non ci sono email salvate, utilizziamo un array predefinito di email come fallback (valore di riserva). 
 // Questo ci permette di avere un set iniziale di email anche se l'utente non ha ancora interagito con l'applicazione.
+
+// Ho commentato la proprietà emailsSignal e ho aggiunto la proprietà stored per recuperare le email salvate nel localStorage.
+// La proprietà stored contiene le email salvate nel localStorage o un array vuoto se non ci sono email salvate.
+// Ho modificato la proprietà emailsSignal per inizializzarla con le email salvate nel localStorage se presenti, altrimenti utilizza l'array predefinito di email.    
 
 
 // PRENDERE LE EMAIL
@@ -253,6 +273,8 @@ export class EmailService {
 // constructor() { ... } 
 // Ho aggiunto un costruttore alla classe EmailService che contiene l'effetto per salvare le email nel localStorage. Il costruttore viene eseguito quando il servizio viene istanziato (es. all'avvio dell'applicazione), garantendo che l'effetto sia attivo fin dall'inizio.
 // In questo modo, ogni volta che lo stato delle email cambia, le modifiche vengono salvate automaticamente nel localStorage, consentendo all'utente di mantenere le email anche dopo aver chiuso e riaperto l'applicazione.
+// Ho commentato la parte che verifica se l'utente è autenticato prima di salvare le email nel localStorage, poiché non è necessario per il funzionamento del servizio. Inoltre, il servizio EmailService non ha accesso diretto al servizio AuthService, quindi non può verificare lo stato di autenticazione dell'utente.
+// Tuttavia, se si desidera implementare questa funzionalità in futuro, è possibile decommentare quella parte e utilizzare il servizio AuthService per verificare lo stato di autenticazione dell'utente.
 
 
 // RIPRISTINARE LE EMAIL SELEZIONATE

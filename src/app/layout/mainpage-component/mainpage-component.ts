@@ -10,6 +10,8 @@ import { EmailInterface } from '../../interface/email-interface';
 import { Folder } from '../../services/folder';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialog } from '../../shared/confirm-dialog/confirm-dialog';
+import { AuthService } from '../../services/auth';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -41,7 +43,9 @@ export class MainpageComponent {
   constructor(
     private emailService: EmailService,
     private folderService: Folder,
-    private dialog: MatDialog) {
+    private dialog: MatDialog,
+    private authService:AuthService,
+    private router: Router) {
 
     this.allEmails = this.folderService.filteredEmails;
 
@@ -108,10 +112,18 @@ export class MainpageComponent {
     return this.folderService.getSelectedFolder()() === 'trash';
   })
 
+
   onRestoreSelected() {
     this.emailService.restoreSelectedEmails();
     this.currentIndex.set(null);
   }
+
+  
+  logout(){
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
+
 }
 
 
@@ -184,6 +196,7 @@ export class MainpageComponent {
 
 
 // PROMPT DI CONFERMA
+
 // 1)     const confirmed = confirm('Are you sure you want to delete this email?');
 //        if (!confirmed) return;
 // Nel metodo onDeleteSelected(), viene utilizzato il prompt di conferma confirm() per chiedere all'utente se è sicuro di voler eliminare l'email selezionata.
@@ -203,7 +216,9 @@ export class MainpageComponent {
 // autoFocus: false - Impedisce che il dialogo acquisisca automaticamente il focus quando viene aperto, migliorando l'esperienza utente.
 
 
+
 // RIPRISTINO EMAIL SELEZIONATE
+
 //isTrashView: computed(() => {
 //  return this.folderService.getSelectedFolder()() === 'trash';
 //})
@@ -219,7 +234,9 @@ export class MainpageComponent {
 // Chiama il metodo restoreSelectedEmails() del servizio EmailService per ripristinare le email selezionate e deselezionarle. 
 // Dopo aver ripristinato le email, imposta currentIndex su null per deselezionare qualsiasi email attualmente visualizzata.
 
-// CONDIZIONE DI SELEZIONE EMAIL
+
+
+// CONDIZIONE DI SELEZIONE EMAIL 
 // const hasSelect = this.allEmails().some(email => email.selected);
 // if(!hasSelect){
 //   return;
@@ -227,3 +244,12 @@ export class MainpageComponent {
 // Nel metodo onDeleteSelected(), viene verificato se ci sono email selezionate prima di procedere con l'eliminazione.
 // Viene utilizzato il metodo some() per controllare se almeno un'email nell'elenco allEmails ha la proprietà selected impostata su true.
 // Se non ci sono email selezionate (hasSelect è false), il metodo esce senza eseguire alcuna azione, impedendo l'eliminazione accidentale di email non selezionate.
+
+
+
+// AGGIUNTA FUNZIONE LOGOUT
+// Ho importato il servizio AuthService e il Router per gestire il logout dell'utente e la navigazione alla pagina di login.
+// Nel construttore, ho iniettato il servizio AuthService e il Router come dipendenze.
+// Ho aggiunto la funzione logout() che chiama il metodo logout() del servizio AuthService per effettuare il logout dell'utente corrente.
+// Dopo aver effettuato il logout, viene utilizzato il router per navigare alla pagina di login (this.router.navigate(['/login'])). 
+// In questo modo, l'utente viene reindirizzato alla pagina di login dopo aver effettuato il logout.

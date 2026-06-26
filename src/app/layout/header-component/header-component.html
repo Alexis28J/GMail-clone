@@ -33,11 +33,52 @@
             <mat-icon fontSet="material-symbols-outlined">notifications</mat-icon>
         </button>
 
+
         <div class="user-avatar">
-            <button class="icon-btn" matTooltip="User" matTooltipPosition="below">
+
+            <button class="icon-btn" matTooltip="User" matTooltipPosition="below" [matMenuTriggerFor]="userMenu">
+                @if(!isLoggedIn()){
                 <mat-icon fontSet="material-symbols-outlined">person</mat-icon>
+                } @else {
+                <span class="avatar-letter">
+                    {{ currentUser()?.email?.[0]?.toUpperCase() ?? 'U'}}
+                </span>
+                }
             </button>
+
+            <mat-menu #userMenu>
+                <!-------------------- NON LOGGATO ----------------------------->
+
+                @if(!isLoggedIn()){
+
+                <button mat-menu-item (click)="goToLogin(); $event.stopPropagation()">
+                    <mat-icon>login</mat-icon>
+                    <span>Login</span>
+                </button>
+
+                <button mat-menu-item (click)="goToRegister(); $event.stopPropagation()">
+                    <mat-icon>person_add</mat-icon>
+                    <span>Register</span>
+                </button>
+
+                } @else {
+
+                <button mat-menu-item disabled>
+                    <mat-icon>person</mat-icon>
+                    <span>{{ currentUser()?.email }}</span>
+                </button>
+
+                <button mat-menu-item (click)="logout(); $event.stopPropagation()">
+                    <mat-icon>logout</mat-icon>
+                    <span>Logout</span>
+                </button>
+
+                }
+
+            </mat-menu>
+
         </div>
+
     </div>
 
 </header>
@@ -50,3 +91,9 @@
 <!-- matTooltip è una direttiva di Angular Material che permette di visualizzare un tooltip quando l'utente passa il mouse sopra un elemento. -->
 
 <!-- fontSet è un attributo di mat-icon che permette di specificare il set di icone da utilizzare. In questo caso, viene utilizzato il set "material-symbols-outlined". -->
+
+<!-- mat-menu è un componente di Angular Material che permette di creare un menu a discesa. In questo caso, viene utilizzato per il menu utente. -->
+
+<!-- mat-menu-item è un componente di Angular Material che rappresenta un elemento all'interno di un mat-menu. -->
+
+<!-- #userMenu è un riferimento locale al mat-menu, utilizzato per collegare il menu al pulsante che lo apre. -->
