@@ -43,6 +43,20 @@ export class Folder {
   }
 
 
+  // TROVARE MESSAGGI
+  private searchTerm = signal<string>('');
+
+  setSearchTerm(term: string) {
+    this.searchTerm.set(term.toLowerCase().trim());
+  }
+
+  getSearchTerm() {
+    return this.searchTerm;
+  }
+
+  //Integro la search dentro filteredEmails
+
+
   filteredEmails = computed(() => {
 
     if (!this.authService.isLoggedIn()) {
@@ -51,45 +65,164 @@ export class Folder {
 
     const folder = this.selectedFolder();
     const emails = this.emailService.getEmails()();
+    const search = this.searchTerm();
+    const filters = this.activeFilters();
+
+    let result: EmailInterface[];
 
     switch (folder) {
 
       case 'starred':
-        return emails.filter(e => e.starred && !e.is_deleted);
+        //return emails.filter(e => e.starred && !e.is_deleted);
+        result = emails.filter(e => e.starred && !e.is_deleted);
+        break;
 
       case 'important':
-        return emails.filter(e => e.label === 'Important' && !e.is_deleted);
+        //return emails.filter(e => e.label === 'Important' && !e.is_deleted);
+        result = emails.filter(e => e.label === 'Important' && !e.is_deleted);
+        break;
 
       case 'spam':
-        return emails.filter(e => e.folder === 'spam');
+        //return emails.filter(e => e.folder === 'spam');
+        result = emails.filter(e => e.folder === 'spam');
+        break;
 
       case 'trash':
-        return emails.filter(e => e.is_deleted === true);
+        //return emails.filter(e => e.is_deleted === true);
+        result = emails.filter(e => e.is_deleted === true);
+        break;
 
       case 'drafts':
-        return emails.filter(e => e.folder === 'drafts');
+        //return emails.filter(e => e.folder === 'drafts');
+        result = emails.filter(e => e.folder === 'drafts');
+        break;
 
       case 'sent':
-        return emails.filter(e => e.folder === 'sent');
+        //return emails.filter(e => e.folder === 'sent');
+        result = emails.filter(e => e.folder === 'sent');
+        break;
 
       case 'personal':
-        return emails.filter(e => e.label === 'Personal' && !e.is_deleted);
+        //return emails.filter(e => e.label === 'Personal' && !e.is_deleted);
+        result = emails.filter(e => e.label === 'Personal' && !e.is_deleted);
+        break;
 
       case 'work':
-        return emails.filter(e => e.label === 'Work' && !e.is_deleted);
+        //return emails.filter(e => e.label === 'Work' && !e.is_deleted);
+        result = emails.filter(e => e.label === 'Work' && !e.is_deleted);
+        break;
 
       case 'archived':
-        return emails.filter(e => e.folder === 'archived');
+        //return emails.filter(e => e.folder === 'archived');
+        result = emails.filter(e => e.folder === 'archived');
+        break;
 
       case 'snoozed':
-        return emails.filter(e => e.folder === 'snoozed');
+        //return emails.filter(e => e.folder === 'snoozed');
+        result = emails.filter(e => e.folder === 'snoozed');
+        break;
 
       case 'inbox':
-        return emails.filter(e => !e.is_deleted);
+      //return emails.filter(e => !e.is_deleted);
 
-      default: return emails.filter(e => !e.is_deleted);
+      //default: return emails.filter(e => !e.is_deleted);
+
+      default: result = emails.filter(e => !e.is_deleted);
+
     }
+
+    // FILTRO SEARCH 
+    // if (!search) return result;
+
+    // return result.filter(email =>
+    //   email.subject.toLowerCase().includes(search) ||
+    //   email.sender.toLowerCase().includes(search) ||
+    //   email.body.toLowerCase().includes(search) ||
+    //   email.recipient.toLowerCase().includes(search)
+    // );
+
+
+    // FILTRO SEARCH (VERSIONE MULTIKEYWORD) E FILTRO MENU FILTRI (SUBJECT, SENDER, DATE)
+    if (!search) return result;
+
+    const keywords = search.split(' ').filter(k => k.length > 0);
+
+    // return result.filter(email => {
+
+    //   const fields = [
+    //     email.subject,
+    //     email.body,
+    //     email.sender,
+    //     email.recipient
+    //   ].join(' ').toLowerCase();
+
+
+    //   // return keywords.every(keyword => 
+    //   //   searchableText.includes(keyword));
+
+    //   return keywords.some(keyword =>
+    //     fields.includes(keyword));
+
+    // });
+
+    return result.filter(email => {
+
+      const fields: string[] = [];
+
+      if (filters.subject) fields.push(email.subject);
+      if (filters.sender) fields.push(email.sender);
+      //if (filters.date) fields.push(email.timestamp.toString()); 
+
+      if (filters.date) {
+        const date = new Date(email.timestamp);
+
+        const fullDate = date.toISOString(); // 2026-06-14
+        const year = date.getFullYear().toString(); // 2026
+        const month = (date.getMonth() + 1).toString().padStart(2, '0'); // 06
+        const day = date.getDate().toString().padStart(2, '0'); // 14
+        const monthNameIT = date.toLocaleString('it', { month: 'long' }).toLowerCase();
+        const monthName = date.toLocaleString('en', { month: 'long' }).toLowerCase(); // june
+
+        fields.push(`${fullDate} ${year} ${month} ${day} ${monthName} ${monthNameIT}`);
+      }
+
+
+      // fallback se tutto è disattivato
+
+      if (fields.length === 0) {
+
+        fields.push(email.subject, email.body, email.sender, email.recipient);
+
+      }
+
+      const searchableText = fields.join(' ').toLowerCase();
+
+      return keywords.every(keyword =>
+        searchableText.includes(keyword)
+      )
+
+    });
+
   });
+
+  // MENU FILTRI
+  private activeFilters = signal({
+    subject: true,
+    sender: true,
+    date: false
+  });
+
+
+  setFilter(key: keyof ReturnType<typeof this.activeFilters>, value: boolean) {
+    this.activeFilters.update(f => ({ ...f, [key]: value }));
+  }
+
+  getFilters() {
+    return this.activeFilters;
+  }
+
+
+
 }
 
 
@@ -192,4 +325,75 @@ export class Folder {
 // In sintesi, questo filtro consente di visualizzare le email in base alla cartella selezionata, applicando condizioni specifiche per ogni cartella per mostrare solo le email rilevanti per quella cartella.
 
 
-//NB: Ho eliminato computed<EmailInterface[]> perché TypeScript riesce a inferire il tipo di ritorno della funzione in base al tipo di dati restituito, quindi non è necessario specificarlo esplicitamente.
+// NB: Ho eliminato computed<EmailInterface[]> perché TypeScript riesce a inferire il tipo di ritorno della funzione in base al tipo di dati restituito, quindi non è necessario specificarlo esplicitamente.
+
+
+// Ho creato una proprietà privata searchTerm che è un segnale reattivo contenente una stringa.
+// Inizializzo il segnale con una stringa vuota, che rappresenta il termine di ricerca iniziale. 
+// Il tipo <string> indica che il segnale conterrà solo valori di tipo stringa. 
+// Questo segnale può essere utilizzato per tenere traccia del termine di ricerca inserito dall'utente e aggiornare l'interfaccia utente di conseguenza.
+
+// Ho creato un metodo pubblico setSearchTerm(term: string) che accetta un parametro term di tipo stringa.
+// Questo metodo viene utilizzato per aggiornare il valore del segnale searchTerm con il nuovo termine di ricerca passato come argomento. 
+// In questo modo, quando viene chiamato questo metodo, il termine di ricerca viene aggiornato e l'interfaccia utente può reagire di conseguenza per filtrare le email in base al nuovo termine di ricerca.
+
+// Ho creato un metodo pubblico getSearchTerm() che restituisce il valore attuale del segnale searchTerm.
+// Questo metodo può essere chiamato da altri componenti o servizi per ottenere il termine di ricerca attualmente inserito dall'utente. 
+// Il metodo utilizza this.searchTerm() per accedere al valore del segnale, che rappresenta il termine di ricerca in quel momento.
+// Non ha parametri perché restituisce semplicemente il valore attuale del segnale searchTerm, che è una stringa che rappresenta il termine di ricerca inserito dall'utente.
+
+// Integro la search dentro filteredEmails, in modo che le email filtrate siano anche filtrate in base al termine di ricerca inserito dall'utente.
+// Ho creato search = this.searchTerm() che è una variabile che contiene il valore attuale del segnale searchTerm.
+// Ho modificato i casi dello switch case in modo che le email filtrate siano anche filtrate in base al termine di ricerca inserito dall'utente.
+
+// break; serve per interrompere l'esecuzione del blocco di codice all'interno di un'istruzione switch case.
+
+// Ho aggiunto un controllo if (!search) return result; prima di filtrare le email in base al termine di ricerca.
+// Questo controllo verifica se il termine di ricerca è vuoto o nullo.
+// Se il termine di ricerca è vuoto o nullo, la funzione restituisce l'array di email filtrate in base alla cartella selezionata senza applicare ulteriori filtri.
+// In questo modo, se l'utente non ha inserito alcun termine di ricerca, verranno visualizzate tutte le email filtrate in base alla cartella selezionata.
+
+// Ho modificato il filtro in modo che le email perché si possano filtrare in base a più parole chiave separate da spazi.
+// Perciò ho creato keywords = search.split(' ').filter(k => k.length > 0); che è una variabile che contiene un array di parole chiave separate da spazi.
+// const fields = [...].join(' ').toLowerCase(); è una variabile che contiene una stringa che unisce i campi subject, body, sender e recipient di ogni email in minuscolo.
+// Questo permette di cercare le parole chiave in tutti i campi dell'email, indipendentemente dal fatto che siano in maiuscolo o minuscolo.
+
+// k è una variabile che rappresenta ogni parola chiave nell'array keywords.
+// La differenza tra keywords.every() e keywords.some() è che il primo restituisce true solo se tutte le parole chiave sono presenti nel testo da cercare, 
+// mentre il secondo restituisce true se almeno una delle parole chiave è presente nel testo da cercare.
+
+
+
+/// MENU FILTRI
+// Ho creato una proprietà privata activeFilters che è un segnale reattivo contenente un oggetto con le proprietà subject, sender e date.
+// Inizializzo il segnale con un oggetto che ha le proprietà subject e sender impostate su true e la proprietà date impostata su false.
+// false su date significa che il filtro per la data non è attivo di default, mentre true su subject e sender significa che i filtri per l'oggetto e il mittente sono attivi di default.
+// Questo segnale può essere utilizzato per tenere traccia dei filtri attivi selezionati dall'utente e aggiornare l'interfaccia utente di conseguenza.
+
+// Ho creato un metodo pubblico setFilter(key: keyof ReturnType<typeof this.activeFilters>, value: boolean) che accetta due parametri: key e value.
+// Il parametro key è di tipo keyof ReturnType<typeof this.activeFilters>, che rappresenta le chiavi dell'oggetto activeFilters (subject, sender e date).
+// Il parametro value è di tipo boolean, che rappresenta il valore del filtro (true o false).
+// Questo metodo viene utilizzato per aggiornare il valore del filtro specificato dalla chiave key con il nuovo valore value passato come argomento.
+// In questo modo, quando viene chiamato questo metodo, il filtro specificato viene aggiornato e l'interfaccia utente può reagire di conseguenza per applicare o rimuovere il filtro selezionato.
+
+// Ho creato un metodo pubblico getFilters() che restituisce l'oggetto activeFilters.
+// Questo metodo può essere chiamato da altri componenti o servizi per ottenere i filtri attivi selezionati dall'utente.
+// Il metodo utilizza this.activeFilters() per accedere al valore del segnale, che rappresenta i filtri attivi in quel momento.
+// Non ha parametri perché restituisce semplicemente il valore attuale del segnale activeFilters, 
+// che è un oggetto con le proprietà subject, sender e date che rappresentano i filtri attivi selezionati dall'utente.
+
+// In parole semplici, setFilter() serve per impostare un filtro specifico (subject, sender o date) su true o false, 
+// mentre getFilters() serve per ottenere lo stato attuale di tutti i filtri attivi.
+
+// Poi, nel computed filteredEmails, ho aggiunto const filters = this.activeFilters(); per ottenere i filtri attivi selezionati dall'utente 
+// e applicarli al filtro delle email (cioè alle email visualizzate) in base alla cartella selezionata e al termine di ricerca inserito dall'utente. 
+// In questo modo, le email filtrate saranno anche filtrate in base ai filtri attivi selezionati dall'utente.
+
+// Successivamente, ho modificato il filtro con una serie di condizioni che verificano se i filtri attivi sono impostati su true o false e aggiungono i campi corrispondenti all'array fields.
+// In questo modo, se un filtro è attivo (true), il campo corrispondente viene aggiunto all'array fields e verrà considerato nella ricerca delle parole chiave.
+
+// const searchableText = fields.join(' ').toLowerCase(); significa che tutti i campi selezionati dai filtri attivi vengono uniti in una singola stringa e convertiti in minuscolo,
+// in modo da poter cercare le parole chiave in tutti i campi selezionati dai filtri attivi, indipendentemente dal fatto che siano in maiuscolo o minuscolo.
+
+// Infine, ho modificato il filtro con keywords.every() per verificare se tutte le parole chiave sono presenti nel testo da cercare (searchableText) e restituire true solo se tutte le parole chiave sono presenti.
+// In questo modo, le email visualizzate saranno filtrate in base alla cartella selezionata, al termine di ricerca inserito dall'utente e ai filtri attivi selezionati dall'utente.

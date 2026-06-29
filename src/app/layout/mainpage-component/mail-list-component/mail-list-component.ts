@@ -3,6 +3,8 @@ import { DatePipe } from '@angular/common';
 import { Input } from '@angular/core';
 import { EmailInterface } from '../../../interface/email-interface';
 import { FormsModule } from '@angular/forms';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { Folder } from '../../../services/folder';
 
 @Component({
   selector: 'app-mail-list-component',
@@ -10,12 +12,14 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './mail-list-component.html',
   styleUrls: ['./mail-list-component.scss'],
 })
+
 export class MailListComponent {
+
+  constructor(private folderService: Folder, private sanitizer: DomSanitizer){}
 
   @Input() emails: EmailInterface[] = [];
 
   ///////////////////////////SELEZIONE EMAIL///////////////////////////////////////////////
-
 
   @Output() emailSelected = new EventEmitter<EmailInterface>();
 
@@ -51,6 +55,29 @@ export class MailListComponent {
 
   getAllEmails(): EmailInterface[] {
     return this.emails;
+  }
+
+
+  //////////////////////////////////EVIDENZIA EMAIL SELEZIONATE///////////////////////////////////////////////
+
+  highlight(text: string): SafeHtml{
+
+    const search = this.folderService.getSearchTerm()();
+
+    if(!search) return text; 
+
+    const keywords = search.split(' ').filter(k => k.length > 0);
+
+    let highlighted = text; 
+
+    keywords.forEach(keyword => {
+      const regex = new RegExp(`(${keyword})`, 'gi');
+      highlighted = highlighted.replace(
+        regex,
+        `<mark>$1</mark>`
+      );
+    })
+    return this.sanitizer.bypassSecurityTrustHtml(highlighted);
   }
 
 }
@@ -89,3 +116,20 @@ export class MailListComponent {
 // toggleStar(email: EmailInterface) è un metodo che viene chiamato quando l'utente clicca sull'icona a forma di stella per contrassegnare o rimuovere un'email come preferita. Il metodo inverte il valore della proprietà starred dell'email, consentendo all'utente di gestire facilmente le email preferite.
 
 // getAllEmails(): EmailInterface[] è un metodo che restituisce l'intero array di email gestito dal componente. Questo metodo può essere utilizzato da altri componenti o servizi per accedere alla lista completa delle email, ad esempio per visualizzarle o per eseguire operazioni su di esse.
+
+
+//////////////////////////////////////////////////////EVIDENZIA EMAIL SELEZIONATE/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Per prima cosa ho creato il constructor con i servizi folderService e sanitizer. Il servizio folderService viene utilizzato per ottenere il termine di ricerca corrente, 
+// mentre il servizio sanitizer viene utilizzato per sanificare l'HTML generato per evidenziare le parole chiave nella visualizzazione delle email.
+
+// NB: Sanificare l'HTML è importante per prevenire attacchi di tipo Cross-Site Scripting (XSS) e garantire che il contenuto visualizzato sia sicuro per l'utente.
+
+// Poi ho creato il metodo highlight(text: string): SafeHtml che prende in input una stringa di testo (ad esempio il corpo o l'oggetto di un'email) e restituisce una versione sanificata del testo con le parole chiave evidenziate.
+// All'interno del metodo, viene ottenuto il termine di ricerca corrente tramite il servizio folderService. Se non c'è alcun termine di ricerca, il metodo restituisce semplicemente il testo originale senza modifiche.
+// Se invece c'è un termine di ricerca, il metodo divide il termine in parole chiave separate e filtra quelle che hanno una lunghezza maggiore di zero.
+
+// Successivamente, viene creato un ciclo che itera su ciascuna parola chiave e utilizza una espressione regolare per cercare e sostituire tutte le occorrenze della parola chiave nel testo originale con una versione evidenziata (racchiusa in un tag <mark>).
+// .forEach(keyword => {..} è un metodo che itera su ciascuna parola chiave e applica la sostituzione nel testo originale. L'espressione regolare viene creata dinamicamente per ogni parola chiave, con l'opzione 'gi' per rendere la ricerca globale e insensibile al maiuscolo/minuscolo.
+
+// Infine, il metodo restituisce il testo modificato, sanificato tramite il servizio sanitizer per garantire la sicurezza del contenuto visualizzato.
