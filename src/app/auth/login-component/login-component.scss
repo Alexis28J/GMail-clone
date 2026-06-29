@@ -1,7 +1,158 @@
+:root {
+  --primary: rgb(221, 200, 200);
+  --primary-dark: rgb(200, 170, 170);
+  --primary-light: rgb(240, 225, 225);
+}
+
+
+h2 {
+  text-align: center;
+  color: #444;
+}
+
+
+input {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  outline: none;
+  transition: 0.2s;
+}
+
+input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px var(--primary-light);
+}
+
+
+
+/* CENTRA PAGINA */
+.auth-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg,
+      var(--primary-light),
+      white);
+}
+
+/* CARD */
+.auth-card {
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  width: 340px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+
+  border: 1px solid var(--primary);
+  backdrop-filter: blur(4px);
+}
+
+
+/* INPUT */
+input {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  outline: none;
+  font-size: 14px;
+}
+
+input:focus {
+  border-color: #1976d2;
+}
+
+/* PASSWORD */
+.input-group {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding-right: 8px;
+}
+
+.input-group input {
+  border: none;
+  flex: 1;
+}
+
+.input-group button {
+  background: none;
+  border: none;
+  padding: 0 2px 0 2px;
+  margin-left: 5px;
+  cursor: pointer;
+  color: #666;
+}
+
+/* PULSANTE */
+.primary-btn {
+  background: var(--primary);
+  color: #333;
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+.primary-btn:hover {
+  background: var(--primary-dark);
+}
+
+.primary-btn:disabled {
+  background: #ddd;
+  cursor: not-allowed;
+}
+
+/* MESSAGGI */
 .error {
-  color: red;
+  color: #d32f2f;
+  font-size: 13px;
 }
 
 .success {
-  color: green;
+  color: #2e7d32;
+  font-size: 13px;
+}
+
+
+/* LINKS */
+.switch {
+  text-align: center;
+  font-size: 14px;
+}
+
+.switch a {
+  color: rgb(234, 155, 155);
+  cursor: pointer;
+  font-weight: 500;
+}
+
+
+/* REGOLE PASSWORD */
+.password-rules {
+  list-style: none;
+  padding: 0;
+  font-size: 12px;
+}
+
+.password-rules li {
+  color: #e53935;
+}
+
+.password-rules li.valid {
+  color: #2e7d32;
+}
+
+.strength {
+  font-size: 13px;
 }

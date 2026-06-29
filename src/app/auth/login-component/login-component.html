@@ -1,31 +1,43 @@
-<div class="login-container">
+<div class="auth-container">
+    <div class="auth-card">
 
-    <h2>Login</h2>
+        <h2>Happy to see you again 😊</h2>
 
-    <input [(ngModel)]="email" placeholder="Email" />
-    <!-- <input [(ngModel)]="password" type="password" placeholder="Password"/>  -->
-    <input [(ngModel)]="password" [type]="showPassword ? 'text': 'password'" placeholder="Password" />
+        <!------------------- EMAIL ------------------------>
+        <input [(ngModel)]="email" placeholder="Email" />
 
-    <button type="button" (click)="togglePasswordVisibility()">
-        <!-- {{ showPassword ? '🙈' : '👁️' }} -->
-        <mat-icon>
-            {{ showPassword ? 'visibility_off' : 'visibility' }}
-        </mat-icon>
+        <!------------------- PASSWORD ------------------------>
+        <div class="input-group">
+            <!-- <input [(ngModel)]="password" type="password" placeholder="Password"/>  -->
+            <input [(ngModel)]="password" [type]="showPassword ? 'text': 'password'" placeholder="Password" />
 
-    </button>
-    <button (click)="onLogin()">Login</button>
-    <!-- <button (click)="onRegister()">Register</button> -->
+            <button type="button" (click)="togglePasswordVisibility()">
+                <!-- {{ showPassword ? '🙈' : '👁️' }} -->
+                <mat-icon>
+                    {{ showPassword ? 'visibility_off' : 'visibility' }}
+                </mat-icon>
+            </button>
+        </div>
 
-    <P>
-        No account?
-        <a (click)="goToRegister()">Register</a>
+        <!------------------------ PULSANTE ------------------------->
+        <button class="primary-btn" (click)="onLogin()">Login</button>
+        <!-- <button (click)="onRegister()">Register</button> -->
 
-   @if(error()){
-    <p class="error">{{ error() }}</p>
-    }
 
-    @if (success()) {
-    <p class="success">{{ success() }}</p>
-    }
+        <P class="switch">
+            No account?
+            <a (click)="goToRegister()">Register</a>
+
+
+            <!-- ---------------- ERRORE E SUCCESSO --------------------- -->
+            @if(error()){
+        <p class="error">{{ error() }}</p>
+        }
+
+        @if (success()) {
+        <p class="success">{{ success() }}</p>
+        }
+
+    </div>
 
 </div>

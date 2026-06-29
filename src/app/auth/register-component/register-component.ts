@@ -38,8 +38,8 @@ export class RegisterComponent {
 
   // VALIDAZIONE DELLA PASSWORD CON REGEX (sequenza di caratteri che definisce un pattern)
   isPasswordValid(password: string): boolean {
-    //return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(password);  //con carattere speciale
-    return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(password);  // senza carattere speciale
+    return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(password);  //con carattere speciale
+    //return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(password);  // senza carattere speciale
   }
 
 
@@ -56,34 +56,31 @@ export class RegisterComponent {
     return /\d/.test(this.password);
   }
 
-  // hasSpecial() {
-  //   return /[@$!%*?&]/.test(this.password);
-  // }
+  hasSpecial() {
+    return /[@$!%*?&]/.test(this.password);
+  }
 
 
   // GESTIONE DELLA FORZA DELLA PASSWORD  
   getPasswordStrength(): string {
 
-    let score = 0;
+    let score = 2;
 
     if (this.hasLowercase()) score++;
     if (this.hasUppercase()) score++;
     if (this.hasNumber()) score++;
-    // if (this.hasSpecial()) score++;
+    if (this.hasSpecial()) score++;
     if (this.password.length >= 8) score++;
 
-    if (score <= 2) return 'Weak';
-    if (score <= 4) return 'Medium';
-    return 'Strong';
-
+    if (score < 4) return 'Weak';
+    if (score < 6) return 'Medium';
+    return 'Strong';  
   }
 
   getPasswordStrengthColor(): string {
 
-    if (this.password.length < 6) return 'red';
-
-    if (this.password.length < 10) return 'orange';
-
+    if (this.getPasswordStrength() === 'Weak') return 'red';
+    if (this.getPasswordStrength() === 'Medium') return 'orange';
     return 'green';
   }
 
@@ -190,7 +187,7 @@ export class RegisterComponent {
 // Ho creato due metodi: getPasswordStrength() e getPasswordStrengthColor() che calcolano la forza della password in base alla sua lunghezza.
 // Il metodo getPasswordStrength() restituisce una stringa che indica se la password è "Weak", "Medium" o "Strong" in base al numero di criteri soddisfatti.
 // Il metodo getPasswordStrengthColor() restituisce un colore che indica la forza della password: rosso per "Weak", arancione per "Medium" e verde per "Strong".
-
+// NB: let score deve inizializzarsi a 2 e non a 0, se voglio che la password sia considerata "Strong" solo se soddisfa tutti i criteri, altrimenti può essere considerata "Medium" anche se soddisfa solo 4 criteri.
 
 /// PASSO 7: Gestione della conferma della password
 // Ho aggiunto una proprietà confirmPassword al componente, che viene utilizzata per memorizzare il valore inserito dall'utente nel campo di conferma della password.
