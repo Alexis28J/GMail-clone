@@ -25,7 +25,7 @@
         <mat-menu #filterMenu="matMenu">
             <div class="filter-menu">
 
-                <p class="filter-title">Filter by</p>
+                <p class="filter-title">Filter by: </p>
 
                 <label>
                     <input type="checkbox" (change)="toggleFilter('subject', $event)" [checked]="folderService.getFilters()().subject"> Subject

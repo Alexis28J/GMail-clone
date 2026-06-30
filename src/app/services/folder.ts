@@ -171,19 +171,25 @@ export class Folder {
 
       if (filters.subject) fields.push(email.subject);
       if (filters.sender) fields.push(email.sender);
-      //if (filters.date) fields.push(email.timestamp.toString()); 
 
+      //if (filters.date) fields.push(email.timestamp.toString()); 
       if (filters.date) {
-        const date = new Date(email.timestamp);
+        const date = typeof email.timestamp === 'string' ? new Date(email.timestamp) : email.timestamp; 
 
         const fullDate = date.toISOString(); // 2026-06-14
         const year = date.getFullYear().toString(); // 2026
-        const month = (date.getMonth() + 1).toString().padStart(2, '0'); // 06
-        const day = date.getDate().toString().padStart(2, '0'); // 14
-        const monthNameIT = date.toLocaleString('it', { month: 'long' }).toLowerCase();
-        const monthName = date.toLocaleString('en', { month: 'long' }).toLowerCase(); // june
 
-        fields.push(`${fullDate} ${year} ${month} ${day} ${monthName} ${monthNameIT}`);
+        const month = (date.getMonth() + 1).toString().padStart(2, '0'); // 06
+        const monthRaw = (date.getMonth() + 1).toString(); // 6
+
+        const day = date.getDate().toString().padStart(2, '0'); // 14
+        const dayRaw = date.getDate().toString(); // 14
+      
+        const monthName = date.toLocaleString('en', { month: 'long' }).toLowerCase(); // june
+        const monthNameIT = date.toLocaleString('it', { month: 'long' }).toLowerCase(); // giugno
+
+        fields.push(`${fullDate} ${year} ${month} ${monthRaw} ${day} ${dayRaw} ${monthName} ${monthNameIT}`);
+
       }
 
 
@@ -397,3 +403,31 @@ export class Folder {
 
 // Infine, ho modificato il filtro con keywords.every() per verificare se tutte le parole chiave sono presenti nel testo da cercare (searchableText) e restituire true solo se tutte le parole chiave sono presenti.
 // In questo modo, le email visualizzate saranno filtrate in base alla cartella selezionata, al termine di ricerca inserito dall'utente e ai filtri attivi selezionati dall'utente.
+
+//Filtro Date
+// Per quanto riguarda il filtro per la data, ho aggiunto un controllo if (filters.date) che verifica se il filtro per la data è attivo (true).
+// Se il filtro per la data è attivo, viene creato un oggetto Date a partire dal timestamp dell'email e vengono estratti i vari componenti della data (anno, mese, giorno, ecc.).
+// Questi componenti vengono poi aggiunti all'array fields in modo che possano essere considerati nella ricerca delle parole chiave.
+// In questo modo, se il filtro per la data è attivo, le email visualizzate saranno filtrate anche in base alla data di invio o ricezione dell'email.
+
+// const date = typeof email.timestamp === 'string' ? new Date(email.timestamp) : email.timestamp; significa che se il timestamp dell'email è una stringa, viene creato un oggetto Date a partire da quella stringa, 
+// altrimenti viene utilizzato direttamente l'oggetto Date presente nel timestamp. In parole semplici, questa riga di codice serve a garantire che il timestamp dell'email sia sempre un oggetto Date, 
+// indipendentemente dal formato in cui è stato salvato.
+
+// const fullDate = date.toISOString(); significa che viene creato un formato di data completo (YYYY-MM-DD) a partire dall'oggetto Date. 
+
+// const year = date.getFullYear().toString(); significa che viene estratto l'anno dall'oggetto Date e convertito in stringa.
+
+// const month = (date.getMonth() + 1).toString().padStart(2, '0'); significa che viene estratto il mese dall'oggetto Date, aggiunto 1 (perché i mesi partono da 0) e convertito in stringa con due cifre (es. 01, 02, ..., 12).
+
+// const monthRaw = (date.getMonth() + 1).toString(); significa che viene estratto il mese dall'oggetto Date, aggiunto 1 e convertito in stringa senza padding (es. 1, 2, ..., 12).
+
+// const day = date.getDate().toString().padStart(2, '0'); significa che viene estratto il giorno dall'oggetto Date e convertito in stringa con due cifre (es. 01, 02, ..., 31).
+
+// const dayRaw = date.getDate().toString(); significa che viene estratto il giorno dall'oggetto Date e convertito in stringa senza padding (es. 1, 2, ..., 31).
+
+// const monthName = date.toLocaleString('en', { month: 'long' }).toLowerCase(); significa che viene estratto il nome del mese in inglese dall'oggetto Date e convertito in minuscolo (es. january, february, ..., december).
+
+// const monthNameIT = date.toLocaleString('it', { month: 'long' }).toLowerCase(); significa che viene estratto il nome del mese in italiano dall'oggetto Date e convertito in minuscolo (es. gennaio, febbraio, ..., dicembre).
+
+// Infine, tutti questi componenti della data vengono uniti in una singola stringa e aggiunti all'array fields in modo che possano essere considerati nella ricerca delle parole chiave.

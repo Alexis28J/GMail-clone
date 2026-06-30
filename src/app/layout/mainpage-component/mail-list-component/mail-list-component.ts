@@ -58,7 +58,7 @@ export class MailListComponent {
   }
 
 
-  //////////////////////////////////EVIDENZIA EMAIL SELEZIONATE///////////////////////////////////////////////
+  //////////////////////////////////EVIDENZIA PAROLE CHIAVE///////////////////////////////////////////////
 
   highlight(text: string): SafeHtml{
 
@@ -74,7 +74,7 @@ export class MailListComponent {
       const regex = new RegExp(`(${keyword})`, 'gi');
       highlighted = highlighted.replace(
         regex,
-        `<mark>$1</mark>`
+        `<mark>$1</mark>` 
       );
     })
     return this.sanitizer.bypassSecurityTrustHtml(highlighted);
@@ -118,7 +118,7 @@ export class MailListComponent {
 // getAllEmails(): EmailInterface[] è un metodo che restituisce l'intero array di email gestito dal componente. Questo metodo può essere utilizzato da altri componenti o servizi per accedere alla lista completa delle email, ad esempio per visualizzarle o per eseguire operazioni su di esse.
 
 
-//////////////////////////////////////////////////////EVIDENZIA EMAIL SELEZIONATE/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////EVIDENZIA PAROLE CHIAVE/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Per prima cosa ho creato il constructor con i servizi folderService e sanitizer. Il servizio folderService viene utilizzato per ottenere il termine di ricerca corrente, 
 // mentre il servizio sanitizer viene utilizzato per sanificare l'HTML generato per evidenziare le parole chiave nella visualizzazione delle email.
@@ -133,3 +133,6 @@ export class MailListComponent {
 // .forEach(keyword => {..} è un metodo che itera su ciascuna parola chiave e applica la sostituzione nel testo originale. L'espressione regolare viene creata dinamicamente per ogni parola chiave, con l'opzione 'gi' per rendere la ricerca globale e insensibile al maiuscolo/minuscolo.
 
 // Infine, il metodo restituisce il testo modificato, sanificato tramite il servizio sanitizer per garantire la sicurezza del contenuto visualizzato.
+
+//`<mark>$1</mark>`. Il tag <mark> vengono utilizzati per evidenziare le parole chiave nel testo visualizzato, rendendole visivamente distinte dal resto del contenuto.
+// E `$1` rappresenta il testo corrispondente alla parola chiave trovata dall'espressione regolare. In questo modo, la parola chiave viene racchiusa nel tag <mark> senza alterare il contenuto originale del testo.
