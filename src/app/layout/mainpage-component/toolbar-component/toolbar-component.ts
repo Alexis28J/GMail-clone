@@ -9,6 +9,7 @@ import { MatTooltipModule } from "@angular/material/tooltip";
   templateUrl: './toolbar-component.html',
   styleUrls: ['./toolbar-component.scss'],
 })
+
 export class ToolbarComponent {
 
   @Input() canGoNext = true;
@@ -69,6 +70,8 @@ export class ToolbarComponent {
 // @Output() delete = new EventEmitter<void>();
 // Ho aggiunto un nuovo EventEmitter chiamato delete, che emette un evento quando l'utente clicca sul pulsante di eliminazione nella toolbar. 
 // Questo evento può essere ascoltato dal componente genitore (che in questo caso è MainPageComponent) per eseguire l'azione di eliminazione delle email selezionate.
+// <void> è un parametro generico che indica che l'evento delete non emette alcun dato specifico quando viene attivato. 
+// In altre parole, l'evento serve solo come segnale per notificare al componente genitore che l'utente ha richiesto di eliminare le email selezionate.
 
 // onDelete() { this.delete.emit(); }
 // Ho aggiunto un nuovo metodo onDelete() che viene chiamato quando l'utente clicca sul pulsante di eliminazione nella toolbar. 

@@ -1,3 +1,12 @@
 <div class="main-container">
   <router-outlet></router-outlet>
 </div>
+
+
+<!-- router-outlet è il selector che indica dove verranno renderizzati i componenti figli in base alla route attiva. 
+ In questo caso, il contenuto del componente figlio verrà visualizzato all'interno del div con la classe "main-container". 
+ app-root e router-outlet non sono la stessa cosa. Il primo è il componente radice dell'applicazione, 
+ mentre il secondo è un placeholder per i componenti figli in base alla route attiva. -->
+
+ <!-- Il selector main-layout-component è il componente principale del layout ma non viene utilizzato direttamente 
+  nel template perché viene referenziato nelle route dell'applicazione che sono definite nel modulo di routing. -->

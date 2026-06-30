@@ -11,7 +11,7 @@ export class EmailService {
     
   //  private emailsSignal = signal<EmailInterface[]>(
     
-  //     JSON.parse(localStorage.getItem('emails') || 'null') ||
+  //  JSON.parse(localStorage.getItem('emails') || 'null') ||
 
   stored = JSON.parse(localStorage.getItem('emails') || '[]');
 
@@ -162,7 +162,7 @@ export class EmailService {
    deleteSelectedEmails(){
 
       this.emailsSignal.update(emails => 
-        emails.map(email => email.selected? 
+        emails.map(email => email.selected?  
           {...email, is_deleted:true, selected: false}: email  
                 )
       );
@@ -184,7 +184,10 @@ export class EmailService {
    /// RIPRISTINARE LE EMAIL SELEZIONATE
     restoreSelectedEmails(){
       this.emailsSignal.update(emails => 
-        emails.map(email => email.selected?{...email, is_deleted:false, selected: false}: email)
+        emails.map(email => 
+          email.selected ? 
+          {...email, is_deleted:false, selected: false} 
+          : email)  // 
       );
     }
 

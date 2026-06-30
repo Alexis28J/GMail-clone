@@ -47,7 +47,7 @@ export class MainpageComponent {
     private authService:AuthService,
     private router: Router) {
 
-    this.allEmails = this.folderService.filteredEmails;
+    this.allEmails = this.folderService.filteredEmails; 
 
   }
 
@@ -97,7 +97,7 @@ export class MainpageComponent {
       data: {
         message: 'Are you sure to want to delete these messages?'
       }
-    });
+    }); 
 
     dialogRef.afterClosed().subscribe(result => {
       if (result === true) {

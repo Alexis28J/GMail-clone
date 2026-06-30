@@ -72,9 +72,9 @@ export class Folder {
 
     switch (folder) {
 
-      case 'starred':
+      case 'starred': 
         //return emails.filter(e => e.starred && !e.is_deleted);
-        result = emails.filter(e => e.starred && !e.is_deleted);
+        result = emails.filter(e => e.starred && !e.is_deleted); 
         break;
 
       case 'important':
@@ -296,6 +296,7 @@ export class Folder {
 // Il metodo utilizza this.selectedFolder() per accedere al valore del segnale, che rappresenta la cartella selezionata in quel momento.
 // Non ha parametri perché restituisce semplicemente il valore attuale del segnale selectedFolder, che è una stringa che rappresenta la cartella selezionata.
 
+// La differenza tra getFolders() e getSelectedFolder() è che il primo restituisce l'intera lista delle cartelle, mentre il secondo restituisce solo la cartella attualmente selezionata.
 
 
 ///// FILTRO EMAIL
