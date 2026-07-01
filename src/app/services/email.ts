@@ -1,217 +1,218 @@
 import { Injectable, signal } from '@angular/core';
 import { EmailInterface } from '../interface/email-interface';
 import { effect } from '@angular/core';
-import { AuthService } from './auth';
+// import { AuthService } from './auth';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class EmailService {
-    
+
   //  private emailsSignal = signal<EmailInterface[]>(
-    
+
   //  JSON.parse(localStorage.getItem('emails') || 'null') ||
 
   stored = JSON.parse(localStorage.getItem('emails') || '[]');
 
   private emailsSignal = signal<EmailInterface[]>(
-  this.stored.length ? this.stored :
+    this.stored.length ? this.stored :
       [
         {
-      id: 1,
-      sender: 'Carlo Bonamico',
-      recipient: 'Jordy Trebejo <jordy.trebejo@dgsspa.com>',
-      subject: 'Meeting Reminder',
-      body: 'Don\'t forget about our meeting tomorrow at 9 AM. Please be on time.',
-      timestamp: new Date('2026-06-14T09:00:00'),
-      starred: false,       
-      label: 'Work',
-      folder: 'inbox',
-      selected: false,
-      is_deleted: false,
-    },
-    {
-      id: 2,
-      sender: 'Lione Melania',
-      recipient: 'Jordy Trebejo <jordy.trebejo@dgsspa.com>',
-      subject: 'Medical Appointment',
-      body: 'Your medical appointment is scheduled for June 19 at 15:50 PM. Please arrive 10 minutes early.',
-      timestamp: new Date('2026-06-15T08:50:00'),
-      starred: true,  
-      label: 'Personal',
-      folder: 'inbox',
-      selected: false,
-      is_deleted: false,
-    },
-    {
-      id: 3,
-      sender: 'HR Department',
-      recipient: 'Jordy Alexis <jordy2806@hotmail.com>',
-      subject: 'Document Submission',
-      body: 'Please submit the required documents by June 10th. Failure to do so may result in delays.',
-      timestamp: new Date('2026-06-10T11:15:00'),
-      starred: false,
-      label: 'Important',
-      folder: 'inbox',
-      selected: false,
-      is_deleted: false,
-    },
-    {
-      id: 4,
-      sender: 'Github Support',
-      recipient: 'Jordy Alexis <jordy2806@hotmail.com>',
-      subject: 'Account Verification',
-      body: 'Please verify your account by clicking the link in the email. This is necessary to access all features.',
-      timestamp: new Date('2026-06-04T14:30:00'),
-      starred: true,
-      label: 'Work',
-      folder: 'inbox',
-      selected: false,
-      is_deleted: false,
-    },
-    {
-      id: 5,
-      sender: 'Comune di Genova',
-      recipient: 'Jordy Alexis <jordy2806@hotmail.com>',
-      subject: 'Citizen Service Update',
-      body: 'You have a new citizen service update from Comune di Genova. Please review it at your earliest convenience.',
-      timestamp: new Date('2026-06-05T10:45:00'),
-      starred: false,
-      label: 'Personal',
-      folder: 'inbox',
-      selected: false,
-      is_deleted: false,
-    },
-    {
-      id: 6,
-      sender: 'Amazon',
-      recipient: 'Jordy Alexis <jordy2806@hotmail.com>',
-      subject: 'Order Confirmation',
-      body: 'Your order has been confirmed and will be shipped soon. Thank you for shopping with us!',
-      timestamp: new Date('2026-06-06T16:20:00'),
-      starred: true,
-      label: 'Important',
-      folder: 'inbox',
-      selected: false,
-      is_deleted: false,
-    },
-    {
-      id: 7,
-      sender: 'eBay',
-      recipient: 'Jordy Alexis <jordy2806@hotmail.com>',
-      subject: 'Object Sold',
-      body: 'Your item has been sold on eBay. Please proceed with the shipping process.',
-      timestamp: new Date('2026-06-07T12:00:00'),
-      starred: false,
-      label: 'Work',
-      folder: 'inbox',
-      selected: false,
-      is_deleted: false,
-    },
-    {
-      id: 8,
-      sender: 'Prime Video',
-      recipient: 'Jordy Alexis <jordy2806@hotmail.com>',
-      subject: 'Subscription Renewal',
-      body: 'Your subscription has been renewed successfully. Enjoy your streaming experience!',
-      timestamp: new Date('2026-06-08T09:00:00'),
-      starred: true,
-      label: 'Personal',
-      folder: 'inbox',
-      selected: false,
-      is_deleted: false,
-    },
-    {
-      id: 9,
-      sender: 'Microsoft',
-      recipient: 'Jordy Trebejo <jordy.trebejo@dgsspa.com>',
-      subject: 'Software Update',
-      body: 'A new software update is available for your device. Please install it at your earliest convenience.',
-      timestamp: new Date('2026-06-09T14:00:00'),
-      starred: false,
-      label: 'Important',
-      folder: 'inbox',
-      selected: false,
-      is_deleted: false,
-    },
-    {
-      id: 10,
-      sender: 'Netflix',
-      recipient: 'Jordy Alexis <jordy2806@hotmail.com>',
-      subject: 'New Movie Release',
-      body: 'A new movie has been released on Netflix. Check it out!',
-      timestamp: new Date('2026-06-10T18:30:00'),
-      starred: true,
-      label: 'Personal',
-      folder: 'inbox',
-      selected: false,
-      is_deleted: false,
-    },
-   ] 
+          id: 1,
+          sender: 'Carlo Bonamico',
+          recipient: 'Jordy Trebejo <jordy.trebejo@dgsspa.com>',
+          subject: 'Meeting Reminder',
+          body: 'Don\'t forget about our meeting tomorrow at 9 AM. Please be on time.',
+          timestamp: new Date('2026-06-14T09:00:00'),
+          starred: false,
+          label: 'Work',
+          folder: 'inbox',
+          selected: false,
+          is_deleted: false,
+        },
+        {
+          id: 2,
+          sender: 'Lione Melania',
+          recipient: 'Jordy Trebejo <jordy.trebejo@dgsspa.com>',
+          subject: 'Medical Appointment',
+          body: 'Your medical appointment is scheduled for June 19 at 15:50 PM. Please arrive 10 minutes early.',
+          timestamp: new Date('2026-06-15T08:50:00'),
+          starred: true,
+          label: 'Personal',
+          folder: 'inbox',
+          selected: false,
+          is_deleted: false,
+        },
+        {
+          id: 3,
+          sender: 'HR Department',
+          recipient: 'Jordy Alexis <jordy2806@hotmail.com>',
+          subject: 'Document Submission',
+          body: 'Please submit the required documents by June 10th. Failure to do so may result in delays.',
+          timestamp: new Date('2026-06-10T11:15:00'),
+          starred: false,
+          label: 'Important',
+          folder: 'inbox',
+          selected: false,
+          is_deleted: false,
+        },
+        {
+          id: 4,
+          sender: 'Github Support',
+          recipient: 'Jordy Alexis <jordy2806@hotmail.com>',
+          subject: 'Account Verification',
+          body: 'Please verify your account by clicking the link in the email. This is necessary to access all features.',
+          timestamp: new Date('2026-06-04T14:30:00'),
+          starred: true,
+          label: 'Work',
+          folder: 'inbox',
+          selected: false,
+          is_deleted: false,
+        },
+        {
+          id: 5,
+          sender: 'Comune di Genova',
+          recipient: 'Jordy Alexis <jordy2806@hotmail.com>',
+          subject: 'Citizen Service Update',
+          body: 'You have a new citizen service update from Comune di Genova. Please review it at your earliest convenience.',
+          timestamp: new Date('2026-06-05T10:45:00'),
+          starred: false,
+          label: 'Personal',
+          folder: 'inbox',
+          selected: false,
+          is_deleted: false,
+        },
+        {
+          id: 6,
+          sender: 'Amazon',
+          recipient: 'Jordy Alexis <jordy2806@hotmail.com>',
+          subject: 'Order Confirmation',
+          body: 'Your order has been confirmed and will be shipped soon. Thank you for shopping with us!',
+          timestamp: new Date('2026-06-06T16:20:00'),
+          starred: true,
+          label: 'Important',
+          folder: 'inbox',
+          selected: false,
+          is_deleted: false,
+        },
+        {
+          id: 7,
+          sender: 'eBay',
+          recipient: 'Jordy Alexis <jordy2806@hotmail.com>',
+          subject: 'Object Sold',
+          body: 'Your item has been sold on eBay. Please proceed with the shipping process.',
+          timestamp: new Date('2026-06-07T12:00:00'),
+          starred: false,
+          label: 'Work',
+          folder: 'inbox',
+          selected: false,
+          is_deleted: false,
+        },
+        {
+          id: 8,
+          sender: 'Prime Video',
+          recipient: 'Jordy Alexis <jordy2806@hotmail.com>',
+          subject: 'Subscription Renewal',
+          body: 'Your subscription has been renewed successfully. Enjoy your streaming experience!',
+          timestamp: new Date('2026-06-08T09:00:00'),
+          starred: true,
+          label: 'Personal',
+          folder: 'inbox',
+          selected: false,
+          is_deleted: false,
+        },
+        {
+          id: 9,
+          sender: 'Microsoft',
+          recipient: 'Jordy Trebejo <jordy.trebejo@dgsspa.com>',
+          subject: 'Software Update',
+          body: 'A new software update is available for your device. Please install it at your earliest convenience.',
+          timestamp: new Date('2026-06-09T14:00:00'),
+          starred: false,
+          label: 'Important',
+          folder: 'inbox',
+          selected: false,
+          is_deleted: false,
+        },
+        {
+          id: 10,
+          sender: 'Netflix',
+          recipient: 'Jordy Alexis <jordy2806@hotmail.com>',
+          subject: 'New Movie Release',
+          body: 'A new movie has been released on Netflix. Check it out!',
+          timestamp: new Date('2026-06-10T18:30:00'),
+          starred: true,
+          label: 'Personal',
+          folder: 'inbox',
+          selected: false,
+          is_deleted: false,
+        },
+      ]
   );
 
 
-   //// PRENDERE LE EMAIL
-   getEmails() {
+  //// PRENDERE LE EMAIL
+  getEmails() {
     return this.emailsSignal;
-   }
-   
-   
-   /// ELIMINARE LE EMAIL SELEZIONATE
-   deleteSelectedEmails(){
+  }
 
-      this.emailsSignal.update(emails => 
-        emails.map(email => email.selected?  
-          {...email, is_deleted:true, selected: false}: email  
-                )
-      );
-   }
 
-   /// CONSTRUCTOR EFFETTO
-   //constructor( private authService: AuthService) {
-   constructor() {
+  /// ELIMINARE LE EMAIL SELEZIONATE
+  deleteSelectedEmails() {
+
+    this.emailsSignal.update(emails =>
+      emails.map(email => email.selected ?
+        { ...email, is_deleted: true, selected: false } : email
+      )
+    );
+  }
+
+  /// CONSTRUCTOR EFFETTO
+  //constructor( private authService: AuthService) {
+  constructor(private snackBar: MatSnackBar) {
     effect(() => {
 
       // if(!this.authService.isLoggedIn()){
       //    this.emailsSignal.set([]);
       // }
-      
+
       localStorage.setItem('emails', JSON.stringify(this.emailsSignal()));
     });
-};
+  };
 
-   /// RIPRISTINARE LE EMAIL SELEZIONATE
-    restoreSelectedEmails(){
-      this.emailsSignal.update(emails => 
-        emails.map(email => 
-          email.selected ? 
-          {...email, is_deleted:false, selected: false} 
-          : email)  // 
-      );
-    }
+  /// RIPRISTINARE LE EMAIL SELEZIONATE
+  restoreSelectedEmails() {
+    this.emailsSignal.update(emails =>
+      emails.map(email =>
+        email.selected ?
+          { ...email, is_deleted: false, selected: false }
+          : email)
+    );
+  }
 
-   
-    /// INVIARE UNA NUOVA EMAIL
-   sendEmail(email: Partial<EmailInterface>){
 
-      const newEmail: EmailInterface = {
-        id: Date.now(),
-        sender: email.sender || 'Me',   
-        recipient: email.recipient || '',
-        subject: email.subject || '',
-        body: email.body || '',
-        timestamp: new Date(),
-        starred: false,
-        label: 'Sent',
-        folder: 'sent',
-        selected: false, 
-        is_deleted: false,
-      };
-      
-      this.emailsSignal.update(emails => [newEmail, ...emails]);
+  /// INVIARE UNA NUOVA EMAIL
+  sendEmail(email: Partial<EmailInterface>) {
 
-   }
+    const newEmail: EmailInterface = {
+      id: Date.now(),
+      sender: email.sender || 'Me',
+      recipient: email.recipient || '',
+      subject: email.subject || '',
+      body: email.body || '',
+      timestamp: new Date(),
+      starred: false,
+      label: 'Sent',
+      folder: 'sent',
+      selected: false,
+      is_deleted: false,
+    };
+
+    this.emailsSignal.update(emails => [newEmail, ...emails]);
+
+  }
 
 }
 
@@ -245,7 +246,7 @@ export class EmailService {
 // Ho modificato la proprietà emailsSignal per inizializzarla con le email salvate nel localStorage se presenti, altrimenti utilizza l'array predefinito di email.    
 
 
-// PRENDERE LE EMAIL
+//// PRENDERE LE EMAIL
 // getEmails() {
 // return this.emailsSignal();
 // }
@@ -253,7 +254,7 @@ export class EmailService {
 //Il metodo utilizza this.emailsSignal() per accedere ai dati delle email, che sono gestiti come un segnale reattivo.
 
 
-// ELIMINARE LE EMAIL SELEZIONATE
+//// ELIMINARE LE EMAIL SELEZIONATE
 // deleteSelectedEmails() { ... }
 // Definiamo un metodo pubblico deleteSelectedEmails() che viene chiamato quando l'utente vuole eliminare le email selezionate.
 // All'interno di questo metodo, utilizziamo this.emailsSignal.update() per aggiornare lo stato del segnale reattivo. 
@@ -270,14 +271,17 @@ export class EmailService {
 // La differenza tra update e set è che update permette di modificare solo alcune proprietà dell'oggetto, mentre set sostituisce completamente l'oggetto con uno nuovo. In questo caso, utilizziamo update per modificare solo le email selezionate senza perdere le altre email nell'array.
 // La differenza tra update e computed è che update permette di modificare lo stato del segnale reattivo, mentre computed crea un nuovo segnale basato su uno o più segnali esistenti. In questo caso, utilizziamo update per modificare lo stato delle email senza creare un nuovo segnale.
 
-// Ho aggiunto un effetto per salvare le email nel localStorage ogni volta che lo stato del segnale emailsSignal cambia. Questo garantisce che le modifiche alle email vengano persistite tra le sessioni dell'utente.
-// effect() è una funzione che permette di eseguire del codice ogni volta che uno o più segnali reattivi cambiano. In questo caso, stiamo salvando le email nel localStorage ogni volta che emailsSignal cambia.
 
+//// CONSTRUCTOR EFFETTO
 // constructor() { ... } 
 // Ho aggiunto un costruttore alla classe EmailService che contiene l'effetto per salvare le email nel localStorage. Il costruttore viene eseguito quando il servizio viene istanziato (es. all'avvio dell'applicazione), garantendo che l'effetto sia attivo fin dall'inizio.
+// L'effetto salva le email nel localStorage ogni volta che lo stato del segnale emailsSignal cambia. Questo garantisce che le modifiche alle email vengano persistite tra le sessioni dell'utente.
+// effect() è una funzione che permette di eseguire del codice ogni volta che uno o più segnali reattivi cambiano. In questo caso, stiamo salvando le email nel localStorage ogni volta che emailsSignal cambia.
 // In questo modo, ogni volta che lo stato delle email cambia, le modifiche vengono salvate automaticamente nel localStorage, consentendo all'utente di mantenere le email anche dopo aver chiuso e riaperto l'applicazione.
+
 // Ho commentato la parte che verifica se l'utente è autenticato prima di salvare le email nel localStorage, poiché non è necessario per il funzionamento del servizio. Inoltre, il servizio EmailService non ha accesso diretto al servizio AuthService, quindi non può verificare lo stato di autenticazione dell'utente.
 // Tuttavia, se si desidera implementare questa funzionalità in futuro, è possibile decommentare quella parte e utilizzare il servizio AuthService per verificare lo stato di autenticazione dell'utente.
+// Ho aggiunto il servizio MatSnackBar al costruttore per mostrare un messaggio di conferma quando le email vengono ripristinate. Questo fornisce un feedback visivo all'utente, migliorando l'esperienza utente.
 
 
 // RIPRISTINARE LE EMAIL SELEZIONATE

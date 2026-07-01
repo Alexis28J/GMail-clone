@@ -24,7 +24,7 @@ export const routes: Routes = [
     },
     {
         path: 'app',
-        component: MainLayoutComponent,
+        component: MainLayoutComponent,  
         canActivate: [authGuard],
         children: [
             {
@@ -69,3 +69,6 @@ export const routes: Routes = [
 // La quarta rotta definita è la rotta principale dell'applicazione, che carica il componente MainLayoutComponent.
 // Questa rotta è protetta dal guardiano authGuard, che verifica se l'utente è autenticato prima di consentire l'accesso alla rotta.
 // Se l'utente non è autenticato, viene reindirizzato alla pagina di login.
+
+// Perché mettiamo component qui e non loadComponent? 
+// Perché vogliamo che il MainLayoutComponent sia il layout principale dell'applicazione, e che tutte le rotte figlie vengano renderizzate all'interno di esso. In questo modo, possiamo avere un layout coerente per tutte le pagine dell'applicazione, con l'intestazione e la barra laterale sempre visibili.

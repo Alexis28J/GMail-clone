@@ -14,7 +14,7 @@ export class Folder {
 
   private selectedFolder = signal<string>('inbox');
 
-  private foldersSignal = signal<FolderInterface[]>(
+  private foldersSignal = signal<FolderInterface[]>(  
     [
       { id: 'inbox', name: 'Inbox', icon: 'inbox' },
       { id: 'starred', name: 'Special', icon: 'star' },
@@ -89,7 +89,7 @@ export class Folder {
 
       case 'trash':
         //return emails.filter(e => e.is_deleted === true);
-        result = emails.filter(e => e.is_deleted === true);
+        result = emails.filter(e => e.is_deleted === true); // se 
         break;
 
       case 'drafts':

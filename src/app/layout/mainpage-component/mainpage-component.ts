@@ -12,6 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialog } from '../../shared/confirm-dialog/confirm-dialog';
 import { AuthService } from '../../services/auth';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -44,10 +45,11 @@ export class MainpageComponent {
     private emailService: EmailService,
     private folderService: Folder,
     private dialog: MatDialog,
-    private authService:AuthService,
-    private router: Router) {
+    private authService: AuthService,
+    private router: Router,
+    private snackBar: MatSnackBar) {
 
-    this.allEmails = this.folderService.filteredEmails; 
+    this.allEmails = this.folderService.filteredEmails;
 
   }
 
@@ -88,23 +90,29 @@ export class MainpageComponent {
 
     const hasSelect = this.allEmails().some(email => email.selected);
 
-    if(!hasSelect){
+    if (!hasSelect) {
       return;
     }
-   
+
     const dialogRef = this.dialog.open(ConfirmDialog, {   //2) 
       autoFocus: false,
       data: {
-        message: 'Are you sure to want to delete these messages?'
+        message: 'Are you sure to want to <strong>DELETE</strong> these messages?'
       }
-    }); 
+    });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result === true) {
         this.emailService.deleteSelectedEmails();
         this.currentIndex.set(null);
+
+        this.snackBar.open('Emails deleted', '', {
+          duration: 3000,
+        });
       }
     });
+
+
   }
 
 
@@ -114,12 +122,44 @@ export class MainpageComponent {
 
 
   onRestoreSelected() {
-    this.emailService.restoreSelectedEmails();
-    this.currentIndex.set(null);
+
+    const hasSelect = this.allEmails().some(email => email.selected);
+
+    if (!hasSelect) {
+      return;
+    }
+
+    const dialogRef = this.dialog.open(ConfirmDialog, {
+      autoFocus: false,
+      data: {
+        message: 'Are you sure to want to <strong>RESTORE</strong> these messages?'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === true) {
+        this.emailService.restoreSelectedEmails();
+        this.currentIndex.set(null);
+
+        this.snackBar.open('Emails restored', '', {
+          duration: 3000,
+        });
+      }
+    });
+
   }
 
-  
-  logout(){
+
+  onSendEmail(email: Partial<EmailInterface>) {
+    this.emailService.sendEmail(email);
+
+    this.snackBar.open('Email sent', '', {
+      duration: 3000,
+    });
+  }
+
+
+  logout() {
     this.authService.logout();
     this.router.navigate(['/login']);
   }
@@ -216,9 +256,20 @@ export class MainpageComponent {
 // autoFocus: false - Impedisce che il dialogo acquisisca automaticamente il focus quando viene aperto, migliorando l'esperienza utente.
 
 
+// ELIMINAZIONE EMAIL SELEZIONATE
+// onDeleteSelected(): Questo metodo viene chiamato quando si desidera eliminare le email selezionate. Chiama il metodo deleteSelectedEmails() del servizio EmailService 
+// per spostare le email selezionate nella cartella "trash" e deselezionarle.
+// Dopo aver eliminato le email, imposta currentIndex su null per deselezionare qualsiasi email attualmente visualizzata.
+// Viene visualizzato un messaggio di conferma utilizzando MatSnackBar per informare l'utente che le email sono state eliminate con successo.
+
+// NB: Mettere in grassetto la parola DELETE nel messaggio del dialogo di conferma, per evidenziare l'azione di eliminazione delle email selezionate.
+// se faccio questo: message: 'Are you sure to want to <b>DELETE</b> these messages?',non funziona perché il messaggio viene visualizzato come testo normale e non come HTML.
+// per risolvere questo problema, posso utilizzare il binding [innerHTML] nel template del dialogo di conferma per interpretare il messaggio come HTML.
+// quindi nel template del dialogo di conferma, modifico la riga <mat-dialog-content>{{data.message}}</mat-dialog-content> in <mat-dialog-content [innerHTML]="data.message"></mat-dialog-content>
+
+
 
 // RIPRISTINO EMAIL SELEZIONATE
-
 //isTrashView: computed(() => {
 //  return this.folderService.getSelectedFolder()() === 'trash';
 //})
@@ -233,7 +284,7 @@ export class MainpageComponent {
 // onRestoreSelected(): Questo metodo viene chiamato quando si desidera ripristinare le email selezionate dalla cartella "trash" alla loro cartella originale.
 // Chiama il metodo restoreSelectedEmails() del servizio EmailService per ripristinare le email selezionate e deselezionarle. 
 // Dopo aver ripristinato le email, imposta currentIndex su null per deselezionare qualsiasi email attualmente visualizzata.
-
+// Alla fine del metodo, viene visualizzato un messaggio di conferma utilizzando MatSnackBar per informare l'utente che le email sono state ripristinate con successo.
 
 
 // CONDIZIONE DI SELEZIONE EMAIL 
@@ -245,6 +296,12 @@ export class MainpageComponent {
 // Viene utilizzato il metodo some() per controllare se almeno un'email nell'elenco allEmails ha la proprietà selected impostata su true.
 // Se non ci sono email selezionate (hasSelect è false), il metodo esce senza eseguire alcuna azione, impedendo l'eliminazione accidentale di email non selezionate.
 
+
+// AGGIUNTA FUNZIONE ON SEND EMAIL
+// Ho aggiunto la funzione onSendEmail(email: Partial<EmailInterface>) che viene chiamata quando si desidera inviare un'email.
+// La funzione accetta un oggetto email parziale (Partial<EmailInterface>) come parametro, che rappresenta l'email da inviare.
+// All'interno della funzione, viene chiamato il metodo sendEmail(email) del servizio EmailService per inviare l'email.
+// Dopo aver inviato l'email, viene visualizzato un messaggio di conferma utilizzando MatSnackBar per informare l'utente che l'email è stata inviata con successo.
 
 
 // AGGIUNTA FUNZIONE LOGOUT
