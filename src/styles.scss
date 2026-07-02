@@ -5,24 +5,21 @@
 // custom components at https://material.angular.dev/guide/theming
 @use '@angular/material' as mat;
 
-html, body {
-    overflow: hidden;
-    height: 100%;
-    margin: 0;
+html,
+body {
+  overflow: hidden;
+  height: 100%;
+  margin: 0;
 }
 
 html {
   height: 100%;
-  @include mat.theme(
-    (
-      color: (
-        primary: mat.$azure-palette,
+  @include mat.theme((color: (primary: mat.$azure-palette,
         tertiary: mat.$blue-palette,
       ),
       typography: Roboto,
       density: 0,
-    )
-  );
+    ));
 }
 
 body {
@@ -42,15 +39,18 @@ body {
   margin: 0;
   height: 100%;
 }
+
 /* You can add global styles to this file, and also import other style files */
 
-
-
-.custom-snackbar {
-  background-color: #dca4a4 !important; 
-  color: #fff;
-
+// CUSTOM SNACKBAR
+/* container */
+.custom-snackbar .mdc-snackbar__surface {
+  background-color: rgb(227, 191, 191) !important;
   border-radius: 8px;
-  font-size: 14px;
+  text-align: center;
 }
 
+/* testo */
+.custom-snackbar .mdc-snackbar__label {
+  font-size: 16px !important;
+}

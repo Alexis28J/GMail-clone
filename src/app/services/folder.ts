@@ -89,17 +89,17 @@ export class Folder {
 
       case 'trash':
         //return emails.filter(e => e.is_deleted === true);
-        result = emails.filter(e => e.is_deleted === true); // se 
+        result = emails.filter(e => e.is_deleted === true); 
         break;
 
       case 'drafts':
         //return emails.filter(e => e.folder === 'drafts');
-        result = emails.filter(e => e.folder === 'drafts');
+        result = emails.filter(e => e.folder === 'drafts' && !e.is_deleted);
         break;
 
       case 'sent':
         //return emails.filter(e => e.folder === 'sent');
-        result = emails.filter(e => e.folder === 'sent');
+        result = emails.filter(e => e.folder === 'sent' && !e.is_deleted);
         break;
 
       case 'personal':

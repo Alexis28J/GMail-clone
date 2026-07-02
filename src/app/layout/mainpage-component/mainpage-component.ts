@@ -108,6 +108,7 @@ export class MainpageComponent {
 
         this.snackBar.open('Emails deleted', '', {
           duration: 3000,
+          panelClass: ['custom-snackbar'] // Aggiungi la classe personalizzata qui (styles.scss)
         });
       }
     });
@@ -143,6 +144,7 @@ export class MainpageComponent {
 
         this.snackBar.open('Emails restored', '', {
           duration: 3000,
+          panelClass: ['custom-snackbar'] // Aggiungi la classe personalizzata qui (styles.scss)
         });
       }
     });
@@ -155,6 +157,7 @@ export class MainpageComponent {
 
     this.snackBar.open('Email sent', '', {
       duration: 3000,
+      panelClass: ['custom-snackbar'] // Aggiungi la classe personalizzata qui (styles.scss)
     });
   }
 

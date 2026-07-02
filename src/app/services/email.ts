@@ -214,6 +214,26 @@ export class EmailService {
 
   }
 
+  saveDraft(email: Partial<EmailInterface>){
+
+    const newDraft: EmailInterface = {
+      id: Date.now(),
+      sender: email.sender || 'Me',
+      recipient: email.recipient || '',
+      subject: email.subject || '',
+      body: email.body || '',
+      timestamp: new Date(),
+      starred: false,
+      label: 'Draft',
+      folder: 'drafts',
+      selected: false,
+      is_deleted: false
+    };
+
+    this.emailsSignal.update(emails => [newDraft, ...emails]);
+
+  }
+
 }
 
 
@@ -299,3 +319,13 @@ export class EmailService {
 // All'interno del metodo, creiamo un nuovo oggetto newEmail di tipo EmailInterface, impostando le proprietà necessarie come id, sender, recipient, subject, body, timestamp, starred, label, folder, selected e is_deleted.
 // L'id viene generato utilizzando Date.now(), che restituisce il numero di millisecondi trascorsi dal 1 gennaio 1970. Questo garantisce un identificatore unico per ogni email inviata.
 // Le altre proprietà vengono impostate in base ai valori forniti nell'oggetto email passato al metodo o a valori predefiniti se non sono presenti.
+
+
+// SALVARE UNA BOZZA DI EMAIL
+// saveDraft(email: Partial<EmailInterface>) { ... }
+// Definiamo un metodo pubblico saveDraft() che viene chiamato quando l'utente vuole salvare una bozza di email.
+// Il metodo accetta un oggetto email di tipo Partial<EmailInterface>, simile al metodo sendEmail().
+// All'interno del metodo, creiamo un nuovo oggetto newDraft di tipo EmailInterface, impostando le proprietà necessarie come id, sender, recipient, subject, body, timestamp, starred, label, folder, selected e is_deleted.
+// L'id viene generato utilizzando Date.now(), garantendo un identificatore unico per ogni bozza salvata.
+// Le altre proprietà vengono impostate in base ai valori forniti nell'oggetto email passato al metodo o a valori predefiniti se non sono presenti. 
+// La cartella viene impostata su "drafts" e la label su "Draft" per indicare che si tratta di una bozza.

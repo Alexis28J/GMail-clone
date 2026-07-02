@@ -3,6 +3,7 @@ import { EmailService } from '../../services/email';
 import { MatDialogRef } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   standalone: true,
@@ -15,10 +16,12 @@ export class ComposeDialog {
 
   private emailService = inject(EmailService);
   private dialogRef = inject(MatDialogRef<ComposeDialog>);
+  private snackBar = inject(MatSnackBar);
 
   recipient = '';
   subject = '';
   body = '';
+
 
   send() {
     this.emailService.sendEmail({
@@ -29,7 +32,16 @@ export class ComposeDialog {
     this.dialogRef.close();
   }
 
+
   close() {
+    if (this.recipient || this.subject || this.body) {
+      this.emailService.saveDraft({
+        recipient: this.recipient,
+        subject: this.subject,
+        body: this.body
+      });
+      this.snackBar.open('Draft saved', '', { duration: 3000, panelClass: ['custom-snackbar'] });
+    }
     this.dialogRef.close();
   }
 }
@@ -59,3 +71,12 @@ export class ComposeDialog {
 // private dialogRef = inject(MatDialogRef<ComposeDialog>);
 // In questo modo, possiamo utilizzare this.dialogRef per accedere alle funzionalità della finestra di dialogo, come la chiusura della finestra stessa.
 // MatDialogRef<ComposeDialog> significa che il riferimento alla finestra di dialogo è specifico per il componente ComposeDialog, consentendoci di interagire con quella particolare istanza della finestra di dialogo.
+
+// Ho aggiunto un controllo nella funzione close() per verificare se l'utente ha inserito del testo nei campi recipient, subject o body.
+// Se almeno uno di questi campi contiene del testo, viene chiamato il metodo saveDraft() del servizio EmailService per salvare la bozza dell'email.
+// Inoltre, viene visualizzato un messaggio di notifica "Draft saved" utilizzando il servizio MatSnackBar, che mostra un breve messaggio all'utente per confermare che la bozza è stata salvata correttamente.
+// In questo modo, se l'utente chiude la finestra di dialogo senza inviare l'email ma ha inserito del testo, la bozza verrà salvata automaticamente. 
+
+// Se, invece, tutti i campi sono vuoti, la finestra di dialogo si chiuderà senza salvare nulla.
+// send() non salva la bozza, ma invia l'email e chiude la finestra di dialogo. E' importante perché l'utente potrebbe voler inviare l'email senza salvarla come bozza.
+// Evita duplicazioni e confusione tra l'invio dell'email e il salvataggio della bozza. In questo modo, l'utente ha un controllo chiaro su cosa accade quando fa clic su "Invia" o "Chiudi".
