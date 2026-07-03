@@ -24,11 +24,26 @@ export class ComposeDialog {
 
 
   send() {
+
+    if (!this.recipient.trim()) {
+      this.snackBar.open(
+        'Please enter a recipient',
+        '',
+        { duration: 3000, panelClass: ['custom-snackbar'] }
+      );
+      return;
+    }
+
     this.emailService.sendEmail({
-      recipient: this.recipient,
-      subject: this.subject,
-      body: this.body
+      recipient: this.recipient.trim(),
+      subject: this.subject.trim(),
+      body: this.body.trim()
     });
+    this.snackBar.open(
+      'Email sent',
+      '',        
+      { duration: 3000 }
+    );
     this.dialogRef.close();
   }
 
@@ -80,3 +95,12 @@ export class ComposeDialog {
 // Se, invece, tutti i campi sono vuoti, la finestra di dialogo si chiuderà senza salvare nulla.
 // send() non salva la bozza, ma invia l'email e chiude la finestra di dialogo. E' importante perché l'utente potrebbe voler inviare l'email senza salvarla come bozza.
 // Evita duplicazioni e confusione tra l'invio dell'email e il salvataggio della bozza. In questo modo, l'utente ha un controllo chiaro su cosa accade quando fa clic su "Invia" o "Chiudi".
+
+// Ho aggiunto un controllo nella funzione send() per verificare se il campo recipient è vuoto.
+// Se il campo recipient è vuoto, viene visualizzato un messaggio di notifica "Please enter a recipient" utilizzando il servizio MatSnackBar.
+// In questo modo, l'utente riceve un feedback immediato e chiaro che deve inserire un destinatario prima di poter inviare l'email.
+// Se il campo recipient contiene del testo, l'email viene inviata normalmente e viene visualizzato un messaggio di conferma "Email sent" per informare l'utente che l'email è stata inviata con successo.
+// La funzione send() invia l'email e chiude la finestra di dialogo, mentre la funzione close() salva la bozza (se necessario) e chiude la finestra di dialogo.
+
+// NB: '' indica che non vogliamo un'azione specifica nel messaggio di notifica, come un pulsante "Annulla" o "Chiudi". 
+// In questo caso, il messaggio di notifica sarà visualizzato per un breve periodo di tempo e poi scomparirà automaticamente.

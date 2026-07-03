@@ -25,6 +25,7 @@
   <div class="star-label-group">
     <span class="star" (click)="toggleStar(email); $event.stopPropagation()">
       {{ email.starred ? '⭐' : '☆' }}
+      <!-- {{ email.starred ? '★' : '☆' }} -->
     </span>
 
     <span class="label">

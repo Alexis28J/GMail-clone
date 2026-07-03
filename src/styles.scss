@@ -63,7 +63,7 @@ body {
 }
 
 //cambia colore del background quando il checkbox è selezionato
-.mat-mdc-checkbox.mat-mdc-checkbox-checked .mdc-checkbox__background,  
+.mat-mdc-checkbox.mat-mdc-checkbox-checked .mdc-checkbox__background,
 .mat-mdc-checkbox.mat-mdc-checkbox--selected .mdc-checkbox__background {
   background-color: rgb(213, 166, 166) !important;
   border-color: rgb(95, 41, 41) !important;
@@ -77,28 +77,25 @@ body {
 
 // Angular non sta usando una classe per il trattino indeterminato, 
 // quindi dobbiamo usare un selettore di attributo per selezionare il trattino indeterminato.
-.mdc-checkbox__native-control[aria-checked="mixed"]
-~ .mdc-checkbox__background {
+.mdc-checkbox__native-control[aria-checked="mixed"]~.mdc-checkbox__background {
   background-color: rgb(241, 232, 232) !important;
   border-color: rgb(95, 41, 41) !important;
 }
 
 // Cambia il colore del trattino indeterminato
-.mdc-checkbox__native-control[aria-checked="mixed"]
-~ .mdc-checkbox__background
-.mdc-checkbox__mixedmark {
+.mdc-checkbox__native-control[aria-checked="mixed"]~.mdc-checkbox__background .mdc-checkbox__mixedmark {
   background-color: rgb(95, 41, 41) !important;
   width: 10px !important;
   height: 2px !important;
 }
 
 
-
+// Rimuove l'effetto ripple dai checkbox. 
 .mdc-checkbox__ripple {
   display: none !important;
 }
 
+// Anche se il ripple è disabilitato, Angular Material aggiunge ancora un elemento di ripple.
 .mat-mdc-checkbox-ripple {
   display: none !important;
 }
-

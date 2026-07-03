@@ -10,3 +10,4 @@ export interface FolderInterface {
 /////////////////////////COMMENTI///////////////////////////////
 
 //? perché non tutti i folder hanno un count, ad esempio "Sent" o "Drafts" potrebbero non avere un count associato
+

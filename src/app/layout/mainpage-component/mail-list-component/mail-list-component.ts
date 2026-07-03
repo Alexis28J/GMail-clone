@@ -55,8 +55,12 @@ export class MailListComponent {
   ///////////////////////////////////PREFERITI///////////////////////////////////////////////
 
 
+  // toggleStar(email: EmailInterface) {
+  //   email.starred = !email.starred;
+  // }
+
   toggleStar(email: EmailInterface) {
-    email.starred = !email.starred;
+    this.emailService.toggleStar(email);
   }
 
   getAllEmails(): EmailInterface[] {
@@ -97,7 +101,7 @@ export class MailListComponent {
 
 
 
-/////////////////////////////////////////////////////////////////COMMENTI////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////COMMENTI////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 // DatePipe è una classe fornita da Angular che consente di formattare le date in base a un formato specifico. In questo caso, viene importata e utilizzata nel componente per formattare la data di invio delle email.
@@ -126,6 +130,10 @@ export class MailListComponent {
 /////////////////////////////////////////////////////PREFERITI/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // toggleStar(email: EmailInterface) è un metodo che viene chiamato quando l'utente clicca sull'icona a forma di stella per contrassegnare o rimuovere un'email come preferita. Il metodo inverte il valore della proprietà starred dell'email, consentendo all'utente di gestire facilmente le email preferite.
+// NB: Questo metodo è stato commentato nel codice, quindi non è attualmente in uso. Tuttavia, se fosse attivo, permetterebbe di gestire la selezione delle email preferite direttamente dal componente MailListComponent. 
+// Tuttavia, il valore della proprietà starred dell'email dovrebbe essere gestito anche a livello di servizio o backend per garantire la persistenza dello stato delle email preferite.
+// Con questo metodo, il valore non si aggiorna automaticamente nel servizio o nel backend, quindi se l'utente ricarica la pagina o naviga in un'altra sezione dell'applicazione, lo stato delle email preferite potrebbe non essere mantenuto correttamente.
+
 
 // getAllEmails(): EmailInterface[] è un metodo che restituisce l'intero array di email gestito dal componente. Questo metodo può essere utilizzato da altri componenti o servizi per accedere alla lista completa delle email, ad esempio per visualizzarle o per eseguire operazioni su di esse.
 
