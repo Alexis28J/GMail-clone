@@ -14,7 +14,11 @@ export class EmailService {
 
   //  JSON.parse(localStorage.getItem('emails') || 'null') ||
 
-  stored = JSON.parse(localStorage.getItem('emails') || '[]');
+  stored = JSON.parse(localStorage.getItem('emails') || '[]')
+    .map((email: EmailInterface) => ({
+      ...email,
+      selected: false
+    }));
 
   private emailsSignal = signal<EmailInterface[]>(
     this.stored.length ? this.stored :
@@ -214,7 +218,8 @@ export class EmailService {
 
   }
 
-  saveDraft(email: Partial<EmailInterface>){
+  /// SALVARE UNA BOZZA DI EMAIL
+  saveDraft(email: Partial<EmailInterface>) {
 
     const newDraft: EmailInterface = {
       id: Date.now(),
@@ -234,24 +239,76 @@ export class EmailService {
 
   }
 
+  /// SELEZIONA / DESELEZIONA EMAIL PER ID
+  setSelectedEmails(ids: number[], selected: boolean) {
+    this.emailsSignal.update(emails =>
+      emails.map(email =>
+        ids.includes(email.id) ?
+          { ...email, selected }
+          : email
+      )
+    );
+  }
+
+
+  /// CONTA EMAIL SELEZIONATE
+  getSelectedEmailsCount(): number {
+    return this.emailsSignal().filter(e => e.selected).length;
+  }
+
+
+  /// PULIZIA SELEZIONE EMAIL
+  clearSelection(){
+    this.emailsSignal.update(emails => 
+      emails.map(email => ({
+        ...email,
+        selected: false
+      }))
+    )
+  }
+
+  
+// SELEZIONA / DESELEZIONA EMAIL PER ID
+toggleEmailSelection(emailId: number, selected: boolean) {
+
+  this.emailsSignal.update(emails =>
+    emails.map(email =>
+      email.id === emailId
+        ? { ...email, selected }
+        : email
+    )
+  );
+
+}
+
+
 }
 
 
 ///////////////////////////////////////////COMMENTI/////////////////////////////////////////////////////
 
-
+/// IMPORTAZIONI
 //import { Injectable, signal } from '@angular/core';
 //Importiamo il decoratore Injectable da Angular, che ci permette di dichiarare la classe come un servizio iniettabile in altri componenti o servizi.
-
 
 //@Injectable({ providedIn: 'root'})
 //Il decoratore Injectable indica che questa classe può essere iniettata come dipendenza in altri componenti o servizi. 
 //L'opzione providedIn: 'root' significa che il servizio sarà disponibile a livello globale nell'applicazione.
 
 
+/// CLASSE EMAILSERVICE
 //export class EmailService { ... }
 //Dichiariamo la classe EmailService, che rappresenta un servizio che gestisce le email. Questa classe conterrà i dati delle email e i metodi per accedervi.
 //export indica che questa classe può essere importata e utilizzata in altri file del progetto.
+
+
+//stored = JSON.parse(localStorage.getItem('emails') || '[]')
+//La proprietà stored contiene le email salvate nel localStorage del browser. Se non ci sono email salvate, viene utilizzato un array vuoto come fallback.
+//Utilizziamo JSON.parse per convertire la stringa JSON salvata nel localStorage in un array di oggetti JavaScript.
+//.map((email: EmailInterface) => ({ ... email, selected: false }));
+//Utilizziamo il metodo map per creare un nuovo array di email, aggiungendo la proprietà selected impostata su false a ciascun oggetto email. 
+//Questo permette di tenere traccia dello stato di selezione delle email senza modificare direttamente gli oggetti originali.
+
 
 // private emailsSignal = signal<EmailInterface[]>([ ... ]);
 // Definiamo una proprietà privata emailsSignal che è un segnale reattivo contenente un array di oggetti che seguono l'interfaccia EmailInterface. 
@@ -329,3 +386,37 @@ export class EmailService {
 // L'id viene generato utilizzando Date.now(), garantendo un identificatore unico per ogni bozza salvata.
 // Le altre proprietà vengono impostate in base ai valori forniti nell'oggetto email passato al metodo o a valori predefiniti se non sono presenti. 
 // La cartella viene impostata su "drafts" e la label su "Draft" per indicare che si tratta di una bozza.
+
+
+// SELEZIONA / DESELEZIONA EMAIL PER ID
+// setSelectedEmails(ids: number[], selected: boolean) { ... }
+// Definiamo un metodo pubblico setSelectedEmails() che viene chiamato quando l'utente vuole selezionare o deselezionare una o più email.
+// Il metodo accetta un array di id di tipo number[] e un valore booleano selected che indica se le email devono essere selezionate (true) o deselezionate (false).
+// All'interno del metodo, utilizziamo this.emailsSignal.update() per aggiornare lo stato del segnale reattivo. 
+// La funzione di aggiornamento prende l'array corrente di email e restituisce un nuovo array in cui le email con id presenti nell'array ids vengono modificate per avere la proprietà selected impostata sul valore passato al metodo, 
+// mentre le altre email rimangono invariate. Ad esempio, se ids contiene [1, 3] e selected è true, le email con id 1 e 3 verranno selezionate, mentre tutte le altre email rimarranno deselezionate.
+
+
+// CONTA EMAIL SELEZIONATE
+// getSelectedEmailsCount(): number { ... }
+// Definiamo un metodo pubblico getSelectedEmailsCount() che restituisce il numero di email attualmente selezionate.
+// All'interno del metodo, utilizziamo this.emailsSignal() per ottenere l'array corrente di email e applichiamo il metodo filter() per creare un nuovo array contenente solo le email con la proprietà selected impostata su true.
+// Infine, restituiamo la lunghezza di questo nuovo array utilizzando la proprietà length, che rappresenta il NUMERO di email selezionate.
+// In sintesi, questo metodo permette di ottenere rapidamente il numero di email selezionate dall'utente, utile per aggiornare l'interfaccia utente o per eseguire azioni sulle email selezionate.
+
+
+// PULIZIA SELEZIONE EMAIL
+// clearSelection() { ... }
+// Definiamo un metodo pubblico clearSelection() che viene chiamato quando l'utente vuole deselezionare tutte le email.
+// All'interno del metodo, utilizziamo this.emailsSignal.update() per aggiornare lo stato del segnale reattivo. 
+// La funzione di aggiornamento prende l'array corrente di email e restituisce un nuovo array in cui tutte le email vengono modificate per avere la proprietà selected impostata su false, 
+// mentre le altre proprietà rimangono invariate. In questo modo, tutte le email vengono deselezionate contemporaneamente.
+
+
+// SELEZIONA / DESELEZIONA EMAIL PER ID
+// toggleEmailSelection(emailId: number, selected: boolean) { ... }
+// Definiamo un metodo pubblico toggleEmailSelection() che viene chiamato quando l'utente vuole selezionare o deselezionare una singola email.
+// Il metodo accetta un id di tipo number che rappresenta l'identificatore dell'email da selezionare o deselezionare e un valore booleano selected che indica se l'email deve essere selezionata (true) o deselezionata (false).
+// All'interno del metodo, utilizziamo this.emailsSignal.update() per aggiornare lo stato del segnale reattivo. 
+// La funzione di aggiornamento prende l'array corrente di email e restituisce un nuovo array in cui l'email con l'id corrispondente a emailId viene modificata per avere la proprietà selected impostata sul valore passato al metodo, 
+// mentre le altre email rimangono invariate. In questo modo, l'utente può selezionare o deselezionare una singola email senza influenzare lo stato delle altre email nell'elenco.

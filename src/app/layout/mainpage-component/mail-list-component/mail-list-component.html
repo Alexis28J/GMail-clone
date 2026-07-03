@@ -5,7 +5,10 @@
   <!-- <input type="checkbox" (click)="$event.stopPropagation()" [checked]="isSelected(email)"
     (change)="toggleSelection(email)" /> -->
 
-  <input type="checkbox" (click)="$event.stopPropagation()" [(ngModel)]="email.selected" />
+  <!-- <input type="checkbox" (click)="$event.stopPropagation()" [(ngModel)]="email.selected" /> -->
+  <!-- <mat-checkbox (click)="$event.stopPropagation()" [(ngModel)]="email.selected"></mat-checkbox> -->
+  <mat-checkbox (click)="$event.stopPropagation()" [checked]="email.selected"
+    (change)="onSelectionChange(email, $event)" class="select-all-checkbox"></mat-checkbox>
 
   <div class="email-details">
     <!-- <div class="email-subject">{{email.subject}}</div> -->
@@ -66,6 +69,7 @@
 
 <!--  Ho commentato il codice del checkbox per utilizzare [(ngModel)] al posto di [checked] e (change). 
    Perché [(ngModel)] permette di legare direttamente il valore del checkbox alla proprietà "selected" dell'email, semplificando la gestione dello stato di selezione. -->
+<!-- Ho sostituito [(ngModel)] con [checked] e (change) per utilizzare MatCheckboxChange e gestire correttamente l'evento di selezione. -->
 
 
 <!-- Ho inserito [innerHTML]="highlight(email.sender)" per evidenziare le parole chiave nel mittente dell'email.

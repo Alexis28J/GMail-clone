@@ -67,7 +67,10 @@ export class HeaderComponent {
 // PASSO 3: Definizione delle proprietà del componente
 // Definisco le proprietà isLoggedIn e currentUser, che vengono inizializzate utilizzando i metodi del servizio AuthService. 
 // Queste proprietà vengono utilizzate per determinare se l'utente è autenticato e per ottenere le informazioni sull'utente corrente.
+// Poi definisco il costruttore del componente, che accetta come parametri le istanze dei servizi AuthService e Router.
 
+
+// public vuol dire che la proprietà folderService è accessibile anche dal template del componente HeaderComponent.
 // templateUrl: './login-component.html',   
 // In Angular non è possibile utilizzare contemporaneamente templateUrl e template nello stesso decoratore @Component. 
 // Le proprietà si escludono a vicenda poiché definiscono due metodi alternativi per fornire l'HTML del componente.

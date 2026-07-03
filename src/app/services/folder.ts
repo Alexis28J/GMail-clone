@@ -14,7 +14,7 @@ export class Folder {
 
   private selectedFolder = signal<string>('inbox');
 
-  private foldersSignal = signal<FolderInterface[]>(  
+  private foldersSignal = signal<FolderInterface[]>(
     [
       { id: 'inbox', name: 'Inbox', icon: 'inbox' },
       { id: 'starred', name: 'Special', icon: 'star' },
@@ -35,6 +35,12 @@ export class Folder {
   }
 
   setSelectedFolder(folderId: string) {
+
+    if (this.selectedFolder() === folderId) {
+      return;
+    }
+
+    this.emailService.clearSelection();
     this.selectedFolder.set(folderId);
   }
 
@@ -72,9 +78,9 @@ export class Folder {
 
     switch (folder) {
 
-      case 'starred': 
+      case 'starred':
         //return emails.filter(e => e.starred && !e.is_deleted);
-        result = emails.filter(e => e.starred && !e.is_deleted); 
+        result = emails.filter(e => e.starred && !e.is_deleted);
         break;
 
       case 'important':
@@ -84,12 +90,12 @@ export class Folder {
 
       case 'spam':
         //return emails.filter(e => e.folder === 'spam');
-        result = emails.filter(e => e.folder === 'spam');
+        result = emails.filter(e => e.folder === 'spam' && !e.is_deleted);
         break;
 
       case 'trash':
         //return emails.filter(e => e.is_deleted === true);
-        result = emails.filter(e => e.is_deleted === true); 
+        result = emails.filter(e => e.is_deleted === true);
         break;
 
       case 'drafts':
@@ -114,12 +120,12 @@ export class Folder {
 
       case 'archived':
         //return emails.filter(e => e.folder === 'archived');
-        result = emails.filter(e => e.folder === 'archived');
+        result = emails.filter(e => e.folder === 'archived' && !e.is_deleted);
         break;
 
       case 'snoozed':
         //return emails.filter(e => e.folder === 'snoozed');
-        result = emails.filter(e => e.folder === 'snoozed');
+        result = emails.filter(e => e.folder === 'snoozed' && !e.is_deleted);
         break;
 
       case 'inbox':
@@ -127,7 +133,7 @@ export class Folder {
 
       //default: return emails.filter(e => !e.is_deleted);
 
-      default: result = emails.filter(e => !e.is_deleted);
+      default: result = emails.filter(e => !e.is_deleted && e.folder === folder);
 
     }
 
@@ -174,7 +180,7 @@ export class Folder {
 
       //if (filters.date) fields.push(email.timestamp.toString()); 
       if (filters.date) {
-        const date = typeof email.timestamp === 'string' ? new Date(email.timestamp) : email.timestamp; 
+        const date = typeof email.timestamp === 'string' ? new Date(email.timestamp) : email.timestamp;
 
         const fullDate = date.toISOString(); // 2026-06-14
         const year = date.getFullYear().toString(); // 2026
@@ -184,7 +190,7 @@ export class Folder {
 
         const day = date.getDate().toString().padStart(2, '0'); // 14
         const dayRaw = date.getDate().toString(); // 14
-      
+
         const monthName = date.toLocaleString('en', { month: 'long' }).toLowerCase(); // june
         const monthNameIT = date.toLocaleString('it', { month: 'long' }).toLowerCase(); // giugno
 
@@ -193,7 +199,7 @@ export class Folder {
       }
 
 
-      // fallback se tutto è disattivato
+      // fallback se tutto è disattivato. 
 
       if (fields.length === 0) {
 
@@ -226,8 +232,6 @@ export class Folder {
   getFilters() {
     return this.activeFilters;
   }
-
-
 
 }
 
@@ -266,6 +270,15 @@ export class Folder {
 // Il tipo <string> indica che il segnale conterrà solo valori di tipo stringa. 
 // Questo segnale può essere utilizzato per tenere traccia della cartella attualmente selezionata e aggiornare l'interfaccia utente di conseguenza.
 
+// Ho aggiunto un controllo if (this.selectedFolder() === folderId) { return; } all'interno del metodo setSelectedFolder(folderId: string).
+// Questo controllo verifica se la cartella selezionata attuale (this.selectedFolder()) è uguale alla cartella passata come parametro (folderId). 
+// Se sono uguali, significa che l'utente ha selezionato la stessa cartella già selezionata, quindi non è necessario aggiornare il segnale selectedFolder. 
+// In questo caso, il metodo termina immediatamente con return;, evitando di eseguire ulteriori operazioni e migliorando le prestazioni dell'applicazione.
+
+// Ho aggiunto this.emailService.clearSelection(); all'interno del metodo setSelectedFolder(folderId: string) prima di aggiornare il segnale selectedFolder.
+// Questo serve a deselezionare tutte le email quando l'utente cambia cartella. 
+// In questo modo, quando l'utente seleziona una nuova cartella, tutte le email precedentemente selezionate vengono deselezionate automaticamente, evitando confusione e garantendo che l'interfaccia utente rifletta correttamente lo stato delle email nella nuova cartella selezionata.
+
 
 ///// LISTA CARTELLE   
 // private foldersSignal = signal<FolderInterface[]>([ ... ]);
@@ -299,6 +312,7 @@ export class Folder {
 // La differenza tra getFolders() e getSelectedFolder() è che il primo restituisce l'intera lista delle cartelle, mentre il secondo restituisce solo la cartella attualmente selezionata.
 
 
+
 ///// FILTRO EMAIL
 // Creo una proprietà computed filteredEmails che restituisce un array di email filtrate in base alla cartella selezionata.
 // La funzione di filtro utilizza uno switch case per verificare il valore della cartella selezionata (folder) e applica un filtro diverso alle email in base a quel valore. 
@@ -326,15 +340,19 @@ export class Folder {
 // Altre cartelle come 'inbox', 'sent', 'drafts', 'spam', 'trash', 'archived' e 'snoozed' si basano sulla cartella (folder) a cui appartengono le email, indipendentemente dalle etichette che possono avere.
 // Ad esempio, le email nella cartella 'inbox' possono avere diverse etichette, ma vengono filtrate in base alla loro appartenenza alla cartella 'inbox'.
 
-// Oltre ai casi specifici, il filtro predefinito (default) restituisce tutte le email che non sono contrassegnate come eliminate (is_deleted !== true), indipendentemente dalla cartella a cui appartengono.
+// Oltre ai casi specifici, il filtro predefinito (default) restituisce tutte le email che non sono contrassegnate come eliminate (is_deleted !== true), indipendentemente dalla cartella a cui appartengono. 
+// L'altra condizione del default è che le email devono appartenere alla cartella specificata dal valore di folder, che rappresenta la cartella selezionata dall'utente. 
+// In questo caso 'inbox' è la cartella selezionata di default, quindi il filtro restituirà tutte le email che non sono contrassegnate come eliminate e che appartengono alla cartella 'inbox'.
 
 // Non è necessario un caso per la cartella 'trash' perché le email eliminate vengono filtrate in base alla proprietà is_deleted, quindi non è necessario spostarle in una cartella specifica.
 // In sintesi, questo filtro consente di visualizzare le email in base alla cartella selezionata, applicando condizioni specifiche per ogni cartella per mostrare solo le email rilevanti per quella cartella.
 
-
+// nb: break; serve per interrompere l'esecuzione del blocco di codice all'interno di un'istruzione switch case.
 // NB: Ho eliminato computed<EmailInterface[]> perché TypeScript riesce a inferire il tipo di ritorno della funzione in base al tipo di dati restituito, quindi non è necessario specificarlo esplicitamente.
 
 
+
+///// RICERCA EMAIL
 // Ho creato una proprietà privata searchTerm che è un segnale reattivo contenente una stringa.
 // Inizializzo il segnale con una stringa vuota, che rappresenta il termine di ricerca iniziale. 
 // Il tipo <string> indica che il segnale conterrà solo valori di tipo stringa. 
@@ -353,7 +371,6 @@ export class Folder {
 // Ho creato search = this.searchTerm() che è una variabile che contiene il valore attuale del segnale searchTerm.
 // Ho modificato i casi dello switch case in modo che le email filtrate siano anche filtrate in base al termine di ricerca inserito dall'utente.
 
-// break; serve per interrompere l'esecuzione del blocco di codice all'interno di un'istruzione switch case.
 
 // Ho aggiunto un controllo if (!search) return result; prima di filtrare le email in base al termine di ricerca.
 // Questo controllo verifica se il termine di ricerca è vuoto o nullo.
@@ -370,8 +387,12 @@ export class Folder {
 // mentre il secondo restituisce true se almeno una delle parole chiave è presente nel testo da cercare.
 
 
+// Fallback se tutto è disattivato. Se l'array fields è vuoto, significa che nessun filtro è attivo, 
+// quindi vengono aggiunti tutti i campi dell'email all'array fields per garantire che la ricerca funzioni correttamente anche quando nessun filtro è attivo.
+
 
 /// MENU FILTRI
+// Ho creato un menu filtri per filtrare le email in base a tre criteri: subject, sender e date.
 // Ho creato una proprietà privata activeFilters che è un segnale reattivo contenente un oggetto con le proprietà subject, sender e date.
 // Inizializzo il segnale con un oggetto che ha le proprietà subject e sender impostate su true e la proprietà date impostata su false.
 // false su date significa che il filtro per la data non è attivo di default, mentre true su subject e sender significa che i filtri per l'oggetto e il mittente sono attivi di default.
@@ -432,3 +453,14 @@ export class Folder {
 // const monthNameIT = date.toLocaleString('it', { month: 'long' }).toLowerCase(); significa che viene estratto il nome del mese in italiano dall'oggetto Date e convertito in minuscolo (es. gennaio, febbraio, ..., dicembre).
 
 // Infine, tutti questi componenti della data vengono uniti in una singola stringa e aggiunti all'array fields in modo che possano essere considerati nella ricerca delle parole chiave.
+
+
+///// SELEZIONARE TUTTE LE EMAIL
+// Ho creato una proprietà selectAll che è un segnale reattivo contenente un booleano.
+// Inizializzo il segnale con il valore false, che rappresenta lo stato iniziale di selezione di tutte le email.
+// Il tipo <boolean> indica che il segnale conterrà solo valori di tipo booleano.
+// Questo segnale può essere utilizzato per tenere traccia dello stato di selezione di tutte le email e aggiornare l'interfaccia utente di conseguenza.
+
+// Ho creato un metodo pubblico setSelectAll(value: boolean) che accetta un parametro value di tipo booleano.
+// Questo metodo viene utilizzato per aggiornare il valore del segnale selectAll con il nuovo valore passato come argomento.
+// In questo modo, quando viene chiamato questo metodo, lo stato di selezione di tutte le email viene aggiornato e l'interfaccia utente può reagire di conseguenza per selezionare o deselezionare tutte le email

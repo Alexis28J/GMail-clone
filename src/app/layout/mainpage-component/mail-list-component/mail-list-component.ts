@@ -5,19 +5,25 @@ import { EmailInterface } from '../../../interface/email-interface';
 import { FormsModule } from '@angular/forms';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Folder } from '../../../services/folder';
+import { MatCheckbox } from "@angular/material/checkbox";
+import { EmailService } from '../../../services/email';
+import { MatCheckboxChange } from '@angular/material/checkbox';
+
 
 @Component({
   selector: 'app-mail-list-component',
-  imports: [DatePipe, FormsModule],
+  imports: [DatePipe, FormsModule, MatCheckbox],
   templateUrl: './mail-list-component.html',
   styleUrls: ['./mail-list-component.scss'],
 })
 
 export class MailListComponent {
 
-  constructor(private folderService: Folder, private sanitizer: DomSanitizer){}
+  constructor(private folderService: Folder, private sanitizer: DomSanitizer, private emailService: EmailService) {
+  }
 
   @Input() emails: EmailInterface[] = [];
+
 
   ///////////////////////////SELEZIONE EMAIL///////////////////////////////////////////////
 
@@ -60,26 +66,32 @@ export class MailListComponent {
 
   //////////////////////////////////EVIDENZIA PAROLE CHIAVE///////////////////////////////////////////////
 
-  highlight(text: string): SafeHtml{
+  highlight(text: string): SafeHtml {
 
     const search = this.folderService.getSearchTerm()();
 
-    if(!search) return text; 
+    if (!search) return text;
 
     const keywords = search.split(' ').filter(k => k.length > 0);
 
-    let highlighted = text; 
+    let highlighted = text;
 
     keywords.forEach(keyword => {
       const regex = new RegExp(`(${keyword})`, 'gi');
       highlighted = highlighted.replace(
         regex,
-        `<mark>$1</mark>` 
+        `<mark>$1</mark>`
       );
     })
     return this.sanitizer.bypassSecurityTrustHtml(highlighted);
   }
 
+
+  ////////////////////////////////////////////////HANDLER PER LA SELEZIONE DELLE EMAIL///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  onSelectionChange(email: EmailInterface, event: MatCheckboxChange) {
+    this.emailService.toggleEmailSelection(email.id, event.checked);
+  }
 }
 
 
@@ -90,7 +102,7 @@ export class MailListComponent {
 
 // DatePipe è una classe fornita da Angular che consente di formattare le date in base a un formato specifico. In questo caso, viene importata e utilizzata nel componente per formattare la data di invio delle email.
 
-// @Input() è un decoratore che indica che la proprietà emails può ricevere dati da un componente genitore. In questo caso, il componente genitore può passare un array di email al componente MailListComponent tramite la proprietà emails.
+// @Input() è un decoratore che indica che la proprietà emails può ricevere dati da un componente genitore. In questo caso, il componente genitore, che sarebbe MainPageComponent, può passare un array di email al componente MailListComponent tramite la proprietà emails.
 
 // EmailInterface è un'interfaccia che definisce la struttura dei dati delle email. In questo caso, viene importata e utilizzata per tipizzare le proprietà e i parametri del componente, garantendo che le email gestite dal componente abbiano una struttura coerente e prevedibile.
 
@@ -118,7 +130,7 @@ export class MailListComponent {
 // getAllEmails(): EmailInterface[] è un metodo che restituisce l'intero array di email gestito dal componente. Questo metodo può essere utilizzato da altri componenti o servizi per accedere alla lista completa delle email, ad esempio per visualizzarle o per eseguire operazioni su di esse.
 
 
-//////////////////////////////////////////////////////EVIDENZIA PAROLE CHIAVE/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////EVIDENZIA PAROLE CHIAVE//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Per prima cosa ho creato il constructor con i servizi folderService e sanitizer. Il servizio folderService viene utilizzato per ottenere il termine di ricerca corrente, 
 // mentre il servizio sanitizer viene utilizzato per sanificare l'HTML generato per evidenziare le parole chiave nella visualizzazione delle email.
@@ -136,3 +148,29 @@ export class MailListComponent {
 
 //`<mark>$1</mark>`. Il tag <mark> vengono utilizzati per evidenziare le parole chiave nel testo visualizzato, rendendole visivamente distinte dal resto del contenuto.
 // E `$1` rappresenta il testo corrispondente alla parola chiave trovata dall'espressione regolare. In questo modo, la parola chiave viene racchiusa nel tag <mark> senza alterare il contenuto originale del testo.
+
+
+
+///////////////////////////////////////////////////////////////////////////////SELEZIONE EMAIL GLOBALE/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Ho aggiunto un effetto (effect) nel constructor che viene eseguito ogni volta che cambia lo stato di selezione globale delle email nel servizio folderService. 
+// L'effetto osserva il valore restituito da this.folderService.getSelectAll()() e aggiorna lo stato di selezione di tutte le email nell'array emails in base a questo valore.
+// In pratica, quando l'utente seleziona o deseleziona la checkbox "Seleziona tutto" nella toolbar, l'effetto aggiorna automaticamente lo stato di selezione di tutte le email visualizzate nella lista delle email.
+//L'effetto viene eseguito automaticamente ogni volta che cambia il valore di selezione globale, garantendo che la lista delle email sia sempre sincronizzata con lo stato di selezione globale gestito dal servizio folderService.
+
+// NB: La doppia parentesi tonde ()() viene utilizzata per ottenere il valore corrente del segnale restituito da getSelectAll(). La prima coppia di parentesi () chiama il metodo getSelectAll(), 
+// mentre la seconda coppia di parentesi () invoca il segnale stesso, restituendo il valore booleano che indica se tutte le email sono selezionate o meno.
+// NB: L'uso di effect consente di reagire ai cambiamenti di stato in modo reattivo, senza dover gestire manualmente gli eventi o le callback. 
+// In questo caso, l'effetto garantisce che la lista delle email sia sempre aggiornata in base allo stato di selezione globale, migliorando l'esperienza dell'utente e semplificando la gestione dello stato nel componente.
+
+
+////////////////////////////////////////////////////////////////////////////////HANDLER PER LA SELEZIONE DELLE EMAIL///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Un handler è una funzione che gestisce un evento specifico, in questo caso l'evento di selezione o deselezione di un'email tramite la checkbox associata a ciascuna email nella lista.
+
+// L'handler onSelectionChange(email: EmailInterface, event: Event) viene chiamato ogni volta che l'utente seleziona o deseleziona un'email tramite la checkbox. 
+// L'evento viene passato come parametro all'handler, consentendo di accedere alle informazioni sull'evento stesso.
+
+// All'interno dell'handler, viene chiamato il metodo toggleEmailSelection(email.id, event.checked) del servizio emailService.
+// Questo metodo aggiorna lo stato di selezione dell'email specifica in base al valore della checkbox (event.checked), che indica se l'email è stata selezionata o deselezionata.
+// In questo modo, l'handler gestisce la logica di selezione delle email e mantiene sincronizzato lo stato di selezione tra la lista delle email e il servizio emailService.

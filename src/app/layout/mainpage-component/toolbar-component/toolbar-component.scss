@@ -5,9 +5,7 @@
   align-items: center;
 
   padding: 0 16px;
-
   border-bottom: 1px solid #e0e0e0;
-
   background: rgb(248, 240, 240);
 }
 
@@ -18,39 +16,54 @@
 }
 
 .Btn-noBorder:hover {
-    background-color: rgb(248, 221, 221); 
-    border-radius: 50%; 
+  padding-top: 4px;
+  background-color: rgb(248, 221, 221);
+  border-radius: 50%;
+}
+
+/// Tutti i Checkbox
+.select-all-checkbox {
+  margin-left: 8px;
+  margin-right: 8px;
+  //transform: scale(0.9);  
+  
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+}
+
+.select-all-checkbox:hover {
+  background-color: rgb(248, 221, 221);
 }
 
 
 .btn-container {
   display: flex;
   gap: 20px;
-  flex-wrap: wrap; 
-  justify-content: space-between; 
+  flex-wrap: wrap;
+  justify-content: space-between;
   padding-left: 50px;
 }
 
 .btn-group {
   display: flex;
-  gap: 20px; 
-  border-right: 1px solid #e0e0e0; 
-  padding-right: 20px; 
-  
+  gap: 20px;
+  border-right: 1px solid #e0e0e0;
+  padding-right: 20px;
+
 }
 
 .spacer {
-  flex: 1; 
+  flex: 1;
 }
 
-.previous-next-btn{
+.previous-next-btn {
   background-color: rgb(221, 200, 200);
   border-radius: 4px;
 }
 
 .previous-next-btn:hover {
-  background-color: rgb(248, 221, 221); 
-  border-radius: 4px; 
+  background-color: rgb(248, 221, 221);
+  border-radius: 4px;
 }
 
 
@@ -90,4 +103,3 @@
 /// 
 /// .spacer {flex: 1; 
 /// //significa che l'elemento occupa tutto lo spazio disponibile, spingendo gli altri elementi verso i bordi del contenitore
-

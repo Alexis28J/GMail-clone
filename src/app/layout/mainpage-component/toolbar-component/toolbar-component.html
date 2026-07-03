@@ -4,6 +4,10 @@
         <mat-icon>arrow_back</mat-icon>
     </button>
 
+    <!-- <input type="checkbox" [checked]="allSelected" (change)="toggleSelectAll($event)"  matTooltip="Select All" matTooltipPosition="above" /> -->
+    <mat-checkbox [checked]="allSelected()" [indeterminate]="isPartiallySelected()" (change)="toggleSelectAll($event)"
+        matTooltip="Select All" matTooltipPosition="above" class="select-all-checkbox"></mat-checkbox>
+
     <div class="btn-container">
         <div class="btn-group">
             <button mat-icon-button class="Btn-noBorder" matTooltip="Archive" matTooltipPosition="below">
@@ -79,5 +83,8 @@
  Essa serve a prevenire sovrapposizioni e garantire che il testo rimanga sempre leggibile. -->
 
 
- <!-- (click) = "onRestore()" serve per emettere l'evento di ripristino delle email selezionate. 
+<!-- (click) = "onRestore()" serve per emettere l'evento di ripristino delle email selezionate. 
   Ma a condizione che isTrashView sia true, il pulsante di ripristino sarà visibile e abilitato. -->
+
+<!-- (change) = "toggleSelectAll($event)" serve per cambiare lo stato di selezione globale delle email in base all'interazione dell'utente con la checkbox nella toolbar.
+   (change) serve a catturare l'evento di cambiamento della checkbox e a chiamare il metodo toggleSelectAll passando l'evento come argomento. -->

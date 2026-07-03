@@ -43,14 +43,62 @@ body {
 /* You can add global styles to this file, and also import other style files */
 
 // CUSTOM SNACKBAR
-/* container */
+// container 
 .custom-snackbar .mdc-snackbar__surface {
   background-color: rgb(227, 191, 191) !important;
   border-radius: 8px;
   text-align: center;
 }
 
-/* testo */
+// testo 
 .custom-snackbar .mdc-snackbar__label {
   font-size: 16px !important;
 }
+
+
+// CUSTOM CHECKBOX
+.mdc-checkbox__background {
+  border: outset 2px black !important;
+  //  transform: scale(0.9);
+}
+
+//cambia colore del background quando il checkbox è selezionato
+.mat-mdc-checkbox.mat-mdc-checkbox-checked .mdc-checkbox__background,  
+.mat-mdc-checkbox.mat-mdc-checkbox--selected .mdc-checkbox__background {
+  background-color: rgb(213, 166, 166) !important;
+  border-color: rgb(95, 41, 41) !important;
+}
+
+//cambia colore del checkmark
+.mdc-checkbox__checkmark-path {
+  stroke: rgb(95, 41, 41) !important;
+}
+
+
+// Angular non sta usando una classe per il trattino indeterminato, 
+// quindi dobbiamo usare un selettore di attributo per selezionare il trattino indeterminato.
+.mdc-checkbox__native-control[aria-checked="mixed"]
+~ .mdc-checkbox__background {
+  background-color: rgb(241, 232, 232) !important;
+  border-color: rgb(95, 41, 41) !important;
+}
+
+// Cambia il colore del trattino indeterminato
+.mdc-checkbox__native-control[aria-checked="mixed"]
+~ .mdc-checkbox__background
+.mdc-checkbox__mixedmark {
+  background-color: rgb(95, 41, 41) !important;
+  width: 10px !important;
+  height: 2px !important;
+}
+
+
+
+.mdc-checkbox__ripple {
+  display: none !important;
+}
+
+.mat-mdc-checkbox-ripple {
+  display: none !important;
+}
+

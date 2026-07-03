@@ -2,20 +2,20 @@
   padding: 10px;
   border-bottom: 1px solid #ccc;
   cursor: pointer;
-  
+
   display: flex;
   align-items: center;
   padding: 8px;
 }
 
-.email-item:hover {
-  background-color: rgb(235, 223, 223);  
+.email-item:hover {  
+  background-color: rgb(245, 239, 239);
 }
 
 
 // mark per evidenziare le parole chiave nella lista delle email
 ::ng-deep mark {
-  background-color: rgb(236, 184, 184); 
+  background-color: rgb(236, 184, 184);
   padding: 0 2px;
   border-radius: 2px;
 }
@@ -26,13 +26,17 @@
 
 
 .selected {
-  background-color: rgb(221, 200, 200);  
+  background-color: rgb(235, 223, 223);
 }
 
-.selected input[type="checkbox"] {
-  accent-color: rgb(242, 210, 210); 
-}
+// .selected input[type="checkbox"] {
+//   accent-color: rgb(242, 210, 210); 
+// }
 
+.select-all-checkbox {
+  margin-left: 8px;
+  margin-right: 8px;
+}
 
 /////////////////DETTAGLI////////////////////
 
