@@ -1,22 +1,33 @@
 <section class="toolbar">
     <div class="btn-container-left">
-        <!-- <input type="checkbox" [checked]="allSelected" (change)="toggleSelectAll($event)"  matTooltip="Select All" matTooltipPosition="above" /> -->
-        <mat-checkbox [checked]="allSelected()" [indeterminate]="isPartiallySelected()"
-            (change)="toggleSelectAll($event)" matTooltip="Select All" matTooltipPosition="below"
-            class="select-all-checkbox"></mat-checkbox>
+        <div class="selection-container">
+            <!-- <input type="checkbox" [checked]="allSelected" (change)="toggleSelectAll($event)"  matTooltip="Select All" matTooltipPosition="above" /> -->
+            <mat-checkbox [checked]="allSelected()" [indeterminate]="isPartiallySelected()"
+                (change)="toggleSelectAll($event)" matTooltip="Select All" matTooltipPosition="below"
+                class="select-all-checkbox"></mat-checkbox>
 
-        <button mat-icon-button class="Btn-noBorder" matTooltip="Refresh" matTooltipPosition="above" (click)="onRefresh()">
-            <mat-icon [class.rotating]="loading()">refresh</mat-icon>
-        </button>
+            @if (selectedCount() > 0) {
+            <span class="selection-counter">
+                {{ selectedCount()}}
+            </span>
+            }
 
+            <button mat-icon-button class="Btn-noBorder" matTooltip="Refresh" matTooltipPosition="above"
+                (click)="onRefresh()">
+                <mat-icon [class.rotating]="loading()">refresh</mat-icon>
+            </button>
+        </div>
     </div>
 
 
     <div class="btn-container-center">
         <div class="btn-group">
-            <button mat-icon-button class="Btn-noBorder" matTooltip="Archive" matTooltipPosition="below">
+            @if (canArchive()) {
+            <button mat-icon-button class="Btn-noBorder" matTooltip="Archive" matTooltipPosition="below"
+                (click)="onArchive()">
                 <mat-icon>archive</mat-icon>
             </button>
+            }
 
             <button mat-icon-button class="Btn-noBorder" matTooltip="Spam" matTooltipPosition="below">
                 <mat-icon>report</mat-icon>

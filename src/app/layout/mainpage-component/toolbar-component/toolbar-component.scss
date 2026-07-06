@@ -74,6 +74,21 @@
 }
 
 
+
+.selection-container {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.selection-counter {
+  font-size: 14px;
+  font-weight: 500;
+  color: #5f6368;
+  min-width: 20px;
+}
+
+
 //////////ANIMAZIONE ROTAZIONE ICONA REFRESH//////////
 
 .rotating {

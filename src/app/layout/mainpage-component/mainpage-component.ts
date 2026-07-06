@@ -167,8 +167,36 @@ export class MainpageComponent {
     this.router.navigate(['/login']);
   }
 
-}
 
+
+  onArchive() {
+
+    const hasSelect = this.allEmails().some(email => email.selected);
+
+    if (!hasSelect) {
+      return;
+    }
+
+    const dialogRef = this.dialog.open(ConfirmDialog, {   //2) 
+      autoFocus: false,
+      data: {
+        message: 'Are you sure to want to <strong>ARCHIVE</strong> these messages?'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === true) {
+        this.emailService.archiveSelectedEmails();
+        this.currentIndex.set(null);
+
+        this.snackBar.open('Emails archived', '', {
+          duration: 3000,
+          panelClass: ['custom-snackbar'] // Aggiungi la classe personalizzata qui (styles.scss)
+        });
+      }
+    });
+  }
+}
 
 
 
@@ -313,3 +341,9 @@ export class MainpageComponent {
 // Ho aggiunto la funzione logout() che chiama il metodo logout() del servizio AuthService per effettuare il logout dell'utente corrente.
 // Dopo aver effettuato il logout, viene utilizzato il router per navigare alla pagina di login (this.router.navigate(['/login'])). 
 // In questo modo, l'utente viene reindirizzato alla pagina di login dopo aver effettuato il logout.
+
+
+// AGGIUNTA FUNZIONE ON ARCHIVE
+// Ho aggiunto la funzione onArchive() che viene chiamata quando si desidera archiviare le email selezionate.
+// All'interno della funzione, viene chiamato il metodo archiveSelectedEmails() del servizio EmailService per archiviare le email selezionate.
+// In questo modo, le email selezionate vengono spostate nella cartella "archived" e deselezionate.

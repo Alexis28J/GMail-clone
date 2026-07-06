@@ -28,9 +28,12 @@ export class ToolbarComponent {
   @Output() prevMail = new EventEmitter<void>();
   //@Output() prevMail = new EventEmitter<EmailInterface>();
 
-  @Output() delete = new EventEmitter<void>();
+  @Output() delete = new EventEmitter<void>();  //emitte un evento a MainPageComponent
 
   @Output() restore = new EventEmitter<void>();
+
+  @Output() archive = new EventEmitter<void>();  
+
 
   onNext() {
     this.nextMail.emit();
@@ -41,12 +44,16 @@ export class ToolbarComponent {
   }
 
   onDelete() {
-    this.delete.emit();
+    this.delete.emit();  //emitte un evento a MainPageComponent 
   }
 
   onRestore() {
     this.restore.emit();
   }
+
+  onArchive() {
+    this.archive.emit();
+}
 
 
   ///// RICARICA LE EMAIL DAL MOCKAPI.IO (bottone refresh)
@@ -56,7 +63,7 @@ export class ToolbarComponent {
 
 
   ///// INDICATORE DI CARICAMENTO EMAIL (bottone refresh)
-  get loading() {  
+  get loading() {
     return this.emailService.loading;
   }
 
@@ -93,6 +100,23 @@ export class ToolbarComponent {
     return selectedCount > 0 && selectedCount < visibleEmails.length;
   });
 
+
+  ///// CONTA EMAIL SELEZIONATE 
+  selectedCount = computed(() => {
+    return this.folderService
+      .filteredEmails()
+      .filter(email => email.selected && !email.is_deleted)
+      .length;
+  })
+
+
+  ///// POSSIBILITÀ DI ARCHIVIARE LE EMAIL
+  canArchive = computed (() => {
+    const folder = this.folderService.getSelectedFolder()();
+    return folder !== 'trash' && folder !== 'archived';  
+  })
+
+
 }
 
 
@@ -121,9 +145,12 @@ export class ToolbarComponent {
 ///// EVENTO PER ELIMINARE LE EMAIL SELEZIONATE
 // @Output() delete = new EventEmitter<void>();
 // Ho aggiunto un nuovo EventEmitter chiamato delete, che emette un evento quando l'utente clicca sul pulsante di eliminazione nella toolbar. 
-// Questo evento può essere ascoltato dal componente genitore (che in questo caso è MainPageComponent) per eseguire l'azione di eliminazione delle email selezionate.
-// <void> è un parametro generico che indica che l'evento delete non emette alcun dato specifico quando viene attivato. 
+// Ma come si collega con emailService.deleteSelectedEmails()? La risposta è che non si collega direttamente. Il componente ToolbarComponent emette un evento delete quando l'utente clicca sul pulsante di eliminazione nella toolbar.
+// Il componente genitore (MainPageComponent) ascolta questo evento e, quando viene emesso, chiama il metodo deleteSelectedEmails() del servizio EmailService per eseguire l'azione di eliminazione delle email selezionate.
+// In questo modo, la logica effettiva di eliminazione delle email è delegata al componente genitore e al servizio EmailService, mentre il ToolbarComponent si occupa solo di emettere l'evento.
 // In altre parole, l'evento serve solo come segnale per notificare al componente genitore che l'utente ha richiesto di eliminare le email selezionate.
+
+// NB: // <void> è un parametro generico che indica che l'evento delete non emette alcun dato specifico quando viene attivato. 
 
 // onDelete() { this.delete.emit(); }
 // Ho aggiunto un nuovo metodo onDelete() che viene chiamato quando l'utente clicca sul pulsante di eliminazione nella toolbar. 
@@ -233,3 +260,23 @@ export class ToolbarComponent {
 
 // NB: In TypeScript, il getter (definito con la parola chiave get) è un metodo speciale utilizzato per leggere il valore di una proprietà di una classe. 
 // All'esterno viene richiamato come una normale proprietà, ma internamente permette di eseguire logiche complesse.
+
+
+///// CONTA EMAIL SELEZIONATE
+// Ho aggiunto una nuova proprietà calcolata (computed) chiamata selectedCount, che restituisce il numero di email selezionate e non eliminate nella vista corrente.
+// Utilizza il metodo filteredEmails() del servizio Folder per ottenere l'elenco delle email visibili in base ai filtri applicati, 
+// quindi utilizza il metodo filter() per creare un nuovo array contenente solo le email che hanno la proprietà selected impostata su true e is_deleted impostata su false.
+// Infine, restituisce la lunghezza dell'array filtrato, che rappresenta il numero di email selezionate e non eliminate.
+// In questo modo, il componente ToolbarComponent fornisce un modo per contare le email selezionate nella vista corrente, 
+// consentendo al componente genitore di reagire di conseguenza (ad esempio, abilitando o disabilitando i pulsanti di azione).
+
+
+////// POSSIBILITÀ DI ARCHIVIARE LE EMAIL
+// Ho aggiunto una nuova proprietà calcolata (computed) chiamata canArchive, che restituisce un valore booleano che indica se le email possono essere archiviate nella vista corrente.
+// Utilizza il metodo getSelectedFolder() del servizio Folder per ottenere la cartella selezionata e verifica se non è "trash" o "archived".
+// Restituisce true se le email possono essere archiviate, altrimenti restituisce false.
+// In questo modo, il componente ToolbarComponent fornisce un modo per determinare se le email possono essere archiviate nella vista corrente, 
+// consentendo al componente genitore di reagire di conseguenza (ad esempio, abilitando o disabilitando il pulsante di archiviazione).
+
+// Successivamente, ho aggiunto un output() chiamato archive e un metodo onArchive() che emette l'evento archive quando l'utente clicca sul pulsante di archiviazione nella toolbar.
+// Il metodo onArchive() e l'output() archive consentono al componente ToolbarComponent di notificare al componente genitore (MainPageComponent) che l'utente ha richiesto di archiviare le email selezionate.

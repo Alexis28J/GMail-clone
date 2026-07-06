@@ -4,6 +4,7 @@ import { EmailInterface } from '../interface/email-interface';
 // import { AuthService } from './auth';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpClient } from '@angular/common/http';
+import { email } from '@angular/forms/signals';
 
 @Injectable({
   providedIn: 'root'
@@ -383,7 +384,7 @@ export class EmailService {
   }
 
 
-  // SELEZIONA / DESELEZIONA EMAIL PER ID
+  /// SELEZIONA / DESELEZIONA EMAIL PER ID
   toggleEmailSelection(emailId: string, selected: boolean) {
 
     this.emailsSignal.update(emails =>
@@ -396,7 +397,7 @@ export class EmailService {
 
   }
 
-  // CARICA EMAIL DAL MOCKAPI.IO
+  /// CARICA EMAIL DAL MOCKAPI.IO
   loading = signal(false);
 
   loadEmails() {
@@ -428,7 +429,7 @@ export class EmailService {
   }
 
 
-  // TOGGLE STAR EMAIL
+  /// TOGGLE STAR EMAIL
   toggleStar(email: EmailInterface) {
 
     const starred = !email.starred;
@@ -452,6 +453,34 @@ export class EmailService {
     ).subscribe();  // subcribe() vuoto perché non ci interessa fare nulla dopo la risposta, ma è necessario per eseguire la richiesta HTTP
   }
 
+
+  /// ARCHIVIA EMAIL
+  archiveSelectedEmails() {
+
+    const selectedEmails = this.emailsSignal().filter(e => e.selected);
+
+    selectedEmails.forEach(email => {
+      this.http.put(
+        `${this.apiUrl}/${email.id}`, {
+        ...email,
+        folder: 'archived',
+        selected: false
+      }
+      ).subscribe(() => {
+        this.emailsSignal.update(emails =>
+          emails.map(e =>
+            e.id === email.id
+              ? {
+                ...e,
+                folder: 'archived',
+                selected: false
+              } : e
+          )
+        );
+      })
+    })
+
+  }
 
 }
 
@@ -624,3 +653,17 @@ export class EmailService {
 // In caso di successo, le email vengono aggiornate nel segnale emailsSignal e viene mostrato un messaggio di conferma tramite MatSnackBar. In caso di errore, viene mostrato un messaggio di errore sempre tramite MatSnackBar.
 
 // Ho aggiunto un segnale loading per indicare lo stato di caricamento delle email. Questo segnale viene impostato su true all'inizio del metodo loadEmails() e su false al termine della richiesta, sia in caso di successo che di errore.
+
+
+/// ARCHIVIA EMAIL
+// archiveSelectedEmails() { ... }
+// Ho aggiunto un metodo archiveSelectedEmails() che permette di spostare le email selezionate nella cartella "archived".
+// Il metodo utilizza this.emailsSignal() per ottenere l'array corrente di email e filtra le email selezionate.
+// Per ciascuna email selezionata, viene inviata una richiesta HTTP PUT a mockapi.io per aggiornare la proprietà folder dell'email su "archived" e impostare selected su false.
+// Dopo che la richiesta è completata con successo, lo stato del segnale emailsSignal viene aggiornato localmente per riflettere le modifiche apportate sul server.
+// In questo modo, le email selezionate vengono archiviate sia localmente che sul server, garantendo la coerenza dei dati tra il client e il server.
+
+// NB: emails.map(e =>e.id === email.id ? { ...e, folder: 'archived', selected: false } : e
+// Questa parte del codice utilizza il metodo map per creare un nuovo array di email, in cui l'email con l'id corrispondente a email.id viene modificata per avere la proprietà folder impostata su "archived" e selected impostata su false.
+// e.id === email.id ?: se l'id dell'email corrente (e.id) è uguale all'id dell'email selezionata (email.id), allora viene creato un nuovo oggetto email con le proprietà aggiornate, altrimenti l'email rimane invariata.
+// Questo controllo sembra ridondante, ma è necessario per garantire che solo l'email selezionata venga modificata, mentre tutte le altre email rimangono invariate nell'array.
