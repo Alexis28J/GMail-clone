@@ -8,11 +8,12 @@ import { Folder } from '../../../services/folder';
 import { MatCheckbox } from "@angular/material/checkbox";
 import { EmailService } from '../../../services/email';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import { MatIconModule } from '@angular/material/icon';
 
 
 @Component({
   selector: 'app-mail-list-component',
-  imports: [DatePipe, FormsModule, MatCheckbox],
+  imports: [DatePipe, FormsModule, MatCheckbox, MatIconModule],
   templateUrl: './mail-list-component.html',
   styleUrls: ['./mail-list-component.scss'],
 })

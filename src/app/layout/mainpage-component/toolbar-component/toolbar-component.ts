@@ -48,6 +48,18 @@ export class ToolbarComponent {
     this.restore.emit();
   }
 
+
+  ///// RICARICA LE EMAIL DAL MOCKAPI.IO (bottone refresh)
+  onRefresh() {
+    this.emailService.loadEmails();
+  }
+
+
+  ///// INDICATORE DI CARICAMENTO EMAIL (bottone refresh)
+  get loading() {  
+    return this.emailService.loading;
+  }
+
   ///// VERIFICA SE TUTTE LE EMAIL VISIBILI SONO SELEZIONATE
   //allSelected(): boolean {
   allSelected = computed(() => {
@@ -206,3 +218,18 @@ export class ToolbarComponent {
 
 // Ho sostituito il metodo isPartiallySelected() con una proprietà calcolata (computed) per migliorare le prestazioni e la reattività del componente.
 // La logica rimane la stessa, ma ora isPartiallySelected è una proprietà che si aggiorna automaticamente quando le email visibili cambiano, senza dover chiamare esplicitamente un metodo.
+
+
+///// RICARICA LE EMAIL DAL MOCKAPI.IO (bottone refresh)
+// Ho aggiunto un nuovo metodo onRefresh() che viene chiamato quando l'utente clicca sul pulsante di refresh nella toolbar. 
+// Questo metodo chiama il metodo loadEmails() del servizio EmailService, che si occupa di ricaricare le email dal mockapi.io.
+// In questo modo, il componente ToolbarComponent fornisce un'interfaccia per ricaricare le email visualizzate, delegando la logica effettiva di questa azione al servizio EmailService.
+
+
+///// INDICATORE DI CARICAMENTO EMAIL (bottone refresh)
+// Ho aggiunto una nuova proprietà calcolata (getter) chiamata loading, che restituisce lo stato di caricamento delle email dal servizio EmailService (vedi metodo loadEmails()).
+// Questa proprietà può essere utilizzata nel template del componente per mostrare un indicatore di caricamento (ad esempio, un'icona rotante) quando le email vengono ricaricate.
+// In questo modo, il componente ToolbarComponent fornisce un feedback visivo all'utente durante il processo di ricarica delle email.
+
+// NB: In TypeScript, il getter (definito con la parola chiave get) è un metodo speciale utilizzato per leggere il valore di una proprietà di una classe. 
+// All'esterno viene richiamato come una normale proprietà, ma internamente permette di eseguire logiche complesse.

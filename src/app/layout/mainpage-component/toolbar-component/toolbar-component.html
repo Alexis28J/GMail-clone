@@ -1,14 +1,18 @@
 <section class="toolbar">
+    <div class="btn-container-left">
+        <!-- <input type="checkbox" [checked]="allSelected" (change)="toggleSelectAll($event)"  matTooltip="Select All" matTooltipPosition="above" /> -->
+        <mat-checkbox [checked]="allSelected()" [indeterminate]="isPartiallySelected()"
+            (change)="toggleSelectAll($event)" matTooltip="Select All" matTooltipPosition="below"
+            class="select-all-checkbox"></mat-checkbox>
 
-    <button mat-icon-button class="Btn-noBorder" matTooltip="Back to Inbox" matTooltipPosition="below">
-        <mat-icon>arrow_back</mat-icon>
-    </button>
+        <button mat-icon-button class="Btn-noBorder" matTooltip="Refresh" matTooltipPosition="above" (click)="onRefresh()">
+            <mat-icon [class.rotating]="loading()">refresh</mat-icon>
+        </button>
 
-    <!-- <input type="checkbox" [checked]="allSelected" (change)="toggleSelectAll($event)"  matTooltip="Select All" matTooltipPosition="above" /> -->
-    <mat-checkbox [checked]="allSelected()" [indeterminate]="isPartiallySelected()" (change)="toggleSelectAll($event)"
-        matTooltip="Select All" matTooltipPosition="above" class="select-all-checkbox"></mat-checkbox>
+    </div>
 
-    <div class="btn-container">
+
+    <div class="btn-container-center">
         <div class="btn-group">
             <button mat-icon-button class="Btn-noBorder" matTooltip="Archive" matTooltipPosition="below">
                 <mat-icon>archive</mat-icon>
@@ -31,6 +35,8 @@
             }
         </div>
 
+        <div class="spacer"></div>
+
         <div class="btn-group">
             <button mat-icon-button class="Btn-noBorder" matTooltip="Unread" matTooltipPosition="below">
                 <mat-icon>mark_email_unread</mat-icon>
@@ -44,6 +50,8 @@
                 <mat-icon>check_circle</mat-icon>
             </button>
         </div>
+
+        <div class="spacer"></div>
 
         <div class="btn-group" style="border-right: none">
             <button mat-icon-button class="Btn-noBorder" style="padding-bottom: 3px;" matTooltip="Move to"
@@ -61,17 +69,18 @@
         </div>
     </div>
 
-    <span class="spacer"></span>
 
-    <button mat-icon-button matTooltip="Previous email" matTooltipPosition="below" class="previous-next-btn"
-        (click)="onPrev()">
-        <mat-icon>chevron_left</mat-icon>
-    </button>
+    <div class="btn-container-right">
+        <button mat-icon-button matTooltip="Previous email" matTooltipPosition="below" class="previous-next-btn"
+            (click)="onPrev()">
+            <mat-icon>chevron_left</mat-icon>
+        </button>
 
-    <button mat-icon-button matTooltip="Next email" matTooltipPosition="below" class="previous-next-btn"
-        (click)="onNext()">
-        <mat-icon>chevron_right</mat-icon>
-    </button>
+        <button mat-icon-button matTooltip="Next email" matTooltipPosition="below" class="previous-next-btn"
+            (click)="onNext()">
+            <mat-icon>chevron_right</mat-icon>
+        </button>
+    </div>
 
 </section>
 

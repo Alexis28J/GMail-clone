@@ -23,10 +23,12 @@
   <!------------------------------- PREFERITI ---------------------------------------------->
 
   <div class="star-label-group">
-    <span class="star" (click)="toggleStar(email); $event.stopPropagation()">
-      {{ email.starred ? '⭐' : '☆' }}
-      <!-- {{ email.starred ? '★' : '☆' }} -->
-    </span>
+    <!-- <span class="star" (click)="toggleStar(email); $event.stopPropagation()">
+      {{ email.starred ? '⭐' : '☆' }}</span> -->
+
+    <mat-icon (click)="toggleStar(email)">
+      {{ email.starred ? 'star' : 'star_border' }}
+    </mat-icon>
 
     <span class="label">
       {{ email.label }}

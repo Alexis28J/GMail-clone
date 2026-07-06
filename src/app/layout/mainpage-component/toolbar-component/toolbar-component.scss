@@ -3,6 +3,7 @@
 
   display: flex;
   align-items: center;
+  justify-content: space-between;
 
   padding: 0 16px;
   border-bottom: 1px solid #e0e0e0;
@@ -23,12 +24,9 @@
 
 /// Tutti i Checkbox
 .select-all-checkbox {
-  margin-left: 8px;
-  margin-right: 8px;
-  //transform: scale(0.9);  
-  
   border-radius: 50%;
   transition: background-color 0.2s ease;
+  //scale: 0.9;
 }
 
 .select-all-checkbox:hover {
@@ -36,24 +34,27 @@
 }
 
 
-.btn-container {
+.btn-container-left {
   display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  padding-left: 50px;
+  align-items: center;
+  gap: 5px;
+}
+
+
+.btn-container-center {
+  display: flex;
+  gap: 40px;
+  justify-content: space-evenly;
 }
 
 .btn-group {
   display: flex;
-  gap: 20px;
-  border-right: 1px solid #e0e0e0;
-  padding-right: 20px;
-
+  gap: 30px;
 }
 
-.spacer {
-  flex: 1;
+.btn-container-right {
+  display: flex;
+  gap: 5px;
 }
 
 .previous-next-btn {
@@ -66,7 +67,28 @@
   border-radius: 4px;
 }
 
+.spacer {
+  display: flex;
+  flex: 1;
+  border-right: 1px solid #e0e0e0;
+}
 
+
+//////////ANIMAZIONE ROTAZIONE ICONA REFRESH//////////
+
+.rotating {
+  animation: spin 1s linear infinite; 
+}
+
+@keyframes spin {
+  from{
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
 
 ///////////////////////////////////////////COMMENTI////////////////////////////////////////////////////////
 /// 

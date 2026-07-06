@@ -397,14 +397,37 @@ export class EmailService {
   }
 
   // CARICA EMAIL DAL MOCKAPI.IO
+  loading = signal(false);
+
   loadEmails() {
+
+    this.loading.set(true);
+
     this.http.get<EmailInterface[]>(this.apiUrl)
-      .subscribe(emails => {
-        this.emailsSignal.set(emails);
-      })
+      .subscribe({
+        next: emails => {
+          this.emailsSignal.set(emails);
+
+          this.snackBar.open(
+            'Updated emails',
+            '',
+            { duration: 3000, panelClass: ['custom-snackbar'] }
+          );
+        },
+        complete: () => {
+          this.loading.set(false);
+        },
+        error: () => {
+          this.snackBar.open(
+            'Error during refresh',
+            '',
+            { duration: 3000, panelClass: ['custom-snackbar'] }
+          );
+        }
+      });
   }
 
-  
+
   // TOGGLE STAR EMAIL
   toggleStar(email: EmailInterface) {
 
@@ -597,3 +620,7 @@ export class EmailService {
 // NB: Gli observable in Angular sono flussi di dati asincroni che possono emettere valori nel tempo. Il metodo subscribe() permette di iscriversi a un observable e ricevere i valori emessi, eseguendo una funzione callback ogni volta che viene emesso un nuovo valore. 
 // In questo caso, viene utilizzato per ricevere le email dall'API mockapi.io e aggiornare lo stato del segnale emailsSignal con i dati ricevuti.
 // Ora emailsSignal viene inizializzato come un array vuoto e viene popolato con le email recuperate dall'API mockapi.io quando il metodo loadEmails() viene chiamato nel costruttore del servizio.
+// Nel metodo loadEmails(), next serve per gestire la risposta positiva della richiesta HTTP, mentre error serve per gestire eventuali errori durante la richiesta. 
+// In caso di successo, le email vengono aggiornate nel segnale emailsSignal e viene mostrato un messaggio di conferma tramite MatSnackBar. In caso di errore, viene mostrato un messaggio di errore sempre tramite MatSnackBar.
+
+// Ho aggiunto un segnale loading per indicare lo stato di caricamento delle email. Questo segnale viene impostato su true all'inizio del metodo loadEmails() e su false al termine della richiesta, sia in caso di successo che di errore.
