@@ -76,9 +76,9 @@
 
 
 .selection-container {
-    display: flex;
-    align-items: center;
-    gap: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .selection-counter {
@@ -92,11 +92,11 @@
 //////////ANIMAZIONE ROTAZIONE ICONA REFRESH//////////
 
 .rotating {
-  animation: spin 1s linear infinite; 
+  animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
-  from{
+  from {
     transform: rotate(0deg);
   }
 
@@ -104,39 +104,3 @@
     transform: rotate(360deg);
   }
 }
-
-///////////////////////////////////////////COMMENTI////////////////////////////////////////////////////////
-/// 
-/// //.Btn-noBorder:hover 
-/// // Aggiunge un effetto hover per i pulsanti delle icone
-/// 
-/// //border-radius: 50%; 
-/// // Rende i pulsanti circolari
-/// 
-/// 
-/// .btn-container { gap: 20px; 
-/// //spazio tra i pulsanti
-/// 
-/// 
-/// flex-wrap: wrap; 
-/// //permette ai pulsanti di andare a capo se lo spazio è insufficiente
-/// 
-/// 
-/// justify-content: space-between; 
-/// //distribuisce i pulsanti in modo uniforme con spazio tra di loro
-/// 
-/// 
-/// .btn-group {gap: 20px; 
-/// //spazio tra i pulsanti all'interno del gruppo
-/// 
-/// 
-/// border-right: 1px solid #e0e0e0; 
-/// //linea di separazione tra i gruppi di pulsanti
-/// 
-/// 
-/// padding-right: 20px; //
-/// spazio a destra del gruppo di pulsanti
-/// 
-/// 
-/// .spacer {flex: 1; 
-/// //significa che l'elemento occupa tutto lo spazio disponibile, spingendo gli altri elementi verso i bordi del contenitore

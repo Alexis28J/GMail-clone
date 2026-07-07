@@ -1,0 +1,20 @@
+# COMMENTI
+
+Invece di usare visualizzare direttamente i componenti all'interno del layout principale, utilizziamo `<router-outlet>` che funge da segnaposto per i componenti figli.
+
+### NB: Quando si dice segnaposto si intende un punto nel template dove verranno inseriti dinamicamente i componenti figli in base alla route attiva. 
+
+
+- Perché mettiamo `<router-outlet>` qui?
+Perché vogliamo che i componenti figli vengano renderizzati all'interno del layout principale, mantenendo l'intestazione e la barra laterale sempre visibili.
+
+
+- Perché in app.html, abbiamo commentato l'header e il layout principale? 
+Perché ora utilizziamo il router-outlet nel MainLayoutComponent per gestire la visualizzazione dei componenti figli in base alla route attiva.
+
+
+- Perché in app.html, c'è anche `<router-outlet>`? 
+Perché il router-outlet in app.html serve come punto di ingresso principale per tutte le rotte dell'applicazione, mentre il router outlet nel MainLayoutComponent gestisce le rotte figlie all'interno del layout principale. 
+
+Quindi se non metto il router-outlet nel MainLayoutComponent, i componenti figli non verranno visualizzati all'interno del layout principale. 
+E se non metto il router outlet in app.html, l'applicazione non avrà un punto di ingresso principale per le rotte, quindi nessuna rotta verrà visualizzata.
