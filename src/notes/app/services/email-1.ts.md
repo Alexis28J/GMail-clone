@@ -10,7 +10,7 @@ Importiamo il decoratore Injectable da Angular, che ci permette di dichiarare la
 Il decoratore Injectable indica che questa classe può essere iniettata come dipendenza in altri componenti o servizi. 
 L'opzione providedIn: 'root' significa che il servizio sarà disponibile a livello globale nell'applicazione.
 
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ## CLASSE EMAILSERVICE
 
@@ -47,10 +47,10 @@ Ho modificato la proprietà `emailsSignal` per inizializzarla con le email salva
 
 
 ## (SECONDA) MODIFICA della classe EMAILSERVICE 
-### Modifica (mockapi.io) per consentire l'aggiornamento delle email tramite richieste HTTP PUT e POST.
+### MODIFICA (MOCKAPI.IO) per consentire l'aggiornamento delle email tramite richieste HTTP PUT e POST.
 Ho modificato l'URL dell'API per puntare a un endpoint che supporta le operazioni di aggiornamento e creazione delle email. In questo modo, quando si inviano richieste `HTTP PUT` o `POST`, le modifiche vengono salvate correttamente nel backend.
 
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ## PRENDERE LE EMAIL
 ```typescript
@@ -62,7 +62,7 @@ Definiamo un metodo pubblico `getEmails()` che restituisce l'array di email. Que
 
 Il metodo utilizza `this.emailsSignal()` per accedere ai dati delle email, che sono gestiti come un segnale reattivo.
 
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ## ELIMINARE LE EMAIL SELEZIONATE
 
@@ -92,7 +92,7 @@ In questo modo, le modifiche alle email selezionate vengono salvate sia localmen
 ### NB: `.subscribe()` è un metodo che permette di iscriversi a un osservabile (observable) in Angular, cioè eseguire del codice quando l'osservabile emette un valore. In questo caso, viene utilizzato per eseguire la richiesta `HTTP PUT` a mockapi.io e aggiornare lo stato delle email selezionate sul server.
 ### `.subscribe()` è necessario per eseguire la richiesta `HTTP`. Senza `subscribe()`, la richiesta non viene inviata e le modifiche non vengono salvate sul server.
 
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ## CONSTRUCTOR EFFETTO
 
@@ -111,7 +111,7 @@ Tuttavia, se si desidera implementare questa funzionalità in futuro, è possibi
 
 Ho aggiunto il servizio `MatSnackBar` al costruttore per mostrare un messaggio di conferma quando le email vengono ripristinate. Questo fornisce un feedback visivo all'utente, migliorando l'esperienza utente.
 
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ## RIPRISTINARE LE EMAIL SELEZIONATE
 
@@ -128,7 +128,7 @@ Ho modificato il metodo `restoreSelectedEmails()` per inviare una richiesta `HTT
 Ho aggiunto un ciclo `forEach` per iterare sulle email selezionate e inviare una richiesta `PUT` per ciascuna email, aggiornando le proprietà `is_deleted` e `selected`.
 In questo modo, le modifiche alle email selezionate vengono salvate sia localmente che sul server, garantendo la coerenza dei dati tra il client e il server.
 
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ## INVIARE UNA NUOVA EMAIL
 
@@ -147,7 +147,7 @@ Le altre proprietà vengono impostate in base ai valori forniti nell'oggetto ema
 Ho modificato il metodo `sendEmail()` per inviare una richiesta `HTTP POST` a mockapi.io per salvare la nuova email sul server. 
 In questo modo, le email inviate vengono salvate sia localmente che sul server, garantendo la coerenza dei dati tra il client e il server.
 
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ## SALVARE UNA BOZZA DI EMAIL
 
@@ -163,7 +163,7 @@ Le altre proprietà vengono impostate in base ai valori forniti nell'oggetto ema
 
 La cartella viene impostata su "drafts" e la label su "Draft" per indicare che si tratta di una bozza.
 
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
  ## SELEZIONA / DESELEZIONA EMAIL PER ID (array di ids)
 
@@ -179,7 +179,7 @@ All'interno del metodo, utilizziamo `this.emailsSignal.update()` per aggiornare 
 La funzione di aggiornamento prende l'array corrente di email e restituisce un nuovo array in cui le email con id presenti nell'array ids vengono modificate per avere la proprietà `selected` impostata sul valore passato al metodo, mentre le altre email rimangono invariate. 
 Ad esempio, se ids contiene [1, 3] e selected è true, le email con id 1 e 3 verranno selezionate, mentre tutte le altre email rimarranno deselezionate.
 
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ## CONTA EMAIL SELEZIONATE
 
@@ -192,7 +192,7 @@ Infine, restituiamo la lunghezza di questo nuovo array utilizzando la proprietà
 
 In sintesi, questo metodo permette di ottenere rapidamente il numero di email selezionate dall'utente, utile per aggiornare l'interfaccia utente o per eseguire azioni sulle email selezionate.
 
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ## PULIZIA SELEZIONE EMAIL
 
@@ -203,7 +203,7 @@ All'interno del metodo, utilizziamo `this.emailsSignal.update()` per aggiornare 
 
 La funzione di aggiornamento prende l'array corrente di email e restituisce un nuovo array in cui tutte le email vengono modificate per avere la proprietà `selected` impostata su false, mentre le altre proprietà rimangono invariate. In questo modo, tutte le email vengono deselezionate contemporaneamente.
 
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ## SELEZIONA / DESELEZIONA EMAIL PER ID (singolo emailId)
 
@@ -218,7 +218,7 @@ All'interno del metodo, utilizziamo `this.emailsSignal.update()` per aggiornare 
 
 La funzione di aggiornamento prende l'array corrente di email e restituisce un nuovo array in cui l'email con l'id corrispondente a `emailId` viene modificata per avere la proprietà `selected` impostata sul valore passato al metodo, mentre le altre email rimangono invariate. In questo modo, l'utente può selezionare o deselezionare una singola email senza influenzare lo stato delle altre email nell'elenco.
 
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ## MOCKAPI.IO
 
@@ -242,7 +242,7 @@ In caso di successo, le email vengono aggiornate nel segnale `emailsSignal` e vi
 
 Ho aggiunto un segnale loading per indicare lo stato di caricamento delle email. Questo segnale viene impostato su true all'inizio del metodo `loadEmails()` e su false al termine della richiesta, sia in caso di successo che di errore.
 
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ## ARCHIVIA EMAIL
 
@@ -262,3 +262,6 @@ In questo modo, le email selezionate vengono archiviate sia localmente che sul s
 
 ### NB: `e.id === email.id ?:` se l'id dell'email corrente (`e.id`) è uguale all'id dell'email selezionata (`email.id`), allora viene creato un nuovo oggetto email con le proprietà aggiornate, altrimenti l'email rimane invariata.
 ### Questo controllo sembra ridondante, ma è necessario per garantire che solo l'email selezionata venga modificata, mentre tutte le altre email rimangono invariate nell'array.
+
+
+
