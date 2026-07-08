@@ -231,23 +231,34 @@ In questo modo, le email vengono caricate dal server all'avvio del servizio e po
 ### NB: Siccome mockapi genera un id come stringa, è meglio usare string invece di number. Perciò ho modificato l'interfaccia `EmailInterface` e tutti i metodi che utilizzano l'id delle email per lavorare con string invece di number.
 
 ### NB: Gli observable in Angular sono flussi di dati asincroni che possono emettere valori nel tempo. Il metodo `subscribe()` permette di iscriversi a un observable e ricevere i valori emessi, eseguendo una funzione callback ogni volta che viene emesso un nuovo valore. 
-### In questo caso, viene utilizzato per ricevere le email dall'API mockapi.io e aggiornare lo stato del segnale emailsSignal con i dati ricevuti.
-// Ora emailsSignal viene inizializzato come un array vuoto e viene popolato con le email recuperate dall'API mockapi.io quando il metodo loadEmails() viene chiamato nel costruttore del servizio.
-// Nel metodo loadEmails(), next serve per gestire la risposta positiva della richiesta HTTP, mentre error serve per gestire eventuali errori durante la richiesta. 
-// In caso di successo, le email vengono aggiornate nel segnale emailsSignal e viene mostrato un messaggio di conferma tramite MatSnackBar. In caso di errore, viene mostrato un messaggio di errore sempre tramite MatSnackBar.
 
-// Ho aggiunto un segnale loading per indicare lo stato di caricamento delle email. Questo segnale viene impostato su true all'inizio del metodo loadEmails() e su false al termine della richiesta, sia in caso di successo che di errore.
+In questo caso, viene utilizzato per ricevere le email dall'API mockapi.io e aggiornare lo stato del segnale emailsSignal con i dati ricevuti.
+
+Ora emailsSignal viene inizializzato come un array vuoto e viene popolato con le email recuperate dall'API mockapi.io quando il metodo `loadEmails()` viene chiamato nel costruttore del servizio.
+
+Nel metodo `loadEmails()`, `next` serve per gestire la risposta positiva della richiesta HTTP, mentre `error` serve per gestire eventuali errori durante la richiesta. 
+
+In caso di successo, le email vengono aggiornate nel segnale `emailsSignal` e viene mostrato un messaggio di conferma tramite `MatSnackBar`. In caso di errore, viene mostrato un messaggio di errore sempre tramite `MatSnackBar`.
+
+Ho aggiunto un segnale loading per indicare lo stato di caricamento delle email. Questo segnale viene impostato su true all'inizio del metodo `loadEmails()` e su false al termine della richiesta, sia in caso di successo che di errore.
 
 
-/// ARCHIVIA EMAIL
-// archiveSelectedEmails() { ... }
-// Ho aggiunto un metodo archiveSelectedEmails() che permette di spostare le email selezionate nella cartella "archived".
-// Il metodo utilizza this.emailsSignal() per ottenere l'array corrente di email e filtra le email selezionate.
-// Per ciascuna email selezionata, viene inviata una richiesta HTTP PUT a mockapi.io per aggiornare la proprietà folder dell'email su "archived" e impostare selected su false.
-// Dopo che la richiesta è completata con successo, lo stato del segnale emailsSignal viene aggiornato localmente per riflettere le modifiche apportate sul server.
-// In questo modo, le email selezionate vengono archiviate sia localmente che sul server, garantendo la coerenza dei dati tra il client e il server.
 
-// NB: emails.map(e =>e.id === email.id ? { ...e, folder: 'archived', selected: false } : e
-// Questa parte del codice utilizza il metodo map per creare un nuovo array di email, in cui l'email con l'id corrispondente a email.id viene modificata per avere la proprietà folder impostata su "archived" e selected impostata su false.
-// e.id === email.id ?: se l'id dell'email corrente (e.id) è uguale all'id dell'email selezionata (email.id), allora viene creato un nuovo oggetto email con le proprietà aggiornate, altrimenti l'email rimane invariata.
-// Questo controllo sembra ridondante, ma è necessario per garantire che solo l'email selezionata venga modificata, mentre tutte le altre email rimangono invariate nell'array.
+## ARCHIVIA EMAIL
+
+`archiveSelectedEmails() { ... }`
+Ho aggiunto un metodo `archiveSelectedEmails()` che permette di spostare le email selezionate nella cartella "archived".
+
+Il metodo utilizza `this.emailsSignal()` per ottenere l'array corrente di email e filtra le email selezionate.
+
+Per ciascuna email selezionata, viene inviata una richiesta `HTTP PUT` a mockapi.io per aggiornare la proprietà folder dell'email su "archived" e impostare `selected` su false.
+
+Dopo che la richiesta è completata con successo, lo stato del segnale `emailsSignal` viene aggiornato localmente per riflettere le modifiche apportate sul server.
+
+In questo modo, le email selezionate vengono archiviate sia localmente che sul server, garantendo la coerenza dei dati tra il client e il server.
+
+### NB: `emails.map(e =>e.id === email.id ? { ...e, folder: 'archived', selected: false } : e`
+### Questa parte del codice utilizza il metodo `map` per creare un nuovo array di email, in cui l'email con l'id corrispondente a `email.id` viene modificata per avere la proprietà folder impostata su "archived" e `selected` impostata su false.
+
+### NB: `e.id === email.id ?:` se l'id dell'email corrente (`e.id`) è uguale all'id dell'email selezionata (`email.id`), allora viene creato un nuovo oggetto email con le proprietà aggiornate, altrimenti l'email rimane invariata.
+### Questo controllo sembra ridondante, ma è necessario per garantire che solo l'email selezionata venga modificata, mentre tutte le altre email rimangono invariate nell'array.
