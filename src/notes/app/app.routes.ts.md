@@ -44,6 +44,8 @@ Anche in questo caso, l'approccio asincrono consente di migliorare le prestazion
 
 La quarta rotta definita è la rotta principale dell'applicazione, che carica il componente `MainLayoutComponent`.
 
+## NB: `Angular` prova ad andare su `/app` andando a caricare il `MainLayoutComponent`, che a sua volta carica il `MainpageComponent` come figlio.
+
 Questa rotta è protetta dal guardiano `authGuard`, che verifica se l'utente è autenticato prima di consentire l'accesso alla rotta.
 
 Se l'utente non è autenticato, viene reindirizzato alla pagina di `login`.
@@ -55,3 +57,8 @@ Se mettiamo `loadComponent` qui, Angular non sa che deve caricare il componente 
 
 In questo modo, possiamo avere un layout coerente per tutte le pagine dell'applicazione, con l'intestazione e la barra laterale sempre visibili.
 
+
+## NB: 
+- main-layout-component.ts è il componente principale che gestisce il layout dell'applicazione. Include l'header e la sidebar, e utilizza il router-outlet per visualizzare i componenti figli in base alla navigazione dell'utente.
+- mainpage-component.ts è il componente principale che viene visualizzato all'interno del layout principale. Viene caricato quando l'utente accede alla sezione "app" dell'applicazione, dopo aver effettuato il login.
+- mainpage-component è il componente figlio del MainLayoutComponent e viene visualizzato all'interno del router-outlet. Contiene la logica e la struttura della pagina principale dell'applicazione, che può includere altre funzionalità e componenti specifici per l'applicazione stessa.

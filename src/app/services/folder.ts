@@ -67,7 +67,7 @@ export class Folder {
   filteredEmails = computed(() => {
 
     if (!this.authService.isLoggedIn()) {
-      return [];
+      return [];   // non mostrerà nulla se l'utente non è loggato
     }
 
     const folder = this.selectedFolder();
@@ -138,43 +138,12 @@ export class Folder {
 
     }
 
-    // FILTRO SEARCH 
-
-    // Questa versione cerca in tutti i campi, anche quelli disattivati nel menu filtri.
-    // Inoltre, non supporta la ricerca multi-keyword.
-
-    // if (!search) return result;
-    // return result.filter(email =>   
-    //   email.subject.toLowerCase().includes(search) ||
-    //   email.sender.toLowerCase().includes(search) ||
-    //   email.body.toLowerCase().includes(search) ||
-    //   email.recipient.toLowerCase().includes(search)
-    // );
 
 
     // FILTRO SEARCH (VERSIONE MULTIKEYWORD) E FILTRO MENU FILTRI (SUBJECT, SENDER, DATE)
     if (!search) return result;
 
     const keywords = search.split(' ').filter(k => k.length > 0);
-
-    // Questa versione supporta la ricerca multi-keyword, ma non il menu filtri. Cerca in tutti i campi.
-    // return result.filter(email => {     
-
-    //   const fields = [
-    //     email.subject,
-    //     email.body,
-    //     email.sender,
-    //     email.recipient
-    //   ].join(' ').toLowerCase();
-
-
-    //   // return keywords.every(keyword => 
-    //   //   searchableText.includes(keyword));
-
-    //   return keywords.some(keyword =>
-    //     fields.includes(keyword));
-
-    // });
 
     return result.filter(email => {
 
@@ -211,9 +180,9 @@ export class Folder {
         fields.push(email.subject, email.body, email.sender, email.recipient);
 
       }
+      ///////////// 
 
       const searchableText = fields.join(' ').toLowerCase();
-
       return keywords.every(keyword =>
         searchableText.includes(keyword)
       )

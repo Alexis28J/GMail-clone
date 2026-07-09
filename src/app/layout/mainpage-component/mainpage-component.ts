@@ -49,7 +49,7 @@ export class MainpageComponent {
     private router: Router,
     private snackBar: MatSnackBar) {
 
-    this.allEmails = this.folderService.filteredEmails;
+    this.allEmails = this.folderService.filteredEmails; 
 
   }
 

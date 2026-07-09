@@ -28,18 +28,19 @@ Implemento i metodi `goToLogin()`, `goToRegister()` e `logout()` per gestire la 
 Questi metodi utilizzano il `Router` di Angular per navigare tra le rotte definite nell'applicazione.
 
 
-// PASSO 5: Implementazione del metodo di ricerca
-// Importo il servizio Folder nel componente HeaderComponent.
-// Implemento il metodo onSearch(value: string) per gestire la ricerca delle email. 
-// Questo metodo chiama il metodo setSearchTerm() del servizio Folder per impostare il termine di ricerca inserito dall'utente.
+## PASSO 5: Implementazione del metodo di ricerca
+Importo il servizio `Folder` nel componente `HeaderComponent`.
+Implemento il metodo `onSearch(value: string)` per gestire la ricerca delle email. 
+Questo metodo chiama il metodo `setSearchTerm()` del servizio `Folder` per impostare il termine di ricerca inserito dall'utente.
 
-// value è il termine di ricerca inserito dall'utente nell'input di ricerca e si aspetta che venga passato come argomento al metodo onSearch() quando l'utente digita qualcosa nell'input di ricerca.
+### NB: `value` è il termine di ricerca inserito dall'utente nell'input di ricerca e si aspetta che venga passato come argomento al metodo `onSearch()` quando l'utente digita qualcosa nell'input di ricerca.
 
 
-// PASSO 6: Implementazione del metodo di filtro
-// Implemento il metodo toggleFilter(type: 'subject' | 'sender' | 'date', event: any) per gestire i filtri delle email. 
-// Questo metodo chiama il metodo setFilter() del servizio Folder per impostare i filtri attivi in base al tipo di filtro selezionato dall'utente (subject, sender o date) e allo stato del checkbox (event.target.checked).
-// type è il tipo di filtro selezionato dall'utente (subject, sender o date) e event è l'evento generato dal checkbox che indica se il filtro è attivo o meno.
-// event.target.checked restituisce un valore booleano che indica se il checkbox è selezionato (true) o deselezionato (false). Questo valore viene passato al metodo setFilter() per aggiornare lo stato del filtro nel servizio Folder.
+## PASSO 6: Implementazione del metodo di filtro
+Implemento il metodo `toggleFilter(type: 'subject' | 'sender' | 'date', event: any)` per gestire i filtri delle email. 
+Questo metodo chiama il metodo `setFilter()` del servizio `Folder` per impostare i filtri attivi in base al tipo di filtro selezionato dall'utente (subject, sender o date) e allo stato del checkbox (`event.target.checked`).
 
-// Ho messo come publico il servizio Folder in modo da poterlo utilizzare direttamente nel template del componente HeaderComponent. -->
+`type` è il tipo di filtro selezionato dall'utente (subject, sender o date) e `event` è l'evento generato dal checkbox che indica se il filtro è attivo o meno.
+`event.target.checked` restituisce un valore booleano che indica se il checkbox è selezionato (true) o deselezionato (false). Questo valore viene passato al metodo `setFilter()` per aggiornare lo stato del filtro nel servizio `Folder`.
+
+## NB: Ho messo come publico il servizio `Folder` in modo da poterlo utilizzare direttamente nel template del componente HeaderComponent. 

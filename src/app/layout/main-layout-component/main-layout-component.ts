@@ -15,7 +15,7 @@ import { RouterOutlet } from "@angular/router";
       <app-sidebar-component></app-sidebar-component>
 
       <div class="main-container">
-        <router-outlet></router-outlet>
+        <router-outlet></router-outlet> //mainpage-component viene renderizzato qui
       </div>
     </div>
   `,

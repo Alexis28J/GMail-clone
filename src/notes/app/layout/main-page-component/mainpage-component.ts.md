@@ -53,6 +53,8 @@ Ho commentato l'iniezione del servizio `EmailService` e la chiamata a `getEmails
 
 Invece, ho iniettato il servizio `Folder` e inizializzato `allEmails` con `folderService.filteredEmails`, che restituisce le email filtrate in base alla cartella selezionata. 
 
+`allEmails` ora è un segnale che dipende da `filteredEmails`, quindi si aggiornerà automaticamente quando `filteredEmails` cambia.
+
 In questo modo, il componente `MainpageComponent` riceve le email direttamente dal servizio `Folder`, che gestisce la logica di filtraggio delle email in base alla cartella selezionata.
 
 Ho abilitato l'iniezione del servizio `EmailService` per poter utilizzare il metodo `deleteSelectedEmails()` quando si desidera eliminare le email selezionate.

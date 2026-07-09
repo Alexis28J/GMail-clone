@@ -189,25 +189,35 @@ In questo modo, quando l'utente digita qualcosa nella barra di ricerca, i risult
 5. Ho creato `search = this.searchTerm()` che è una variabile che contiene il valore attuale del segnale `searchTerm`.
 
 
-6. Ho modificato i casi dello `switch case` in modo che le email filtrate siano anche filtrate in base al termine di ricerca inserito dall'utente.
+6. Ho MODIFICATO i casi dello `switch case` in modo che le email filtrate siano anche filtrate in base al termine di ricerca inserito dall'utente.
    
 Uso `result`, invece di `return`, per poter applicare il filtro search successivamente.
 
 
-7. Ho aggiunto un controllo `if (!search) return result;` prima di filtrare le email in base al termine di ricerca.
+7. Ho AGGIUNTO un controllo `if (!search) return result;` prima di filtrare le email in base al termine di ricerca.
 Questo controllo verifica se il termine di ricerca è vuoto o nullo.
 
 Se il termine di ricerca è vuoto o nullo, la funzione restituisce l'array di email filtrate in base alla cartella selezionata senza applicare ulteriori filtri.
 In questo modo, se l'utente non ha inserito alcun termine di ricerca, verranno visualizzate tutte le email filtrate in base alla cartella selezionata.
 
 
-6. Ho modificato il filtro in modo che le email perché si possano filtrare in base a più parole chiave separate da spazi.
+6. Ho MODIFICATO il filtro in modo che le email perché si possano filtrare in base a più parole chiave separate da spazi.
 Perciò ho creato `keywords = search.split(' ').filter(k => k.length > 0);` che è una variabile che contiene un array di parole chiave separate da spazi.
 
 ### NB: `k` è una variabile che rappresenta ogni parola chiave nell'array keywords.
 
 
-7. `Fallback` se tutto è disattivato. Se l'array `fields` è vuoto, significa che nessun filtro è attivo, quindi vengono aggiunti tutti i campi dell'email all'array `fields` per garantire che la ricerca funzioni correttamente anche quando nessun filtro è attivo.
+7. `Fallback` se tutto è disattivato. Se l'array `fields` è vuoto (`if (fields.length === 0)`), significa che nessun filtro è attivo, quindi vengono aggiunti tutti i campi dell'email all'array `fields` (`fields.push(email.subject, email.body, email.sender, email.recipient)`) per garantire che la ricerca funzioni correttamente anche quando nessun filtro è attivo.
+
+8. Concateno i campi selezionati in un'unica stringa e la converto in minuscolo per la ricerca case insensitive, poi verifico che ogni keyword sia presente nella stringa concatenata dei campi selezionati.
+
+`const searchableText = fields.join(' ').toLowerCase();` significa che la ricerca non è case sensitive
+e ogni keyword deve essere presente nel testo concatenato dei campi selezionati.
+```typescript
+   return keywords.every(keyword =>   
+        searchableText.includes(keyword)
+      )
+```
 
 
 
