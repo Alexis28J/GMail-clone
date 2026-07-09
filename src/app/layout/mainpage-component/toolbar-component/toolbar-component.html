@@ -1,4 +1,6 @@
 <section class="toolbar">
+
+    <!-- GRUPPO BOTTONI SINISTRA -->
     <div class="btn-container-left">
         <div class="selection-container">
             <!-- <input type="checkbox" [checked]="allSelected" (change)="toggleSelectAll($event)"  matTooltip="Select All" matTooltipPosition="above" /> -->
@@ -19,8 +21,11 @@
         </div>
     </div>
 
+    <!------------------------------------- GRUPPO BOTTONI CENTRO ---------------------------------->
 
     <div class="btn-container-center">
+
+        <!-------------------------------------ARCHIVE, SPAM, DELETE & RESTORE ---------------------------------->
         <div class="btn-group">
             @if (canArchive()) {
             <button mat-icon-button class="Btn-noBorder" matTooltip="Archive" matTooltipPosition="below"
@@ -48,6 +53,8 @@
 
         <div class="spacer"></div>
 
+        <!------------------------------------------UNREAD, SNOOZE & READ------------------------------------->
+
         <div class="btn-group">
             <button mat-icon-button class="Btn-noBorder" matTooltip="Unread" matTooltipPosition="below">
                 <mat-icon>mark_email_unread</mat-icon>
@@ -64,11 +71,35 @@
 
         <div class="spacer"></div>
 
+        <!------------------------------------ SPOSTA IN, LABEL & MORE ---------------------------------------->
+
         <div class="btn-group" style="border-right: none">
-            <button mat-icon-button class="Btn-noBorder" style="padding-bottom: 3px;" matTooltip="Move to"
-                matTooltipPosition="below">
-                <mat-icon>next_week</mat-icon>
+
+            <!----------------------------- PULSANTE "SPOSTA IN"------------------------------------------->
+
+            <button mat-icon-button [matMenuTriggerFor]="moveMenu" class="Btn-noBorder" style="padding-bottom: 3px;"
+                matTooltip="Move to" matTooltipPosition="below">
+                <mat-icon>drive_file_move</mat-icon>
             </button>
+
+            <!---------------------------- MENU "SPOSTA EMAIL" ---------------------------------->
+
+            <mat-menu #moveMenu="matMenu">
+                <button mat-menu-item (click)="moveTo('inbox')">
+                    Inbox
+                </button>
+                <button mat-menu-item (click)="moveTo('spam')">
+                    Spam
+                </button>
+                <button mat-menu-item (click)="moveTo('personal')">
+                    Personal
+                </button>
+                <button mat-menu-item (click)="moveTo('work')">
+                    Work
+                </button>
+            </mat-menu>
+
+            <!------------------------------LABEL & MORE ------------------------------------ -->
 
             <button mat-icon-button class="Btn-noBorder" matTooltip="Label" matTooltipPosition="below">
                 <mat-icon>label</mat-icon>
@@ -77,9 +108,10 @@
             <button mat-icon-button class="Btn-noBorder" matTooltip="More" matTooltipPosition="below">
                 <mat-icon>more_vert</mat-icon>
             </button>
+
         </div>
     </div>
-
+    <!------------------------------------------------ GRUPPO BOTTONI DESTRA ---------------------------------------->
 
     <div class="btn-container-right">
         <button mat-icon-button matTooltip="Previous email" matTooltipPosition="below" class="previous-next-btn"

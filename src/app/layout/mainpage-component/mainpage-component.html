@@ -1,7 +1,8 @@
 <div class="main-page-container">
 
     <app-toolbar-component (nextMail)="nextEmail()" (prevMail)="previousEmail()" (delete)="onDeleteSelected()"
-        (restore)="onRestoreSelected()" [isTrashView]="isTrashView()" (archive)="onArchive()"></app-toolbar-component>
+        (restore)="onRestoreSelected()" [isTrashView]="isTrashView()" (archive)="onArchive()"
+        (moveRequested)="moveEmails($event)"></app-toolbar-component>
 
     <div class="content">
 

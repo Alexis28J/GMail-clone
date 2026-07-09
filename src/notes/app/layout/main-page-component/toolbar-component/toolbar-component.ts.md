@@ -198,3 +198,17 @@ consentendo al componente genitore di reagire di conseguenza (ad esempio, abilit
 Successivamente, ho aggiunto un `output()` chiamato archive e un metodo `onArchive()` che emette l'evento archive quando l'utente clicca sul pulsante di archiviazione nella toolbar.
 
 Il metodo `onArchive()` e l'`output()` archive consentono al componente ToolbarComponent di notificare al componente genitore (MainPageComponent) che l'utente ha richiesto di archiviare le email selezionate.
+
+
+
+## SPOSTA LE EMAIL SELEZIONATE IN UNA CARTELLA SPECIFICA (es. "work", "personal", "spam", ecc.)
+
+1. Ho aggiunto il metodo `moveTo` al componente `ToolbarComponent` per consentire lo spostamento delle email selezionate in una cartella specifica. Questo metodo utilizza il servizio `EmailService` per eseguire l'operazione di spostamento.
+
+`this.emailService.moveSelectedEmails(targetFolder);`  
+Chiama il metodo `moveSelectedEmails` del servizio `EmailService` per spostare le email selezionate nella cartella target specificata.
+
+
+2. Ho MODIFICATO il parametro della funzione da "`targetFolder: string`" a "`folder: MovableFolder`" per garantire che il tipo di cartella sia corretto e conforme alle costanti definite in "`folders.constants.ts`".
+
+.

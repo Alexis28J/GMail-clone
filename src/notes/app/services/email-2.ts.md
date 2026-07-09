@@ -201,3 +201,53 @@ diventa:
   selected:false
 }
 ```
+
+
+ ## MODIFICA METODO ARCHIVIA EMAIL 
+ ```typescript
+   archiveSelectedEmails() {
+    this.moveSelectedEmails('archived');
+  }
+  ```
+ Ho creato la funzione `moveSelectedEmails(folder: MovableFolder)` per spostare le email selezionate in una cartella specifica. In questo modo, la funzione `archiveSelectedEmails()` può semplicemente chiamare `moveSelectedEmails('archived')` per spostare le email selezionate nella cartella "archived". Questo evita la duplicazione del codice e rende il servizio più modulare e manutenibile.
+ 
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+## SPOSTARE LE EMAIL SELEZIONATE IN UNA CARTELLA SPECIFICA (es. "work", "personal", "spam", ecc.)
+
+  ## METODO GENERICO PER SPOSTARE LE EMAIL SELEZIONATE IN UNA CARTELLA SPECIFICA 
+  ```typescript
+  moveSelectedEmails(targetFolder: string) {
+    this.updateSelectedEmails({
+      folder: targetFolder,  
+      is_deleted: false
+    });
+  }
+  ```
+### NB: `targetFolder` è la cartella di destinazione, ad esempio "work", "personal", "spam", ecc.
+
+Questo metodo può essere utilizzato per spostare LE email selezionate in qualsiasi cartella specificata,e può essere richiamato da altre parti del codice, come ad esempio il componente della toolbar, 
+per implementare la funzionalità di spostamento delle email in una cartella specifica.
+
+Questo metodo sfrutta il metodo privato `updateSelectedEmails` per aggiornare la proprietà `folder` delle email selezionate, spostandole nella cartella `target` specificata. Inoltre, imposta `is_deleted` su false per assicurarsi che le email non siano contrassegnate come eliminate durante lo spostamento.
+
+
+## Piccola MODIFICA del metodo "SPOSTARE LE EMAIL SELEZIONATE"
+  ```typescript
+  moveSelectedEmails(folder: MovableFolder) {
+    this.updateSelectedEmails({
+      folder: targetFolder,  
+      is_deleted: false
+    });
+  }
+  ```
+Dopo aver creato il file `folders.constants.ts`, ho importato il tipo `MovableFolder` in `email.ts` e ho modificato il tipo del parametro della funzione `moveSelectedEmails` da `string` a `MovableFolder`.
+
+Ho modificato il tipo del parametro da `string` a `MovableFolder` per garantire che solo le cartelle definite in `MOVABLE_FOLDERS` possano essere utilizzate come destinazione per lo spostamento delle email selezionate.
+
+Successivamente, ho aggiornato il metodo `moveTo` nel componente `ToolbarComponent` per utilizzare il tipo `MovableFolder` come parametro, garantendo così la coerenza tra il servizio e il componente.
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////

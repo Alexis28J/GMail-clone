@@ -358,3 +358,16 @@ QUESTO RENDERÀ IL CODICE PIÙ PULITO E MENO RIPETITIVO.
 
   }
   ```
+
+  ## MODIFICA METODO ARCHIVIA EMAIL 
+
+ ```typescript 
+  archiveSelectedEmails() {
+    this.updateSelectedEmails({
+      folder: 'archived'
+    });
+    }
+   ```
+
+  Ho commentato questa versione che faceva uso del metodo `updateSelectedEmails` perché ho creato la funzione `moveSelectedEmails(folder: MovableFolder)` per spostare le email selezionate in una cartella specifica. In questo modo, la funzione `archiveSelectedEmails()` può semplicemente chiamare `moveSelectedEmails('archived')` per spostare le email selezionate nella cartella "archived". Questo evita la duplicazione del codice e rende il servizio più modulare e manutenibile.
+  

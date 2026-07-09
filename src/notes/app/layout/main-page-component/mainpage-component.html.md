@@ -33,3 +33,5 @@ Si usa le parentesi quadre perché si tratta di un binding di proprietà e non d
 
 - `(archive)` è un evento emesso dal componente ToolbarComponent per archiviare le email selezionate.
     Si usa le parentesi tonde e non le parentesi quadre perché si tratta di un evento e non di un binding di proprietà.
+
+

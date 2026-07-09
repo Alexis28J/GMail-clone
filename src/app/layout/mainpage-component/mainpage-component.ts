@@ -13,6 +13,7 @@ import { ConfirmDialog } from '../../shared/confirm-dialog/confirm-dialog';
 import { AuthService } from '../../services/auth';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MovableFolder } from '../../constants/folders.constants';
 
 
 @Component({
@@ -49,7 +50,7 @@ export class MainpageComponent {
     private router: Router,
     private snackBar: MatSnackBar) {
 
-    this.allEmails = this.folderService.filteredEmails; 
+    this.allEmails = this.folderService.filteredEmails;
 
   }
 
@@ -177,7 +178,7 @@ export class MainpageComponent {
       return;
     }
 
-    const dialogRef = this.dialog.open(ConfirmDialog, {   //2) 
+    const dialogRef = this.dialog.open(ConfirmDialog, {
       autoFocus: false,
       data: {
         message: 'Are you sure to want to <strong>ARCHIVE</strong> these messages?'
@@ -195,7 +196,42 @@ export class MainpageComponent {
         });
       }
     });
+
   }
+
+
+
+  moveEmails(folder: MovableFolder) {
+
+    const hasSelect = this.allEmails().some(email => email.selected);
+
+    if (!hasSelect) {
+      return;
+    }
+
+    const dialogRef = this.dialog.open(ConfirmDialog, {
+      autoFocus: false,
+      data: {
+        message: `Move selected emails to <strong>${folder}</strong>?`
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === true) {
+        this.emailService.moveSelectedEmails(folder as MovableFolder);
+        this.currentIndex.set(null);
+
+        this.snackBar.open(`Emails moved to ${folder}`, '', {
+          duration: 3000,
+          panelClass: ['custom-snackbar'] // Aggiungi la classe personalizzata qui (styles.scss)
+        });
+      }
+    });
+
+  }
+
+
 }
+
 
 

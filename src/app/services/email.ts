@@ -4,7 +4,7 @@ import { EmailInterface } from '../interface/email-interface';
 // import { AuthService } from './auth';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpClient } from '@angular/common/http';
-import { email } from '@angular/forms/signals';
+import { MovableFolder } from '../constants/folders.constants';
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +30,38 @@ export class EmailService {
   constructor(private snackBar: MatSnackBar, private http: HttpClient) {
     this.loadEmails(); // Carica le email dal mockapi.io all'avvio del servizio
   };
+
+
+  ///// CARICA EMAIL DAL MOCKAPI.IO
+  loading = signal(false);
+
+  loadEmails() {
+
+    this.loading.set(true);
+
+    this.http.get<EmailInterface[]>(this.apiUrl)
+      .subscribe({
+        next: emails => {
+          this.emailsSignal.set(emails);
+
+          this.snackBar.open(
+            'Updated emails',
+            '',
+            { duration: 3000, panelClass: ['custom-snackbar'] }
+          );
+        },
+        complete: () => {
+          this.loading.set(false);
+        },
+        error: () => {
+          this.snackBar.open(
+            'Error during refresh',
+            '',
+            { duration: 3000, panelClass: ['custom-snackbar'] }
+          );
+        }
+      });
+  }
 
 
   ///// Versione aggiornata "INVIARE UNA NUOVA EMAIL" (con richiesta HTTP POST a mockapi.io)
@@ -125,37 +157,6 @@ export class EmailService {
 
   }
 
-  ///// CARICA EMAIL DAL MOCKAPI.IO
-  loading = signal(false);
-
-  loadEmails() {
-
-    this.loading.set(true);
-
-    this.http.get<EmailInterface[]>(this.apiUrl)
-      .subscribe({
-        next: emails => {
-          this.emailsSignal.set(emails);
-
-          this.snackBar.open(
-            'Updated emails',
-            '',
-            { duration: 3000, panelClass: ['custom-snackbar'] }
-          );
-        },
-        complete: () => {
-          this.loading.set(false);
-        },
-        error: () => {
-          this.snackBar.open(
-            'Error during refresh',
-            '',
-            { duration: 3000, panelClass: ['custom-snackbar'] }
-          );
-        }
-      });
-  }
-
 
   ///// TOGGLE STAR EMAIL
   toggleStar(email: EmailInterface) {
@@ -187,10 +188,10 @@ export class EmailService {
   ///// REFACTORING: 
   // deleteSelectedEmails()  (ELIMINA LE EMAIL SELEZIONATE)
   // restoreSelectedEmails() (RIPRISTINA LE EMAIL SELEZIONATE)
-  // archiveSelectedEmails() (ARCHIVIA LE EMAIL SELEZIONATE)
+  // archiveSelectedEmails() (ARCHIVIA LE EMAIL SELEZIONATE) 
 
   private updateSelectedEmails(changes: Partial<EmailInterface>) {
-    
+
     const selectedEmails = this.emailsSignal().filter(e => e.selected);
 
     selectedEmails.forEach(email => {
@@ -229,11 +230,18 @@ export class EmailService {
   }
 
   archiveSelectedEmails() {
-    this.updateSelectedEmails({
-      folder: 'archived'
-    });
+    this.moveSelectedEmails('archived');
   }
 
+
+  ///// SPOSTARE LE EMAIL SELEZIONATE
+  moveSelectedEmails(folder: MovableFolder) {
+    this.updateSelectedEmails({
+      folder,
+      is_deleted: false
+    });
+  }
+  
 }
 
 
