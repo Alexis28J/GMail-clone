@@ -16,3 +16,5 @@ Ma a condizione che isTrashView sia true, il pulsante di ripristino sarà visibi
 - `#moveMenu` è il riferimento locale al menu che viene utilizzato da `[matMenuTriggerFor]`. Quindi collega il pulsante al menu corrispondente.
 
 - `matMenu` è un riferimento locale al menu stesso. Sia `moveMenu` che `matMenu` fanno riferimento allo stesso menu. Sono nomi che posso scegliere liberamente. 
+
+-  Il ciclo `@for` genera dinamicamente i bottoni per le cartelle disponibili grazie all'`input` `availableFolders` di `ToolbarComponent`.

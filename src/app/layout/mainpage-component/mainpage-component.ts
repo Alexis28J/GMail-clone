@@ -13,7 +13,8 @@ import { ConfirmDialog } from '../../shared/confirm-dialog/confirm-dialog';
 import { AuthService } from '../../services/auth';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MovableFolder } from '../../constants/folders.constants';
+import { MOVABLE_FOLDERS, MovableFolder } from '../../constants/folders.constants';
+import { FolderInterface } from '../../interface/folder-interface';
 
 
 @Component({
@@ -54,11 +55,13 @@ export class MainpageComponent {
 
   }
 
+  ///// EMAIL SELEZIONATA
   onEmailSelected(email: EmailInterface) {
     const index = this.allEmails().findIndex(e => e.id === email.id);
     this.currentIndex.set(index);
   }
 
+  //// EMAIL SUCCESSIVA
   nextEmail() {
     const index = this.currentIndex();
 
@@ -67,6 +70,7 @@ export class MainpageComponent {
     }
   }
 
+  //// EMAIL PRECEDENTE
   previousEmail() {
     const index = this.currentIndex();
 
@@ -75,16 +79,18 @@ export class MainpageComponent {
     }
   }
 
-
+  ///// INOLTRO
   onForward(email: EmailInterface) {
     console.log('Forward dal MAIN:', email);
   }
 
+  ///// RISPOSTA
   onReply(email: EmailInterface) {
     console.log('Reply dal MAIN:', email);
   }
 
 
+  //// ELIMINA EMAIL SELEZIONATE
   onDeleteSelected() {
     //1) // const confirmed = confirm('Are you sure you want to delete this email?');
     // if (!confirmed) return;
@@ -118,11 +124,13 @@ export class MainpageComponent {
   }
 
 
+  ///// TRASH VIEW (SE SIAMO NELLA CARTELLA TRASH)
   isTrashView = computed(() => {
     return this.folderService.getSelectedFolder()() === 'trash';
   })
 
 
+  ///// RESTORE EMAIL SELEZIONATE
   onRestoreSelected() {
 
     const hasSelect = this.allEmails().some(email => email.selected);
@@ -153,6 +161,7 @@ export class MainpageComponent {
   }
 
 
+  ///// INVIO EMAIL
   onSendEmail(email: Partial<EmailInterface>) {
     this.emailService.sendEmail(email);
 
@@ -163,13 +172,15 @@ export class MainpageComponent {
   }
 
 
+
+  ///// FARE IL LOGOUT
   logout() {
     this.authService.logout();
     this.router.navigate(['/login']);
   }
 
 
-
+  ///// ARCHIVIA EMAIL SELEZIONATE
   onArchive() {
 
     const hasSelect = this.allEmails().some(email => email.selected);
@@ -200,7 +211,22 @@ export class MainpageComponent {
   }
 
 
+  ///// FOLDERS DISPONIBILI PER SPOSTAMENTO DELLE EMAIL
+  availableFolders = computed(() => {
+    const currentFolder = this.folderService.getSelectedFolder()();
+ 
+   return this.folderService.getFolders()().filter(  
+    (
+      f    
+    ) : f is FolderInterface & { id: MovableFolder } =>  
+      MOVABLE_FOLDERS.includes(
+        f.id as MovableFolder
+      ) && f.id !== currentFolder
+   );
+  });
 
+
+  ///// SPOSTA EMAIL SELEZIONATE IN UN'ALTRA CARTELLA
   moveEmails(folder: MovableFolder) {
 
     const hasSelect = this.allEmails().some(email => email.selected);
@@ -212,7 +238,7 @@ export class MainpageComponent {
     const dialogRef = this.dialog.open(ConfirmDialog, {
       autoFocus: false,
       data: {
-        message: `Move selected emails to <strong>${folder}</strong>?`
+        message: `Move selected emails to <strong>${folder.toUpperCase()}</strong>?`
       }
     });
 
@@ -221,15 +247,13 @@ export class MainpageComponent {
         this.emailService.moveSelectedEmails(folder as MovableFolder);
         this.currentIndex.set(null);
 
-        this.snackBar.open(`Emails moved to ${folder}`, '', {
+        this.snackBar.open(`Emails moved to ${folder.toUpperCase()}`, '', {
           duration: 3000,
           panelClass: ['custom-snackbar'] // Aggiungi la classe personalizzata qui (styles.scss)
         });
       }
     });
-
   }
-
 
 }
 

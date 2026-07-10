@@ -1,6 +1,11 @@
 
 # COMMENTI
 
+La differenza tra `EmailService` e `MainpageComponent` è che `EmailService` gestisce la logica di business (cioè le regole e le operazioni sugli email), mentre `MainpageComponent` gestisce l'interfaccia utente e le interazioni dell'utente con gli email. 
+
+`MainpageComponent` utilizza `EmailService` per eseguire azioni come inviare, eliminare, ripristinare, archiviare e spostare email, ma non contiene la logica di business stessa.
+
+
 
 ## IMPORTAZIONI:
 
@@ -200,3 +205,80 @@ Ho aggiunto la funzione `onArchive()` che viene chiamata quando si desidera arch
 All'interno della funzione, viene chiamato il metodo `archiveSelectedEmails()` del servizio `EmailService` per archiviare le email selezionate.
 
 In questo modo, le email selezionate vengono spostate nella cartella "archived" e deselezionate.
+
+
+
+## AGGIUNTA FUNZIONE MOVE EMAILS
+
+`moveEmails(folder: MovableFolder) {...}`
+Ho creato il metodo `moveEmails` per gestire lo spostamento delle email selezionate in una cartella specifica. 
+
+Questo metodo ha come parametro il folder di destinazione (es. 'personal', 'work', 'archived', ecc.)
+
+Inoltre, apre un dialogo di conferma e, se l'utente conferma, chiama il servizio `EmailService` per spostare le email nella cartella desiderata utilizzando il metodo `moveSelectedEmails`.
+
+Successivamente mostra uno `snackbar` per informare l'utente dell'azione completata con successo.
+
+
+### Perché ho creato questo metodo in `MainPageComponent` invece di farlo direttamente in `ToolbarComponent`?
+Ho creato questo metodo in `MainPageComponent` perché il componente `ToolbarComponent` non ha accesso diretto al servizio `EmailService`.
+
+Il componente `ToolbarComponent` è responsabile solo della gestione dell'interfaccia utente della toolbar, mentre la logica di spostamento delle email è gestita dal MainPageComponent e dal servizio EmailService.
+
+In questo modo, il `MainPageComponent` può coordinare le azioni tra la `toolbar` e il servizio `EmailService`, mantenendo una separazione chiara delle responsabilità tra i componenti.
+
+
+### In che modo si collega questo metodo al ToolbarComponent?  
+Il metodo `moveEmails` viene chiamato quando l'utente seleziona un'opzione di spostamento nel `ToolbarComponent`. Il `ToolbarComponent` emette un evento `moveRequested` con il folder selezionato, e il `MainpageComponent` ascolta questo evento e chiama il metodo `moveEmails` con il folder specificato.
+
+--> Nel `mainpage-component.html`, il `ToolbarComponent` ha un `output` (`moveRequested`) che viene legato al metodo `moveEmails` del `MainpageComponent`. Quando l'utente seleziona un'opzione di spostamento nel `ToolbarComponent`, viene emesso l'evento `moveRequested` con il folder selezionato, e il `MainpageComponent` gestisce lo spostamento delle email selezionate in quella cartella specifica.
+
+### NB: `${folder}` per inserire il nome della cartella selezionata dinamicamente 
+
+
+
+## AVAILABLE FOLDERS ('FOLDERS DISPONIBILI PER SPOSTAMENTO DELLE EMAIL)
+
+```typescript
+  availableFolders = computed(() => {
+    const currentFolder = this.folderService.getSelectedFolder()(); 
+    //Ottieniamo la cartella corrente selezionata
+
+    return MOVABLE_FOLDERS.filter(folder => folder !== currentFolder); 
+    //Filtriamo le cartelle disponibili escludendo quella corrente
+  }); 
+```
+Ho creato un `Computed` per filtrare le cartelle disponibili per lo spostamento delle email, escludendo la cartella corrente.
+
+Successivamente, nel `toolbar-component.ts` ho aggiunto un `@Input()` chiamato `availableFolders` che riceve questa lista di cartelle disponibili dal componente genitore (`MainPageComponent`). In questo modo, il `toolbar-component` può visualizzare solo le cartelle in cui è possibile spostare le email selezionate, escludendo la cartella corrente.
+
+
+## MODIFICA di AVAILABLE FOLDERS
+
+ Ho sostituito il `return MOVABLE_FOLDERS.filter(folder => folder !== currentFolder); `
+ con il `return this.folderService.getFolders()().filter(...)` per ottenere le cartelle disponibili per lo spostamento delle email, escludendo la cartella corrente.
+
+ La differenza tra queste due versioni è che la prima versione utilizza una costante `MOVABLE_FOLDERS` per filtrare le cartelle disponibili, mentre la seconda versione utilizza il servizio Folder per ottenere dinamicamente le cartelle disponibili e filtrarle in base alla cartella corrente.
+ 
+ In altre parole, la seconda versione è più flessibile e si adatta meglio ai cambiamenti delle cartelle disponibili nel sistema.
+
+ La prima versione è più statica e dipende dalla costante `MOVABLE_FOLDERS`, che potrebbe non riflettere le cartelle effettivamente disponibili nel sistema.
+
+    ```typescript 
+    return this.folderService.getFolders()().filter(  
+    (
+      f    
+    ) : f is FolderInterface & { id: MovableFolder } =>  
+    // Qui stiamo usando un type guard per assicurare che f sia di tipo FolderInterface con un id di tipo MovableFolder
+      MOVABLE_FOLDERS.includes(
+        f.id as MovableFolder
+      ) && f.id !== currentFolder
+   );
+```
+Se lo esaminiamo linea per linea, la funzione `availableFolders()` fa quanto segue:
+1. Recupera la cartella attualmente selezionata tramite `this.folderService.getSelectedFolder()()`.
+2. Chiama `this.folderService.getFolders()()` per ottenere l'elenco completo delle cartelle disponibili.
+3. Filtra l'elenco delle cartelle per includere solo quelle che soddisfano due condizioni:
+  a. La cartella deve essere inclusa nell'array `MOVABLE_FOLDERS` (che contiene le cartelle in cui è consentito spostare le email).
+  b. La cartella non deve essere la stessa della cartella attualmente selezionata (`currentFolder`).
+4. Restituisce un array di oggetti `FolderInterface` che rappresentano le cartelle disponibili per lo spostamento delle email.

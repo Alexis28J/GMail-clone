@@ -1,6 +1,11 @@
 
 # COMMENTI
 
+La differenza tra `EmailService` e `MainpageComponent` è che `EmailService` gestisce la logica di business (cioè le regole e le operazioni sugli email), mentre `MainpageComponent` gestisce l'interfaccia utente e le interazioni dell'utente con gli email. 
+
+`MainpageComponent` utilizza `EmailService` per eseguire azioni come inviare, eliminare, ripristinare, archiviare e spostare email, ma non contiene la logica di business stessa.
+
+
 ## IMPORTAZIONI
 
 - `import { Injectable, signal } from '@angular/core';`

@@ -2,7 +2,7 @@
 
     <app-toolbar-component (nextMail)="nextEmail()" (prevMail)="previousEmail()" (delete)="onDeleteSelected()"
         (restore)="onRestoreSelected()" [isTrashView]="isTrashView()" (archive)="onArchive()"
-        (moveRequested)="moveEmails($event)"></app-toolbar-component>
+        (moveRequested)="moveEmails($event)" [availableFolders]="availableFolders()"></app-toolbar-component>
 
     <div class="content">
 

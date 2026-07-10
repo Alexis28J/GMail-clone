@@ -1,10 +1,24 @@
 export interface FolderInterface {
-    id: string;
+    // id: string;
+    id: FolderId;
     name: string;
     icon: string;
     count?: number;  
 }
 
 
-//? perché non tutti i folder hanno un count, ad esempio "Sent" o "Drafts" potrebbero non avere un count associato.
+export type FolderId =
+    | 'inbox'
+    | 'starred'
+    | 'snoozed'
+    | 'sent'
+    | 'drafts'
+    | 'spam'
+    | 'important'
+    | 'personal'
+    | 'archived'
+    | 'work'
+    | 'trash'
+
+
 

@@ -23,6 +23,13 @@ export class ToolbarComponent {
   @Input() canGoNext = true;
   @Input() canGoPrev = true;
   @Input() isTrashView = false;
+  @Input() availableFolders: {
+    id: MovableFolder;
+    name: string;
+    icon: string;
+  }[] = [];
+  
+
 
   @Output() nextMail = new EventEmitter<void>();
   //@Output() nextMail = new EventEmitter<EmailInterface>();
@@ -37,6 +44,7 @@ export class ToolbarComponent {
   @Output() archive = new EventEmitter<void>();
 
   @Output() moveRequested = new EventEmitter<MovableFolder>();
+
 
 
   onNext() {
@@ -72,7 +80,7 @@ export class ToolbarComponent {
     return this.emailService.loading;
   }
 
-  
+
   ///// VERIFICA SE TUTTE LE EMAIL VISIBILI SONO SELEZIONATE
   //allSelected(): boolean {
   allSelected = computed(() => {
@@ -125,8 +133,8 @@ export class ToolbarComponent {
 
   ///// SPOSTA LE EMAIL SELEZIONATE IN UNA CARTELLA SPECIFICA 
   moveTo(folder: MovableFolder) {
-    // this.emailService.moveSelectedEmails(folder);  // l'ho commentato perché voglio che sia MainPageComponent a gestire lo spostamento delle email selezionate in una cartella specifica, non ToolbarComponent. ToolbarComponent emette un evento a MainPageComponent e MainPageComponent gestisce lo spostamento delle email selezionate in una cartella specifica.
-    this.moveRequested.emit(folder);  // moveTo solo deve emettere un evento a MainPageComponent per spostare le email selezionate in una cartella specifica. MainPageComponent gestirà lo spostamento delle email selezionate in una cartella specifica.
+    this.moveRequested.emit(folder);
   }
-  
+
 }
+

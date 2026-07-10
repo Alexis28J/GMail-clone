@@ -85,19 +85,21 @@
             <!---------------------------- MENU "SPOSTA EMAIL" ---------------------------------->
 
             <mat-menu #moveMenu="matMenu">
-                <button mat-menu-item (click)="moveTo('inbox')">
-                    Inbox
+
+                @for (folder of availableFolders; track folder.id) {
+
+                <button mat-menu-item (click)="moveTo(folder.id)">
+
+                    <mat-icon>{{ folder.icon }}</mat-icon>
+
+                    {{ folder.name }}
+
                 </button>
-                <button mat-menu-item (click)="moveTo('spam')">
-                    Spam
-                </button>
-                <button mat-menu-item (click)="moveTo('personal')">
-                    Personal
-                </button>
-                <button mat-menu-item (click)="moveTo('work')">
-                    Work
-                </button>
+
+                }
+
             </mat-menu>
+
 
             <!------------------------------LABEL & MORE ------------------------------------ -->
 

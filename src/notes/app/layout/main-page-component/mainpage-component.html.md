@@ -35,3 +35,7 @@ Si usa le parentesi quadre perché si tratta di un binding di proprietà e non d
     Si usa le parentesi tonde e non le parentesi quadre perché si tratta di un evento e non di un binding di proprietà.
 
 
+- `(moveRequested)` è l'evento emesso quando si richiede di spostare le email selezionate in una cartella specifica.
+
+
+- `[availableFolders]` è la lista delle cartelle disponibili per lo spostamento delle email.
