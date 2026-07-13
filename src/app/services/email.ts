@@ -32,7 +32,8 @@ export class EmailService {
 
 
   ///// CARICA EMAIL DAL MOCKAPI.IO
-  loading = signal(false);
+  loading = signal(false);  // serve per mostrare un indicatore di caricamento durante il recupero delle email
+  // false perché all'avvio non stiamo caricando le email, ma le carichiamo subito dopo con loadEmails()
 
   loadEmails() {
 
@@ -53,6 +54,7 @@ export class EmailService {
           this.loading.set(false);
         },
         error: () => {
+          this.loading.set(false);  //ho aggiunto questo per assicurarmi che l'indicatore di caricamento venga nascosto anche in caso di errore
           this.snackBar.open(
             'Error during refresh',
             '',

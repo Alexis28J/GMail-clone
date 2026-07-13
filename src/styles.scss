@@ -100,3 +100,47 @@ body {
   display: none !important;
 }
 
+
+// Cambio colore dello spinner
+.mdc-circular-progress__indeterminate-circle-graphic {
+  stroke: rgb(221, 200, 200) !important;
+}
+
+
+// cambio colore della barra di caricamento
+.mat-mdc-progress-bar .mdc-linear-progress__buffer .mdc-linear-progress__buffer-bar {
+  height: 6px !important;
+  border-radius: 3px !important;
+  background-color: rgb(248, 221, 221) !important;
+}
+
+// cambio colore della barra di progresso
+.mat-mdc-progress-bar .mdc-linear-progress__bar-inner {
+  border-color: rgb(231, 157, 157) !important;
+}
+
+
+// bordo del campo di input e  testo dell'etichetta (mat-label) 
+/* Colore del bordo in stato normale (apparenza outline) */
+.mat-mdc-form-field-type-mat-input .mdc-notched-outline__leading,
+.mat-mdc-form-field-type-mat-input .mdc-notched-outline__notch,
+.mat-mdc-form-field-type-mat-input .mdc-notched-outline__trailing {
+  border-color: grey !important;
+}
+
+/* Colore del bordo quando il campo è selezionato (focused) */
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__notch,
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing {
+  border-color: rgb(231, 147, 147) !important;
+}
+
+/* Colore dell'etichetta (mat-label) */
+.mat-mdc-form-field .mat-mdc-floating-label {
+  color: grey !important;
+}
+
+/* Colore dell'etichetta quando il campo è selezionato */
+.mat-mdc-form-field.mat-focused .mat-mdc-floating-label {
+  color: rgb(231, 147, 147) !important;
+}

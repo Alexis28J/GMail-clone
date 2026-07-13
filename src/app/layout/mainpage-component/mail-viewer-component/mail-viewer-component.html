@@ -1,3 +1,13 @@
+@if(emailService.loading()){
+
+<div class="loading-container">
+  <mat-spinner diameter="50"></mat-spinner>
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  <p>Loading emails...</p>
+</div>
+
+} @else {
+
 @if(email){
 
 <div class="email-viewer">
@@ -29,5 +39,7 @@
   <h3>No Email Selected</h3>
   <p>Please select an email to view its content.</p>
 </div>
+
+}
 
 }

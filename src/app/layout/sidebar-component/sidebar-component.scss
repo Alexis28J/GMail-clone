@@ -14,7 +14,7 @@
 }
 
 .sidebar-content {
-    flex: 1;
+    flex: 1;  // permette al contenuto di occupare tutto lo spazio disponibile tra l'header e il footer
     overflow-y: auto;
 
     // nasconde la scrollbar in tutti i browser
@@ -88,33 +88,39 @@
 }
 
 
-.divider {
-    height: 1px;
-    margin: 16px 12px;
-    background: rgba(0, 0, 0, 0.15);
-}
-
 .toggle-btn {
     width: 100%;
 
     display: flex;
+    justify-content: baseline;
     align-items: center;
-    gap: 8px;
+    gap: 8px; 
 
     padding: 8px 16px;
 
     border: none;
+    border-radius: 8px;
     background: transparent;
 
     cursor: pointer;
 
     color: #5f6368;
     font-size: 14px;
+    // il bottone tende a spostarsi verso il basso quando viene cliccato,
+    // quindi imposto un bordo trasparente per evitare questo comportamento
+    border-bottom: solid 2px transparent;  //funziona perché il bordo trasparente occupa lo stesso spazio del bordo colorato che appare al click
 }
 
 .toggle-btn:hover {
-    box-shadow: 0 1px 3px rgb(222, 175, 175);
-    background-color: rgb(248, 221, 221);
+    box-shadow: 0 1px 3px rgb(222, 175, 175); //1px sig
+    background-color: rgb(243, 224, 224);
+    border-bottom: solid 2px rgb(222, 175, 175);
+}
+
+.divider {
+    height: 1px;
+    margin: 16px 12px;
+    background: rgba(0, 0, 0, 0.15);
 }
 
 .custom-folders {
@@ -144,10 +150,16 @@
     color: #5f6368;
     font-size: 14px;
     margin-left: 8px;
+    padding: 0;
 }
 
 .add-folder-btn:hover {
     border-radius: 50%;
-    box-shadow: 0 1px 3px rgb(222, 175, 175); 
+    box-shadow: 0 1px 3px rgb(222, 175, 175);
     background-color: rgb(248, 221, 221);
+    // se voglio che l'icona sia centrata all'interno dell'hover, devo usare display: flex e justify-content: center e align-items: center
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: solid 2px rgb(222, 175, 175);
 }

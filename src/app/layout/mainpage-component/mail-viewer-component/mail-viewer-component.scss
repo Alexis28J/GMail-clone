@@ -61,3 +61,26 @@
     font-size: 48px;
     margin-bottom: 10px;
 }
+
+
+///////////////////////////////////////////////LOADING STATE//////////////////////////////////////////////
+
+.loading-container {
+    height: 100%;
+    min-height: 300px; //300 mi sembra un'altezza minima ragionevole per il contenitore di caricamento 
+
+    //invece se non voglio che occupi tutta la larghezza, posso usare max-width: 400px; e margin: 0 auto; per centrarlo orizzontalmente
+    max-width: 400px;  
+    margin: 0 auto; // Centra il contenitore orizzontalmente
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+
+    color: #666; // Colore del testo per il messaggio di caricamento
+    font-weight: bold; // Rende il testo più evidente
+    font-size: 18px; // Dimensione del testo leggermente più grande per maggiore visibilità
+    font-family: Arial, sans-serif; // Font chiaro e leggibile
+}
