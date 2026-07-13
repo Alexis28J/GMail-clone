@@ -1,0 +1,50 @@
+<div class="create-folder-dialog">
+    <h2 mat-dialog-title class="dialog-title">
+
+        <mat-icon>create_new_folder</mat-icon>
+
+        <span>Create new folder</span>
+
+    </h2>
+
+
+    <mat-dialog-content>
+
+        <mat-form-field appearance="outline" class="full-width">
+
+            <mat-label>Folder name</mat-label>
+
+            <input matInput maxlength="30" cdkFocusInitial [(ngModel)]='folderName'>
+
+            <mat-hint align="end">{{folderName.length}} / 30</mat-hint>
+
+        </mat-form-field>
+
+    </mat-dialog-content>
+
+
+    <mat-dialog-actions align="end">
+
+        <!-- Preview in tempo reale -->
+        <div class="preview">
+
+            <mat-icon>folder</mat-icon>
+
+            <span>
+                {{ folderName || 'New Folder' }}
+            </span>
+
+        </div>
+
+        <button class="cancel-btn" mat-button (click)="close()">
+            Cancel
+        </button>
+
+        <button class="create-btn" mat-raised-button color="primary" [disabled]="!folderName.trim()" (click)="save()">
+            Create
+        </button>
+
+
+    </mat-dialog-actions>
+
+</div>

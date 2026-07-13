@@ -1,6 +1,7 @@
 import { computed, Injectable, signal } from '@angular/core';
 import { FolderInterface } from '../interface/folder-interface';
-import { EmailService } from '../services/email'
+import { EmailService } from '../services/email';
+import { HttpClient } from '@angular/common/http';
 import { EmailInterface } from '../interface/email-interface';
 import { AuthService } from './auth';
 
@@ -10,25 +11,51 @@ import { AuthService } from './auth';
 
 export class Folder {
 
-  constructor(private emailService: EmailService, private authService: AuthService) { }
+  constructor(private emailService: EmailService, private authService: AuthService, private http: HttpClient
+
+  ) {
+    this.loadFolders();
+  }
 
   private selectedFolder = signal<string>('inbox');
 
-  private foldersSignal = signal<FolderInterface[]>(
-    [
-      { id: 'inbox', name: 'Inbox', icon: 'inbox' },
-      { id: 'starred', name: 'Special', icon: 'star' },
-      { id: 'snoozed', name: 'Snoozed', icon: 'watch_later' },
-      { id: 'sent', name: 'Sent', icon: 'send' },
-      { id: 'drafts', name: 'Drafts', icon: 'drafts' },
-      { id: 'spam', name: 'Spam', icon: 'report' },
-      { id: 'important', name: 'Important', icon: 'label_important' },
-      { id: 'personal', name: 'Personal', icon: 'person' },
-      { id: 'archived', name: 'Archived', icon: 'archive' },
-      { id: 'work', name: 'Work', icon: 'work' },
-      { id: 'trash', name: 'Trash', icon: 'delete' },
-    ]
-  );
+
+  private systemFolders: FolderInterface[] = [
+    { id: 'inbox', name: 'Inbox', icon: 'inbox', movable: true, system: true },
+    { id: 'starred', name: 'Special', icon: 'star', movable: false, system: true },
+    { id: 'snoozed', name: 'Snoozed', icon: 'watch_later', movable: false, system: true },
+    { id: 'sent', name: 'Sent', icon: 'send', movable: false, system: true },
+    { id: 'drafts', name: 'Drafts', icon: 'drafts', movable: false, system: true },
+    { id: 'spam', name: 'Spam', icon: 'report', movable: false, system: true },
+    { id: 'important', name: 'Important', icon: 'label_important', movable: false, system: true },
+    { id: 'personal', name: 'Personal', icon: 'person', movable: false, system: true },
+    { id: 'archived', name: 'Archived', icon: 'archive', movable: false, system: true },
+    { id: 'work', name: 'Work', icon: 'work', movable: false, system: true },
+    { id: 'trash', name: 'Trash', icon: 'delete', movable: false, system: true },
+  ];
+
+
+  private foldersSignal = signal<FolderInterface[]>([]);
+
+  // private foldersSignal = signal<FolderInterface[]>(
+  //   [
+  //     { id: 'inbox', name: 'Inbox', icon: 'inbox', movable: true },
+  //     { id: 'starred', name: 'Special', icon: 'star', movable: false },
+  //     { id: 'snoozed', name: 'Snoozed', icon: 'watch_later', movable: false },
+  //     { id: 'sent', name: 'Sent', icon: 'send', movable: false },
+  //     { id: 'drafts', name: 'Drafts', icon: 'drafts', movable: false },
+  //     { id: 'spam', name: 'Spam', icon: 'report', movable: false },
+  //     { id: 'important', name: 'Important', icon: 'label_important', movable: false },
+  //     { id: 'personal', name: 'Personal', icon: 'person', movable: false },
+  //     { id: 'archived', name: 'Archived', icon: 'archive', movable: false },
+  //     { id: 'work', name: 'Work', icon: 'work', movable: false },
+  //     { id: 'trash', name: 'Trash', icon: 'delete', movable: false },
+  //   ]
+  // );
+
+  private folderApiUrl =
+    'https://6a477fc3abfcbaade1188ff8.mockapi.io/api/gclone/folder';
+
 
   getFolders() {
     return this.foldersSignal;
@@ -191,7 +218,7 @@ export class Folder {
 
   });
 
-  
+
   // MENU FILTRI
   private activeFilters = signal({
     subject: true,
@@ -204,9 +231,52 @@ export class Folder {
     this.activeFilters.update(f => ({ ...f, [key]: value }));
   }
 
+
   getFilters() {
     return this.activeFilters;
   }
+
+
+  addFolder(name: string) {
+
+    const exists = this.foldersSignal().some(folder => folder.name.toLowerCase() === name.toLowerCase());
+    if (exists) {
+     console.error(`Folder with name "${name}" already exists.`);
+     return;
+    }
+
+    this.http.post<FolderInterface>(
+      this.folderApiUrl,
+      {
+        name,
+        icon: 'folder'
+      }
+    ).subscribe(folder => {
+      this.foldersSignal.update(folders => [
+        ...folders,
+        folder
+      ]);
+    });
+  }
+
+
+  loadFolders() {
+    
+    this.http.get<FolderInterface[]>(
+      this.folderApiUrl
+    )
+      .subscribe(customFolders => {
+
+        this.foldersSignal.set([
+          ...this.systemFolders,
+          ...customFolders
+        ]);
+
+      });
+
+  }
+
+
 
 }
 

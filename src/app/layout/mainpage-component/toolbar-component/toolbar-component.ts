@@ -7,6 +7,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatMenuItem, MatMenuTrigger, MatMenu } from "@angular/material/menu";
 import { MovableFolder } from '../../../constants/folders.constants';
+import { FolderInterface } from '../../../interface/folder-interface';
 
 
 @Component({
@@ -23,11 +24,7 @@ export class ToolbarComponent {
   @Input() canGoNext = true;
   @Input() canGoPrev = true;
   @Input() isTrashView = false;
-  @Input() availableFolders: {
-    id: MovableFolder;
-    name: string;
-    icon: string;
-  }[] = [];
+  @Input() availableFolders: FolderInterface[] = [];
   
 
 
@@ -43,7 +40,7 @@ export class ToolbarComponent {
 
   @Output() archive = new EventEmitter<void>();
 
-  @Output() moveRequested = new EventEmitter<MovableFolder>();
+  @Output() moveRequested = new EventEmitter<string>();
 
 
 
@@ -132,7 +129,7 @@ export class ToolbarComponent {
 
 
   ///// SPOSTA LE EMAIL SELEZIONATE IN UNA CARTELLA SPECIFICA 
-  moveTo(folder: MovableFolder) {
+  moveTo(folder: string) {
     this.moveRequested.emit(folder);
   }
 

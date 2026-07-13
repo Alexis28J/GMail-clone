@@ -4,7 +4,6 @@ import { EmailInterface } from '../interface/email-interface';
 // import { AuthService } from './auth';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpClient } from '@angular/common/http';
-import { MovableFolder } from '../constants/folders.constants';
 
 @Injectable({
   providedIn: 'root'
@@ -235,7 +234,7 @@ export class EmailService {
 
 
   ///// SPOSTARE LE EMAIL SELEZIONATE
-  moveSelectedEmails(folder: MovableFolder) {
+  moveSelectedEmails(folder: string) {
     this.updateSelectedEmails({
       folder,
       is_deleted: false

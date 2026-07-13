@@ -1,13 +1,15 @@
 <aside class="sidebar">
 
-    <div>
+
+    <div class="sidebar-header">
         <button class="compose-btn" matTooltip="Compose a new email" matTooltipPosition="below" (click)="openCompose()">
             <mat-icon>edit</mat-icon>
             <span>Compose</span>
         </button>
+    </div>
 
-        <nav>
-            <!-- @for (item of menuItems; track item.id) {
+    <!-- <nav> -->
+    <!-- @for (item of menuItems; track item.id) {
             <div class="menu-item">
                 <div class="menu-left">
                     <mat-icon>{{ item.icon }}</mat-icon>
@@ -19,10 +21,46 @@
                 }
             </div>
             } -->
-            <app-folder-list-component [folders]="folders()"
-                (folderSelected)="onFolderSelected($event)"></app-folder-list-component>
+    <!-- </nav> -->
+    <div class="sidebar-content">
+        <app-folder-list-component [folders]="visibleSystemFolders()"
+            (folderSelected)="onFolderSelected($event)"></app-folder-list-component>
 
-        </nav>
+        <button class="toggle-btn" (click)="showMoreFolders.set(!showMoreFolders())">
+            <mat-icon>
+                {{ showMoreFolders() ? 'expand_less' : 'expand_more' }}
+            </mat-icon>
+
+            <span>{{ showMoreFolders() ? 'Show less' : 'Show more' }}</span>
+        </button>
+
+        @if (showMoreFolders()) {
+        <app-folder-list-component [folders]="hiddenSystemFolders()"
+            (folderSelected)="onFolderSelected($event)"></app-folder-list-component>
+        }
+
+
+        <!-- @if (customFolders().length > 0) { -->
+
+        <div class="divider"></div>
+
+        <div class="custom-folders">
+
+            <span>Custom folders</span>
+
+            <button class="add-folder-btn" (click)="openCreateFolderDialog()">
+
+                <mat-icon>add</mat-icon>
+
+            </button>
+
+        </div>
+
+        <app-folder-list-component [folders]="customFolders()" (folderSelected)="onFolderSelected($event)">
+        </app-folder-list-component>
+
+        <!-- } -->
+
     </div>
 
 </aside>

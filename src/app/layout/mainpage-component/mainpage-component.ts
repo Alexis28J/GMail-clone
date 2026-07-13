@@ -13,8 +13,7 @@ import { ConfirmDialog } from '../../shared/confirm-dialog/confirm-dialog';
 import { AuthService } from '../../services/auth';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MOVABLE_FOLDERS, MovableFolder } from '../../constants/folders.constants';
-import { FolderInterface } from '../../interface/folder-interface';
+import { MovableFolder } from '../../constants/folders.constants';
 
 
 @Component({
@@ -213,21 +212,24 @@ export class MainpageComponent {
 
   ///// FOLDERS DISPONIBILI PER SPOSTAMENTO DELLE EMAIL
   availableFolders = computed(() => {
+
     const currentFolder = this.folderService.getSelectedFolder()();
- 
-   return this.folderService.getFolders()().filter(  
-    (
-      f    
-    ) : f is FolderInterface & { id: MovableFolder } =>  
-      MOVABLE_FOLDERS.includes(
-        f.id as MovableFolder
-      ) && f.id !== currentFolder
-   );
+
+    // return this.folderService.getFolders()().filter(
+    //   (f): f is FolderInterface & { id: MovableFolder } =>
+    //     MOVABLE_FOLDERS.includes(
+    //       f.id as MovableFolder
+    //     ) && f.id !== currentFolder
+    // );
+
+    return this.folderService.getFolders()().filter(folder =>
+      folder.id !== currentFolder && folder.movable !== false
+    );
   });
 
 
   ///// SPOSTA EMAIL SELEZIONATE IN UN'ALTRA CARTELLA
-  moveEmails(folder: MovableFolder) {
+  moveEmails(folder: string) {
 
     const hasSelect = this.allEmails().some(email => email.selected);
 

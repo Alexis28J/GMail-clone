@@ -8,4 +8,3 @@ export const MOVABLE_FOLDERS = [
 ] as const;  
 
 export type MovableFolder = typeof MOVABLE_FOLDERS[number]; 
-

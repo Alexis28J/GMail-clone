@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { MatIconModule } from "@angular/material/icon";
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Folder } from '../../services/folder';
@@ -6,6 +6,8 @@ import { FolderListComponent } from "../folder-list-component/folder-list-compon
 import { MatDialog } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ComposeDialog } from '../../shared/compose-dialog/compose-dialog';
+import { CreateFolderDialog } from '../../shared/create-folder-dialog/create-folder-dialog';
+
 
 @Component({
   standalone: true,
@@ -42,6 +44,47 @@ export class SidebarComponent {
       width: '500px',
     });
   }
+
+
+  openCreateFolderDialog() {
+    const dialogRef = this.dialog.open(CreateFolderDialog, {
+      width: '400px',
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.folderService.addFolder(result);
+      }
+    });
+  }
+
+
+  //////////////////////////
+
+  showMoreFolders = signal(false);
+
+  visibleSystemFolders = computed(() => {
+    return this.folders()
+      .filter(folder => folder.system)
+      .slice(0, 4);
+  });
+
+
+  hiddenSystemFolders = computed(() => {
+    return this.folders()
+      .filter(folder => folder.system)
+      .slice(4);
+  });
+
+
+  customFolders = computed(() =>
+    this.folders().filter(folder => folder.system !== true)
+  );
+
+
+  hasMoreFolders = computed(() =>
+    this.folders().filter(f => f.system).length > 4
+  );
 
 }
 
