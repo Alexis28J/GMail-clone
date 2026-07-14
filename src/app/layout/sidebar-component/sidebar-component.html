@@ -1,6 +1,6 @@
 <aside class="sidebar">
 
-
+    <!------------------------------------------ HEADER ------------------------------------------->
     <div class="sidebar-header">
         <button class="compose-btn" matTooltip="Compose a new email" matTooltipPosition="below" (click)="openCompose()">
             <mat-icon>edit</mat-icon>
@@ -8,20 +8,10 @@
         </button>
     </div>
 
-    <!-- <nav> -->
-    <!-- @for (item of menuItems; track item.id) {
-            <div class="menu-item">
-                <div class="menu-left">
-                    <mat-icon>{{ item.icon }}</mat-icon>
-                    <span>{{ item.name }}</span>
-                </div>
 
-                @if (item.count) {
-                <span class="count">{{ item.count }}</span>
-                }
-            </div>
-            } -->
-    <!-- </nav> -->
+    <!------------------------------------------ CONTENUTO ------------------------------------------->
+
+    <!------------------------------- SYSTEM FOLDERS ---------------------------------------->
     <div class="sidebar-content">
         <app-folder-list-component [folders]="visibleSystemFolders()"
             (folderSelected)="onFolderSelected($event)"></app-folder-list-component>
@@ -39,11 +29,10 @@
             (folderSelected)="onFolderSelected($event)"></app-folder-list-component>
         }
 
-
-        <!-- @if (customFolders().length > 0) { -->
-
+        <!--------------------- LINEA DI DIVISIONE ----------------------->
         <div class="divider"></div>
 
+        <!------------------------------- CUSTOM FOLDERS ---------------------------------------->
         <div class="custom-folders">
 
             <span>Custom folders</span>
@@ -58,8 +47,6 @@
 
         <app-folder-list-component [folders]="customFolders()" (folderSelected)="onFolderSelected($event)">
         </app-folder-list-component>
-
-        <!-- } -->
 
     </div>
 

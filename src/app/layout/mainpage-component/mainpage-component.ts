@@ -81,8 +81,15 @@ export class MainpageComponent {
 
   ///// INOLTRO
   onForward(email: EmailInterface) {
-    console.log('Forward dal MAIN:', email);
+    
+    this.emailService.setFordwardEmail(email);
+
+    this.dialog.open(ComposeDialog, {
+      width: '500px'
+    })
   }
+
+
 
   ///// RISPOSTA
   onReply(email: EmailInterface) {
@@ -96,7 +103,7 @@ export class MainpageComponent {
     // Ho commentato questa parte perché ho spostato la pulizia del signal replyDraft nel metodo ngOnDestroy del componente ComposeDialog, 
     // così che venga pulito automaticamente quando il dialog viene chiuso, evitando di doverlo fare manualmente qui.
     // dialogRef.afterClosed().subscribe(() => {
-    //   this.emailService.clearReplyDraft();  // Pulisco il signal replyDraft dopo la chiusura del dialog, così che la prossima volta che apro il dialog non ci siano dati residui della bozza di risposta precedente
+    //  this.emailService.clearReplyDraft();  // Pulisco il signal replyDraft dopo la chiusura del dialog, così che la prossima volta che apro il dialog non ci siano dati residui della bozza di risposta precedente
     // })
   }
 

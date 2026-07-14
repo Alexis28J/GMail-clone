@@ -1,11 +1,30 @@
 
 # COMMENTI
 
+```html
+    <nav> 
+    @for (item of menuItems; track item.id) {
+            <div class="menu-item">
+                <div class="menu-left">
+                    <mat-icon>{{ item.icon }}</mat-icon>
+                    <span>{{ item.name }}</span>
+                </div>
+
+                @if (item.count) {
+                <span class="count">{{ item.count }}</span>
+                }
+            </div>
+            }
+    </nav>
+```
+
 - Il `track` nel ciclo `for` serve a Angular per identificare in modo univoco ogni elemento della lista, migliorando le prestazioni durante il rendering. 
 
 
-## Modifica
-Ho commentato il ciclo for e il codice relativo alle voci del menu statiche perché ora utilizziamo il componente FolderListComponent per visualizzare le cartelle dinamicamente.
+
+## MODIFICA
+Ho sostituito il ciclo for e il codice relativo alle voci del menu statiche perché ora utilizziamo il componente FolderListComponent per visualizzare le cartelle dinamicamente.
+
 
 ### NB: Il binding delle proprietà è un meccanismo che consente di passare dati da un componente genitore a un componente figlio. In questo caso, il componente `SidebarComponent` passa l'array di cartelle al componente `FolderListComponent` tramite il binding delle proprietà. 
 
@@ -41,3 +60,22 @@ Il parametro `$event` contiene i dati dell'evento emesso dal componente figlio.
 In sintesi, `(folderSelected)="onFolderSelected($event)"` significa che stiamo ascoltando l'evento `folderSelected` emesso dal componente `FolderListComponent` e, quando viene emesso, chiamiamo il metodo `onFolderSelected` del componente `SidebarComponent`, passando i dati dell'evento come argomento.
 
 Nel nostro caso, il componente genitore `SidebarComponent` riceve l'evento `folderSelected` dal componente figlio `FolderListComponent` e gestisce l'evento tramite il metodo `onFolderSelected`. 
+
+
+
+## MODIFICA
+
+Ho suddiviso i folder in `system` e `custom`. In questo modo è più chiaro. Nella sezione `system` ci sono le cartelle di default e quelle nascoste affinché non occupino spazio nella sidebar. La sezione dei `custom` contiene le cartelle create dall'utente.
+
+Per farlo utilizzo due metodi: `visibleSystemFolders()` e `hiddenSystemFolders()`.
+
+- `[folders]="visibleSystemFolders()"` significa che vengono mostrate solo le cartelle di sistema visibili.
+
+- `(click)="showMoreFolders.set(!showMoreFolders())"` significa che al click viene invertito il valore di `showMoreFolders`
+
+- `{{ showMoreFolders() ? 'expand_less' : 'expand_more' }}` significa che se `showMoreFolders()` è true mostra `'expand_less'`, altrimenti `'expand_more'`.
+
+`'expand_more'` e `'expand_less'` sono le icone utilizzate per indicare l'espansione o la contrazione della lista.
+
+- 
+

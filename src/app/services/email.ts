@@ -248,7 +248,7 @@ export class EmailService {
 
   // Per primo creo un signal per la bozza di risposta, che può essere un oggetto parziale di EmailInterface o null
   // Questo signal conterrà i dati da precompilare nel dialog. replyDraft è un signal che contiene la bozza di risposta corrente, se presente, altrimenti null
-  replyDraft = signal<Partial<EmailInterface> | null>(null);
+  // replyDraft = signal<Partial<EmailInterface> | null>(null);
   // Partial<EmailInterface> perché non tutte le proprietà sono necessarie per la bozza di risposta
   //| null perché inizialmente non c'è nessuna bozza di risposta
   //(null) indica che non c'è nessuna bozza di risposta attiva
@@ -256,7 +256,8 @@ export class EmailService {
 
   setReplyEmail(originalEmail: EmailInterface) {   //Funzione per impostare la bozza di risposta a partire dall'email originale
 
-    this.replyDraft.set({
+    //this.replyDraft.set({
+    this.composeDraft.set({
       recipient: originalEmail.sender,
 
       subject: originalEmail.subject.startsWith('Re: ')
@@ -275,10 +276,57 @@ export class EmailService {
   // Pulire il signal
   // Altrimenti succede un problema. 
   // Reply a una mail. Chiudo il dialog. Nuova Compose. Mi ritrovo ancora i dati della reply.
-  clearReplyDraft() {
-    this.replyDraft.set(null);
-  }
+  //clearReplyDraft() {
+    //this.replyDraft.set(null);
+  //} // ngOnDestroy() del componente ComposeDialog chiama questa funzione per pulire il signal replyDraft quando il dialog viene chiuso, 
+  // così che la prossima volta che apro il dialog non ci siano dati residui della bozza di risposta precedente
 
+
+  ////////////////////INOLTRARE EMAIL (FORWARD) A PARTIRE DALLA EMAIL ORIGINALE
+
+  // Aggiungo un signal per il forward
+  //forwardDraft = signal<Partial<EmailInterface> | null>(null);
+
+  setFordwardEmail(originalEmail: EmailInterface) {
+
+    const date = new Date(originalEmail.timestamp); //timestamp viene visualizzato in un formato leggibile nel dialog, ma viene salvato come stringa ISO nel database. 
+    
+    //this.forwardDraft.set({
+    this.composeDraft.set({
+
+      recipient: '',
+
+      subject: originalEmail.subject.startsWith('Fwd: ')
+        ? originalEmail.subject
+        : `Fwd: ${originalEmail.subject}`,
+
+      body: ` 
+      ---------------------------------------------------------------\n
+      Forwarded message 
+
+      From: ${originalEmail.sender}\n
+      To: ${originalEmail.recipient}\n
+      Date: ${date.toLocaleString()}\n
+      Subject: ${originalEmail.subject}\n
+
+      ${originalEmail.body}
+      `
+    }); // \n va a capo nel dialog ma non nel database, perché il database salva la stringa così com'è, con \n come carattere speciale.
+  } 
+
+  //clearForwardDraft() {
+    //this.forwardDraft.set(null);
+  //}
+
+  //REFACTORING: 1 solo signal per la bozza di email, che può essere una bozza di risposta o una bozza di inoltro.
+  // In questo modo non ho bisogno di due signals separati, ma posso usare un solo signal per gestire entrambe le situazioni.
+  // Questo semplifica il codice e riduce la duplicazione.
+  
+  composeDraft = signal<Partial<EmailInterface> | null>(null);
+
+  clearComposeDraft() {
+    this.composeDraft.set(null);
+  }
 
 }
 

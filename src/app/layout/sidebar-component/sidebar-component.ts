@@ -17,17 +17,6 @@ import { CreateFolderDialog } from '../../shared/create-folder-dialog/create-fol
   styleUrls: ['./sidebar-component.scss'],
 })
 export class SidebarComponent {
-  // menuItems = [
-  //   { id: 1, name: 'Inbox', icon: 'inbox', count: 10 },
-  //   { id: 2, name: 'Special', icon: 'star' },
-  //   { id: 3, name: 'Sent', icon: 'send' },
-  //   { id: 4, name: 'Drafts', icon: 'drafts', count: 1 },
-  //   { id: 5, name: 'Spam', icon: 'report', count: 3 },
-  //   { id: 6, name: 'Important', icon: 'label_important' },
-  //   { id: 7, name: 'Categories', icon: 'label' },
-  //   { id: 8, name: 'Snoozed', icon: 'snooze' },
-  //   { id: 9, name: 'Trash', icon: 'delete' },
-  // ];
 
   private folderService = inject(Folder);
 
@@ -35,10 +24,14 @@ export class SidebarComponent {
 
   folders = this.folderService.getFolders();
 
+
+  ///// SELEZIONA CARTELLE
   onFolderSelected(folderId: string) {
     this.folderService.setSelectedFolder(folderId);
   }
 
+
+  ///// APRI COMPOSE DIALOG
   openCompose() {
     this.dialog.open(ComposeDialog, {
       width: '500px',
@@ -46,6 +39,7 @@ export class SidebarComponent {
   }
 
 
+  ///// APRI CREATE FOLDER DIALOG
   openCreateFolderDialog() {
     const dialogRef = this.dialog.open(CreateFolderDialog, {
       width: '400px',
@@ -59,10 +53,11 @@ export class SidebarComponent {
   }
 
 
-  //////////////////////////
+  /////  GESTIONE CARTELLE  ///////
 
   showMoreFolders = signal(false);
 
+  ///// CARTELLE VISIBILI
   visibleSystemFolders = computed(() => {
     return this.folders()
       .filter(folder => folder.system)
@@ -70,6 +65,7 @@ export class SidebarComponent {
   });
 
 
+  ///// CARTELLE NASCOSTE
   hiddenSystemFolders = computed(() => {
     return this.folders()
       .filter(folder => folder.system)
@@ -77,11 +73,13 @@ export class SidebarComponent {
   });
 
 
+  ///// CARTELLE PERSONALIZZATE
   customFolders = computed(() =>
     this.folders().filter(folder => folder.system !== true)
   );
 
 
+  ///// CI SONO ALTRE CARTELLE?
   hasMoreFolders = computed(() =>
     this.folders().filter(f => f.system).length > 4
   );

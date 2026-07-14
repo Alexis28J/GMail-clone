@@ -322,18 +322,3 @@ Infine, tutti questi componenti della data vengono uniti in una singola stringa 
 
 
 
-## SELEZIONARE TUTTE LE EMAIL
-
-Ho creato una proprietà `selectAll` che è un segnale reattivo contenente un booleano.
-
-Inizializzo il segnale con il valore `false`, che rappresenta lo stato iniziale di selezione di tutte le email.
-
-Il tipo `<boolean>` indica che il segnale conterrà solo valori di tipo booleano.
-
-Questo segnale può essere utilizzato per tenere traccia dello stato di selezione di tutte le email e aggiornare l'interfaccia utente di conseguenza.
-
-Ho creato un metodo pubblico `setSelectAll(value: boolean)` che accetta un parametro `value` di tipo booleano.
-
-Questo metodo viene utilizzato per aggiornare il valore del segnale `selectAll` con il nuovo valore passato come argomento.
-
-In questo modo, quando viene chiamato questo metodo, lo stato di selezione di tutte le email viene aggiornato e l'interfaccia utente può reagire di conseguenza per selezionare o deselezionare tutte le email

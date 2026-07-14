@@ -17,16 +17,19 @@ export class CreateFolderDialog {
 
   dialogRef = inject(MatDialogRef<CreateFolderDialog>);
 
+  ///// SALVARE NOME DELLA CARTELLA
   save() {
-    if (!this.folderName.trim()) {
-      return;
+    if (!this.folderName.trim()) {  
+      return;  
     }
 
     this.dialogRef.close(this.folderName);
   }
 
-  close() {
-    this.dialogRef.close();
+
+  ///// CHIUDERE LA DIALOG
+  close() {  
+    this.dialogRef.close(); 
   }
 
 }
