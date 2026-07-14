@@ -14,6 +14,7 @@ import { AuthService } from '../../services/auth';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MovableFolder } from '../../constants/folders.constants';
+import { ComposeDialog } from '../../shared/compose-dialog/compose-dialog';
 
 
 @Component({
@@ -85,7 +86,18 @@ export class MainpageComponent {
 
   ///// RISPOSTA
   onReply(email: EmailInterface) {
-    console.log('Reply dal MAIN:', email);
+    this.emailService.setReplyEmail(email);  // Setta la bozza di risposta nel servizio EmailService
+    // Il dialog di risposta di default è più piccolo rispetto al dialog di composizione email, quindi lo apriamo con una larghezza maggiore per dare più spazio all'utente per scrivere la risposta.
+    // const dialogRef = 
+    this.dialog.open(ComposeDialog, {
+      width: '500px'
+    }); // Apre il dialogo di composizione email, che leggerà la bozza di risposta dal servizio EmailService
+
+    // Ho commentato questa parte perché ho spostato la pulizia del signal replyDraft nel metodo ngOnDestroy del componente ComposeDialog, 
+    // così che venga pulito automaticamente quando il dialog viene chiuso, evitando di doverlo fare manualmente qui.
+    // dialogRef.afterClosed().subscribe(() => {
+    //   this.emailService.clearReplyDraft();  // Pulisco il signal replyDraft dopo la chiusura del dialog, così che la prossima volta che apro il dialog non ci siano dati residui della bozza di risposta precedente
+    // })
   }
 
 
@@ -256,6 +268,7 @@ export class MainpageComponent {
       }
     });
   }
+
 
 }
 

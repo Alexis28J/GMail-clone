@@ -242,7 +242,44 @@ export class EmailService {
       is_deleted: false
     });
   }
-  
+
+
+  ///// CREARE RISPOSTA EMAIL (REPLY) A PARTIRE DALLA EMAIL ORIGINALE
+
+  // Per primo creo un signal per la bozza di risposta, che può essere un oggetto parziale di EmailInterface o null
+  // Questo signal conterrà i dati da precompilare nel dialog. replyDraft è un signal che contiene la bozza di risposta corrente, se presente, altrimenti null
+  replyDraft = signal<Partial<EmailInterface> | null>(null);
+  // Partial<EmailInterface> perché non tutte le proprietà sono necessarie per la bozza di risposta
+  //| null perché inizialmente non c'è nessuna bozza di risposta
+  //(null) indica che non c'è nessuna bozza di risposta attiva
+
+
+  setReplyEmail(originalEmail: EmailInterface) {   //Funzione per impostare la bozza di risposta a partire dall'email originale
+
+    this.replyDraft.set({
+      recipient: originalEmail.sender,
+
+      subject: originalEmail.subject.startsWith('Re: ')
+        ? originalEmail.subject
+        : `Re: ${originalEmail.subject}`,
+
+      body: `
+      ---------------------------------------------------------------\n
+      From: ${originalEmail.sender}
+      
+      ${originalEmail.body}
+      `
+    });
+  }
+
+  // Pulire il signal
+  // Altrimenti succede un problema. 
+  // Reply a una mail. Chiudo il dialog. Nuova Compose. Mi ritrovo ancora i dati della reply.
+  clearReplyDraft() {
+    this.replyDraft.set(null);
+  }
+
+
 }
 
 

@@ -14,7 +14,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 export class MailViewerComponent {
 
-  constructor(public emailService: EmailService) {}
+  constructor(public emailService: EmailService) { }
 
   @Input() email: EmailInterface | null = null;
 
@@ -32,5 +32,6 @@ export class MailViewerComponent {
       this.reply.emit(this.email);
     }
   }
+
 
 }

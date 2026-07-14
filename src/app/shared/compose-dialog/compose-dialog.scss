@@ -1,7 +1,7 @@
 .compose-container {
     display: flex;
     flex-direction: column;
-    width: 100%;
+    width: 100%;  
     height: 100%;
 }
 
@@ -31,7 +31,7 @@
         margin-top: 10px;
         border: none;
         resize: none;
-        height: 150px;
+        height: 200px;
         outline: none;
         border-bottom: 1px solid #ccc;
     }
@@ -64,3 +64,8 @@
     background-color: rgb(248, 221, 221);
     border-radius: 50%;
 }
+
+:host {
+  display: block;  // permette al dialog di occupare tutto lo spazio disponibile
+}
+
