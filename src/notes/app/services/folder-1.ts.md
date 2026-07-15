@@ -34,7 +34,7 @@ Inoltre, ho aggiunto anche il servizio `AuthService` per poter verificare se l'u
 
 ## FOLDER SELEZIONATO
 
-`private selectedFolder = signal<string>('Inbox');`
+- `private selectedFolder = signal<string>('Inbox');`
 Creo una proprietà privata `selectedFolder` che è un segnale reattivo contenente una stringa. 
 
 Inizializzo il segnale con il valore 'Inbox', che rappresenta la cartella selezionata di default. 
@@ -43,8 +43,10 @@ Il tipo `<string>` indica che il segnale conterrà solo valori di tipo stringa.
 
 Questo segnale può essere utilizzato per tenere traccia della cartella attualmente selezionata e aggiornare l'interfaccia utente di conseguenza.
 
+`inbox` è la cartella predefinita all'avvio dell'applicazione. Se l'utente non ha selezionato una cartella, verrà visualizzata la posta in arrivo per impostazione predefinita.
 
-`if (this.selectedFolder() === folderId) { return; }`
+
+- `if (this.selectedFolder() === folderId) { return; }`
 Ho aggiunto un controllo all'interno del metodo `setSelectedFolder(folderId: string)`.
 
 Questo controllo verifica se la cartella selezionata attuale (`this.selectedFolder()`) è uguale alla cartella passata come parametro (`folderId`). 
@@ -54,7 +56,7 @@ Se sono uguali, significa che l'utente ha selezionato la stessa cartella già se
 In questo caso, il metodo termina immediatamente con `return;`, evitando di eseguire ulteriori operazioni e migliorando le prestazioni dell'applicazione.
 
 
-Ho aggiunto `this.emailService.clearSelection();` all'interno del metodo `setSelectedFolder(folderId: string)` prima di aggiornare il segnale `selectedFolder`.
+- Ho aggiunto `this.emailService.clearSelection();` all'interno del metodo `setSelectedFolder(folderId: string)` prima di aggiornare il segnale `selectedFolder`.
 
 Questo serve a deselezionare tutte le email quando l'utente cambia cartella. 
 In questo modo, quando l'utente seleziona una nuova cartella, tutte le email precedentemente selezionate vengono deselezionate automaticamente, evitando confusione e garantendo che l'interfaccia utente rifletta correttamente lo stato delle email nella nuova cartella selezionata.
@@ -193,6 +195,10 @@ In questo modo, quando l'utente digita qualcosa nella barra di ricerca, i risult
    
 Uso `result`, invece di `return`, per poter applicare il filtro search successivamente.
 
+Prima di usare `result`, ritornava direttamente il filtro, ma ora uso result per poter applicare anche il filtro di ricerca successivamente.
+
+In parole povere, prima filtravo solo per cartella, ora filtro anche per ricerca (e per menu filtri).
+
 
 7. Ho AGGIUNTO un controllo `if (!search) return result;` prima di filtrare le email in base al termine di ricerca.
 Questo controllo verifica se il termine di ricerca è vuoto o nullo.
@@ -201,15 +207,17 @@ Se il termine di ricerca è vuoto o nullo, la funzione restituisce l'array di em
 In questo modo, se l'utente non ha inserito alcun termine di ricerca, verranno visualizzate tutte le email filtrate in base alla cartella selezionata.
 
 
-6. Ho MODIFICATO il filtro in modo che le email perché si possano filtrare in base a più parole chiave separate da spazi.
+8. Ho MODIFICATO il filtro in modo che le email perché si possano filtrare in base a più parole chiave separate da spazi.
 Perciò ho creato `keywords = search.split(' ').filter(k => k.length > 0);` che è una variabile che contiene un array di parole chiave separate da spazi.
 
 ### NB: `k` è una variabile che rappresenta ogni parola chiave nell'array keywords.
 
 
-7. `Fallback` se tutto è disattivato. Se l'array `fields` è vuoto (`if (fields.length === 0)`), significa che nessun filtro è attivo, quindi vengono aggiunti tutti i campi dell'email all'array `fields` (`fields.push(email.subject, email.body, email.sender, email.recipient)`) per garantire che la ricerca funzioni correttamente anche quando nessun filtro è attivo.
+9. ### `Fallback` se tutto è disattivato. 
+Se l'array `fields` è vuoto (`if (fields.length === 0)`), significa che nessun filtro è attivo, quindi vengono aggiunti tutti i campi dell'email all'array `fields` (`fields.push(email.subject, email.body, email.sender, email.recipient)`) per garantire che la ricerca funzioni correttamente anche quando nessun filtro è attivo.
 
-8. Concateno i campi selezionati in un'unica stringa e la converto in minuscolo per la ricerca case insensitive, poi verifico che ogni keyword sia presente nella stringa concatenata dei campi selezionati.
+
+10. Concateno i campi selezionati in un'unica stringa e la converto in minuscolo per la ricerca case insensitive, poi verifico che ogni keyword sia presente nella stringa concatenata dei campi selezionati.
 
 `const searchableText = fields.join(' ').toLowerCase();` significa che la ricerca non è case sensitive
 e ogni keyword deve essere presente nel testo concatenato dei campi selezionati.
@@ -261,7 +269,7 @@ In parole semplici, `setFilter()` serve per impostare un filtro specifico (subje
 In questo modo, le email filtrate saranno anche filtrate in base ai filtri attivi selezionati dall'utente.
 
 
-7. Successivamente, ho modificato il filtro con una serie di condizioni che verificano se i filtri attivi sono impostati su true o false e aggiungono i campi corrispondenti all'array fields (vedi `FILTRO SEARCH (VERSIONE MULTIKEYWORD) E FILTRO MENU FILTRI (SUBJECT, SENDER, DATE)`)
+7. Successivamente, ho modificato il filtro con una serie di condizioni che verificano se i filtri attivi sono impostati su true o false e aggiungono i campi corrispondenti all'array fields (vedi `FILTRO SEARCH (VERSIONE MULTIKEYWORD) E FILTRO MENU FILTRI (SUBJECT, SENDER, DATE)` su folder.ts)
 
 `if(filters.subject) fields.push(email.subject);` vuol dire che se il filtro subject è attivo (true), allora il campo subject dell'email viene aggiunto all'array fields.
 

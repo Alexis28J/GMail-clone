@@ -37,3 +37,23 @@ Quindi, se voglio spostare tutte le email selezionate in una cartella specifica,
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+## SIGNAL E METODI DI PULIZIA SOSTITUITI
+
+`replyDraft = signal<Partial<EmailInterface> | null>(null);`
+
+`forwardDraft = signal<Partial<EmailInterface> | null>(null);`
+
+```typescript
+clearForwardDraft() {
+   this.forwardDraft.set(null);
+  }
+
+clearForwardDraft() {
+   this.forwardDraft.set(null);
+  }
+```
+
+Ho deciso di creare un singolo signal (`composeDraft`) per gestire le bozze di reply e forward. 
+Pertanto, anche i due metodi di pulizia signal sono stati sostituiti per uno solo (`clearComposeDraft`).
+
+Vedi: `email-3.ts.md`

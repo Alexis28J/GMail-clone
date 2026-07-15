@@ -19,3 +19,4 @@
 ```
 
 Ho commentato il codice precedente per usare il ciclo dinamico. In questo modo, il menu si aggiorna automaticamente in base alle cartelle disponibili grazie all'input availableFolders.
+

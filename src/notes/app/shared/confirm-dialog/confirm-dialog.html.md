@@ -17,4 +17,4 @@ Il pulsante "Proceed" utilizza l'attributo `[mat-dialog-close]` con una espressi
 E a differenza del pulsante "Cancel", utilizza le parentesi quadre per indicare che il valore è un'espressione Angular. 
 
 
-## NB: Ho commentato la riga 4 per utilizzare il binding `[innerHTML]` e interpretare il messaggio come `HTML`. E così facendo, posso visualizzare il grassetto la parola DELETE o RESTORE. -->
+## NB: Ho commentato la riga 4 per utilizzare il binding `[innerHTML]` e interpretare il messaggio come `HTML`. E così facendo, posso visualizzare il grassetto la parola DELETE o RESTORE.

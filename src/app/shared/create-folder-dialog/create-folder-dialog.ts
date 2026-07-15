@@ -11,6 +11,8 @@ import { MatIcon } from "@angular/material/icon";
   templateUrl: './create-folder-dialog.html',
   styleUrls: ['./create-folder-dialog.scss'],
 })
+
+
 export class CreateFolderDialog {
 
   folderName = '';

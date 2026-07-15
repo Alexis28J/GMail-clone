@@ -17,7 +17,7 @@ L'opzione providedIn: 'root' significa che il servizio sarà disponibile a livel
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-## CLASSE EMAILSERVICE
+## CLASSE EMAIL SERVICE
 
 `export class EmailService { ... }`
 Dichiariamo la classe `EmailService`, che rappresenta un servizio che gestisce le email. Questa classe conterrà i dati delle email e i metodi per accedervi.
@@ -66,6 +66,11 @@ return this.emailsSignal();
 Definiamo un metodo pubblico `getEmails()` che restituisce l'array di email. Questo metodo può essere chiamato da altri componenti o servizi per ottenere la lista delle email.
 
 Il metodo utilizza `this.emailsSignal()` per accedere ai dati delle email, che sono gestiti come un segnale reattivo.
+
+Il metodo prende le email dal `signal` e le restituisce come `Observable`, in modo che i componenti possano sottoscriversi e ricevere aggiornamenti in tempo reale.
+
+In parole semplici, questa funzione restituisce il `signal` che contiene le email.
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -172,7 +177,9 @@ La cartella viene impostata su "drafts" e la label su "Draft" per indicare che s
 
  ## SELEZIONA / DESELEZIONA EMAIL PER ID (array di ids)
 
- ## NB: Il metodo `toggleEmailSelection`  e `setSelectedEmails` fanno la stessa cosa, ma `toggleEmailSelection` è più specifico per un singolo emailId, mentre `setSelectedEmails` può gestire un array di ids.
+Metodo per selezionare o deselezionare più email contemporaneamente, dato un array di ID di email e un valore booleano selected.
+
+## NB: Il metodo `toggleEmailSelection` e `setSelectedEmails` fanno la stessa cosa, ma `toggleEmailSelection` è più specifico per un singolo emailId, mentre `setSelectedEmails` può gestire un array di ids.
 
 `setSelectedEmails(ids: number[], selected: boolean) { ... }`
 Definiamo un metodo pubblico `setSelectedEmails()` che viene chiamato quando l'utente vuole selezionare o deselezionare una o più email.
@@ -233,13 +240,13 @@ Il metodo si iscrive all'osservabile restituito dalla richiesta `HTTP` e, quando
 
 In questo modo, le email vengono caricate dal server all'avvio del servizio e possono essere visualizzate nell'applicazione.  
 
-### NB: Siccome mockapi genera un id come stringa, è meglio usare string invece di number. Perciò ho modificato l'interfaccia `EmailInterface` e tutti i metodi che utilizzano l'id delle email per lavorare con string invece di number.
+### NB: Siccome `mockapi` genera un id come `stringa`, è meglio usare string invece di `number`. Perciò ho modificato l'interfaccia `EmailInterface` e tutti i metodi che utilizzano l'id delle email per lavorare con `string` invece di `number`.
 
-### NB: Gli observable in Angular sono flussi di dati asincroni che possono emettere valori nel tempo. Il metodo `subscribe()` permette di iscriversi a un observable e ricevere i valori emessi, eseguendo una funzione callback ogni volta che viene emesso un nuovo valore. 
+### NB: Gli `observable` in Angular sono flussi di dati asincroni che possono emettere valori nel tempo. Il metodo `subscribe()` permette di iscriversi a un `observable` e ricevere i valori emessi, eseguendo una funzione callback ogni volta che viene emesso un nuovo valore. 
 
-In questo caso, viene utilizzato per ricevere le email dall'API mockapi.io e aggiornare lo stato del segnale emailsSignal con i dati ricevuti.
+In questo caso, viene utilizzato per ricevere le email dall'API mockapi.io e aggiornare lo stato del segnale `emailsSignal` con i dati ricevuti.
 
-Ora emailsSignal viene inizializzato come un array vuoto e viene popolato con le email recuperate dall'API mockapi.io quando il metodo `loadEmails()` viene chiamato nel costruttore del servizio.
+Ora `emailsSignal` viene inizializzato come un array vuoto e viene popolato con le email recuperate dall'API mockapi.io quando il metodo `loadEmails()` viene chiamato nel costruttore del servizio.
 
 Nel metodo `loadEmails()`, `next` serve per gestire la risposta positiva della richiesta HTTP, mentre `error` serve per gestire eventuali errori durante la richiesta. 
 

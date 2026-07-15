@@ -12,10 +12,10 @@ import { AuthService } from './auth';
 export class Folder {
 
   constructor(private emailService: EmailService, private authService: AuthService, private http: HttpClient
-
   ) {
-    this.loadFolders();
+    this.loadFolders();  
   }
+
 
   private selectedFolder = signal<string>('inbox');
 
@@ -35,32 +35,22 @@ export class Folder {
   ];
 
 
+  ///// FOLDERS SIGNAL (FOLDERS DI SISTEMA + FOLDERS CUSTOM)
   private foldersSignal = signal<FolderInterface[]>([]);
 
-  // private foldersSignal = signal<FolderInterface[]>(
-  //   [
-  //     { id: 'inbox', name: 'Inbox', icon: 'inbox', movable: true },
-  //     { id: 'starred', name: 'Special', icon: 'star', movable: false },
-  //     { id: 'snoozed', name: 'Snoozed', icon: 'watch_later', movable: false },
-  //     { id: 'sent', name: 'Sent', icon: 'send', movable: false },
-  //     { id: 'drafts', name: 'Drafts', icon: 'drafts', movable: false },
-  //     { id: 'spam', name: 'Spam', icon: 'report', movable: false },
-  //     { id: 'important', name: 'Important', icon: 'label_important', movable: false },
-  //     { id: 'personal', name: 'Personal', icon: 'person', movable: false },
-  //     { id: 'archived', name: 'Archived', icon: 'archive', movable: false },
-  //     { id: 'work', name: 'Work', icon: 'work', movable: false },
-  //     { id: 'trash', name: 'Trash', icon: 'delete', movable: false },
-  //   ]
-  // );
 
+  ///// API URL
   private folderApiUrl =
     'https://6a477fc3abfcbaade1188ff8.mockapi.io/api/gclone/folder';
 
 
+  ///// RECUPERO CARTELLE (FOLDERS DI SISTEMA + FOLDERS CUSTOM)
   getFolders() {
     return this.foldersSignal;
   }
 
+
+  ///// CARTELLA SELEZIONATA
   setSelectedFolder(folderId: string) {
 
     if (this.selectedFolder() === folderId) {
@@ -71,30 +61,37 @@ export class Folder {
     this.selectedFolder.set(folderId);
   }
 
+
+  ///// RECUPERO CARTELLA SELEZIONATA
   getSelectedFolder() {
     return this.selectedFolder;
   }
 
 
-  // TROVARE MESSAGGI
+  //////////////////////////////////////FILTRO CARTELLE E RICERCA EMAIL//////////////////////////////////////////
+
+  ///// TERMINI DI RICERCA
   private searchTerm = signal<string>('');
 
+
+  ///// IMPOSTA TERMINI DI RICERCA
   setSearchTerm(term: string) {
     this.searchTerm.set(term.toLowerCase().trim());
   }
 
+  ///// RECUPERO TERMINI DI RICERCA
   getSearchTerm() {
     return this.searchTerm;
   }
 
+  /////Integro la search (cioè i termini di ricerca) dentro filteredEmails////// 
 
-  //Integro la search dentro filteredEmails. 
 
-
+  ///// MESSAGGI FILTRATI (IN BASE ALLA CARTELLA SELEZIONATA E AI TERMINI DI RICERCA)
   filteredEmails = computed(() => {
 
     if (!this.authService.isLoggedIn()) {
-      return [];   // non mostrerà nulla se l'utente non è loggato
+      return [];
     }
 
     const folder = this.selectedFolder();
@@ -107,67 +104,53 @@ export class Folder {
     switch (folder) {
 
       case 'starred':
-        //return emails.filter(e => e.starred && !e.is_deleted);
         result = emails.filter(e => e.starred && !e.is_deleted);
         break;
 
       case 'important':
-        //return emails.filter(e => e.label === 'Important' && !e.is_deleted);
         result = emails.filter(e => e.label === 'Important' && !e.is_deleted);
         break;
 
       case 'spam':
-        //return emails.filter(e => e.folder === 'spam');
         result = emails.filter(e => e.folder === 'spam' && !e.is_deleted);
         break;
 
       case 'trash':
-        //return emails.filter(e => e.is_deleted === true);
         result = emails.filter(e => e.is_deleted === true);
         break;
 
       case 'drafts':
-        //return emails.filter(e => e.folder === 'drafts');
         result = emails.filter(e => e.folder === 'drafts' && !e.is_deleted);
         break;
 
       case 'sent':
-        //return emails.filter(e => e.folder === 'sent');
         result = emails.filter(e => e.folder === 'sent' && !e.is_deleted);
         break;
 
       case 'personal':
-        //return emails.filter(e => e.label === 'Personal' && !e.is_deleted);
         result = emails.filter(e => e.label === 'Personal' && !e.is_deleted);
         break;
 
       case 'work':
-        //return emails.filter(e => e.label === 'Work' && !e.is_deleted);
         result = emails.filter(e => e.label === 'Work' && !e.is_deleted);
         break;
 
       case 'archived':
-        //return emails.filter(e => e.folder === 'archived');
         result = emails.filter(e => e.folder === 'archived' && !e.is_deleted);
         break;
 
       case 'snoozed':
-        //return emails.filter(e => e.folder === 'snoozed');
         result = emails.filter(e => e.folder === 'snoozed' && !e.is_deleted);
         break;
 
       case 'inbox':
-      //return emails.filter(e => !e.is_deleted);
-
-      //default: return emails.filter(e => !e.is_deleted);
-
       default: result = emails.filter(e => !e.is_deleted && e.folder === folder);
 
     }
 
 
 
-    // FILTRO SEARCH (VERSIONE MULTIKEYWORD) E FILTRO MENU FILTRI (SUBJECT, SENDER, DATE)
+    ///// FILTRO SEARCH (VERSIONE MULTIKEYWORD) E FILTRO MENU FILTRI (SUBJECT, SENDER, DATE)
     if (!search) return result;
 
     const keywords = search.split(' ').filter(k => k.length > 0);
@@ -179,7 +162,6 @@ export class Folder {
       if (filters.subject) fields.push(email.subject);
       if (filters.sender) fields.push(email.sender);
 
-      //if (filters.date) fields.push(email.timestamp.toString()); 
       if (filters.date) {
         const date = typeof email.timestamp === 'string' ? new Date(email.timestamp) : email.timestamp;
 
@@ -200,8 +182,7 @@ export class Folder {
       }
 
 
-      // fallback se tutto è disattivato. 
-
+      /////fallback se tutto è disattivato/////
       if (fields.length === 0) {
 
         fields.push(email.subject, email.body, email.sender, email.recipient);
@@ -219,7 +200,7 @@ export class Folder {
   });
 
 
-  // MENU FILTRI
+  ///// SIGNAL PER TENERE TRACCIA DEI FILTRI ATTIVI (SUBJECT, SENDER, DATE)
   private activeFilters = signal({
     subject: true,
     sender: true,
@@ -227,22 +208,27 @@ export class Folder {
   });
 
 
+  ///// IMPOSTA FILTRO ATTIVO/DISATTIVO
   setFilter(key: keyof ReturnType<typeof this.activeFilters>, value: boolean) {
     this.activeFilters.update(f => ({ ...f, [key]: value }));
   }
 
 
+  ///// RECUPERO FILTRI ATTIVI
   getFilters() {
     return this.activeFilters;
   }
 
 
+  /////////////////////////////////////////CARTELLE CUSTOM//////////////////////////////////////////////////
+
+  ////// AGGIUNGI CARTELLA PERSONALIZZATA
   addFolder(name: string) {
 
     const exists = this.foldersSignal().some(folder => folder.name.toLowerCase() === name.toLowerCase());
     if (exists) {
-     console.error(`Folder with name "${name}" already exists.`);
-     return;
+      console.error(`Folder with name "${name}" already exists.`);
+      return;
     }
 
     this.http.post<FolderInterface>(
@@ -260,8 +246,9 @@ export class Folder {
   }
 
 
+  ///// CARICA CARTELLE DI SISTEMA E PERSONALIZZATE DA API
   loadFolders() {
-    
+
     this.http.get<FolderInterface[]>(
       this.folderApiUrl
     )

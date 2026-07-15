@@ -16,22 +16,25 @@ export class MailViewerComponent {
 
   constructor(public emailService: EmailService) { }
 
-  @Input() email: EmailInterface | null = null;
-
-  @Output() reply = new EventEmitter<EmailInterface>();
+  @Input() email: EmailInterface | null = null;   
+  @Output() reply = new EventEmitter<EmailInterface>();  
   @Output() forward = new EventEmitter<EmailInterface>();
 
+
+  ///// GESTIONE INOLTRA E RISPOSTA EMAIL
+
+  ///// INOLTRA EMAIL
   onForward() {
     if (this.email) {
       this.forward.emit(this.email);
     }
-
   }
+
+  ///// RISPOSTA EMAIL
   onReply() {
     if (this.email) {
       this.reply.emit(this.email);
     }
   }
-
 
 }

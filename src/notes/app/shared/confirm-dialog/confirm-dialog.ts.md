@@ -1,6 +1,9 @@
 
 # COMMENTI
 
+Questo componente rappresenta un dialogo di conferma che può essere utilizzato per chiedere all'utente di confermare un'azione. Il messaggio da visualizzare nel dialogo viene passato tramite l'iniezione di dipendenza `MAT_DIALOG_DATA`.
+
+
 `import { Component, Inject } from '@angular/core';`
 Importiamo il decoratore `Component` da Angular, che ci permette di dichiarare la classe come un componente. 
 Importiamo anche il decoratore `Inject`, che ci consente di iniettare dipendenze nel costruttore della classe.

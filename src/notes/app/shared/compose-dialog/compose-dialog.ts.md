@@ -59,3 +59,83 @@ La funzione `send()` invia l'email e chiude la finestra di dialogo, mentre la fu
 
 ### NB: `''` indica che non vogliamo un'azione specifica nel messaggio di notifica, come un pulsante "Annulla" o "Chiudi". 
 ### In questo caso, il messaggio di notifica sarà visualizzato per un breve periodo di tempo e poi scomparirà automaticamente.
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+## COLLEGAMENTO CON IL SIGNAL COMPOSE DRAFT (EMAIL SERVICE) (REPLY E FORWARD)
+
+Inizialmente avevo 2 signal separati per Reply e Forward e li avevo collegato con il ComposeDialogComponent.
+
+`replyDraft = this.emailService.replyDraft;` :  collegamento al signal replyDraft del servizio EmailService
+`forwardDraft = this.emailService.forwardDraft;` : collegamento al signal forwardDraft del servizio EmailService
+
+Tuttavia, per rendere più pulito il codice, ho deciso di creare uno solo che gestisca entrambi.
+
+`composeDraft = this.emailService.composeDraft;`: collegamento al `signal composeDraft` del servizio `EmailService` 
+ Significa che ogni volta che il valore di `composeDraft` cambia nel servizio `EmailService`, anche il valore di `composeDraft` in `ComposeDialog` cambierà automaticamente.
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+## IMPLEMENTAZIONE DEL LIFECYCLE HOOK ON DESTROY DI ANGULAR
+
+1. 
+
+Ho aggiunto un costruttore per creare un effetto che reagisce ai cambiamenti del signal `replyDraft`.
+
+Ogni volta che `replyDraft` cambia, l'effetto aggiorna i campi del dialogo di composizione email (recipient, subject, body) con i valori della bozza di risposta. Se `replyDraft` è null, non fa nulla.
+
+In Angular moderno normalmente si usa `effect()` nel costruttore:
+In questo modo non ho bisogno di usare `ngOnInit()`, `ngOnChanges()` né altri lifecycle hooks, perché l'effetto si attiva automaticamente quando il signal cambia.
+
+L'effetto viene creato una sola volta quando il componente viene istanziato, e non viene ricreato ad ogni render del template, evitando comportamenti indesiderati.
+
+In questo caso l'effetto serve a sincronizzare i campi del dialogo di composizione email con i valori della bozza di risposta, senza sovrascrivere i valori dei campi quando l'utente sta scrivendo una nuova email.
+In parole povere, l'effetto serve a "leggere" i valori della bozza di risposta e a "scriverli" nei campi del dialogo di composizione email, ma solo quando la bozza di risposta cambia, e non quando l'utente sta scrivendo una nuova email.
+
+
+```typescript
+constructor() {
+    effect(() => {
+    //I signal replyDraft e forwardDraft sono stati sostituiti, quindi non servono più
+    // const draft = this.replyDraft() ?? this.forwardDraft();  // Prendo il valore corrente del signal replyDraft o forwardDraft. Se entrambi sono null, draft sarà null.
+    // if (!draft) return;  // Se replyDraft è null, esci dall'effetto senza fare nulla
+
+    const draft = this.emailService.composeDraft();  // Prendo il valore corrente del signal composeDraft. Se è null, draft sarà null.
+
+    if (!draft) return;  // Se composeDraft è null, esci dall'effetto senza fare nulla
+
+    this.recipient = draft.recipient ?? '';  // ?? significa che se draft.recipient è undefined o null, allora assegna una stringa vuota
+    this.subject = draft.subject ?? '';
+    this.body = draft.body ?? '';
+      });
+}
+```
+
+In sintesi, questo effetto osserva il signal `composeDraft` del servizio `EmailService`. Ogni volta che il valore di `composeDraft` cambia (ad esempio, quando l'utente seleziona "Reply" o "Forward" su un'email), l'effetto viene eseguito e aggiorna i campi del dialogo di composizione email con i valori della bozza di risposta o inoltro. Se `composeDraft` è `null`, significa che non c'è alcuna bozza da caricare, quindi i campi rimangono vuoti.
+
+La differenza tra l'`effect` e il `computed` è che l'effect non restituisce un valore, ma esegue un'azione ogni volta che i signals a cui fa riferimento cambiano.
+In questo caso, l'`action` è aggiornare i campi del dialogo di composizione email con i valori della bozza di risposta.
+
+L'uso del `constructor` qui serve a garantire che `l'effetto` sia creato una sola volta e non ricreato ad ogni render del template, evitando comportamenti indesiderati.
+Ad esempio, se l'effetto fosse creato ad ogni render, potrebbe sovrascrivere i valori dei campi del dialogo di composizione email anche quando l'utente sta scrivendo una nuova email, causando perdita di dati.
+
+
+2. 
+
+Importo `OnDestroy` per poter utilizzare il `lifecycle hook ngOnDestroy`, che viene chiamato quando il componente viene distrutto (cioè quando il `dialog` viene chiuso). 
+
+In questo caso, lo utilizzo per pulire il `signal composeDraft` quando il dialog viene chiuso, così che la prossima volta che apro il dialog non ci siano dati residui della bozza di risposta o inoltro precedente.
+
+```typescript
+ngOnDestroy() {
+    this.emailService.clearComposeDraft();
+}
+```
+
+RIPETO:
+`OnDestroy` è un `lifecycle hook di Angular` che viene chiamato quando il componente viene distrutto, cioè rimosso dal DOM. 
+In questo caso, viene usato per pulire il `signal replyDraft` quando il dialog viene chiuso.
+
+`this.emailService.clearComposeDraft()`; 
+Pulisco il signal composeDraft quando il componente viene distrutto (cioè quando il dialog viene chiuso), così che la prossima volta che apro il dialog non ci siano dati residui della bozza di risposta o inoltro precedente.
+

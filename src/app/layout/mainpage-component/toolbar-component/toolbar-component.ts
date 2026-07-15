@@ -25,41 +25,38 @@ export class ToolbarComponent {
   @Input() canGoPrev = true;
   @Input() isTrashView = false;
   @Input() availableFolders: FolderInterface[] = [];
-  
+
 
 
   @Output() nextMail = new EventEmitter<void>();
-  //@Output() nextMail = new EventEmitter<EmailInterface>();
-
   @Output() prevMail = new EventEmitter<void>();
-  //@Output() prevMail = new EventEmitter<EmailInterface>();
-
-  @Output() delete = new EventEmitter<void>();  //emitte un evento a MainPageComponent
-
+  @Output() delete = new EventEmitter<void>();
   @Output() restore = new EventEmitter<void>();
-
   @Output() archive = new EventEmitter<void>();
-
   @Output() moveRequested = new EventEmitter<string>();
 
 
-
+  ////// EMETTE EVENTI AL COMPONENTE PADRE (MainPageComponent) PER NAVIGARE TRA LE EMAIL
   onNext() {
     this.nextMail.emit();
   }
 
+  ///// EMETTE EVENTI AL COMPONENTE PADRE (MainPageComponent) PER NAVIGARE TRA LE EMAIL
   onPrev() {
     this.prevMail.emit();
   }
 
+  ///// EMETTE EVENTI AL COMPONENTE PADRE (MainPageComponent) PER ELIMINARE LE EMAIL SELEZIONATE
   onDelete() {
-    this.delete.emit();  //emitte un evento a MainPageComponent 
+    this.delete.emit();
   }
 
+  ///// EMETTE EVENTI AL COMPONENTE PADRE (MainPageComponent) PER RIPRISTINARE LE EMAIL SELEZIONATE
   onRestore() {
     this.restore.emit();
   }
 
+  ///// EMETTE EVENTI AL COMPONENTE PADRE (MainPageComponent) PER ARCHIVIARE LE EMAIL SELEZIONATE
   onArchive() {
     this.archive.emit();
   }
@@ -79,7 +76,6 @@ export class ToolbarComponent {
 
 
   ///// VERIFICA SE TUTTE LE EMAIL VISIBILI SONO SELEZIONATE
-  //allSelected(): boolean {
   allSelected = computed(() => {
     const visibleEmails = this.folderService.filteredEmails();
     const selectableEmails = visibleEmails.filter(e => !e.is_deleted);
@@ -87,19 +83,7 @@ export class ToolbarComponent {
   });
 
 
-  ////// CAMBIO STATO SELEZIONE EMAILS
-  toggleSelectAll(event: MatCheckboxChange) {
-    //const checked = (event.target as HTMLInputElement).checked;
-    const visibleEmails = this.folderService.filteredEmails();
-    const ids = visibleEmails.map(email => email.id);
-
-    //this.emailService.setSelectedEmails(ids, checked);
-    this.emailService.setSelectedEmails(ids, event.checked);
-  }
-
-
   ////// VERIFICA SE ALCUNE EMAIL VISIBILI SONO SELEZIONATE
-  //isPartiallySelected(): boolean {
   isPartiallySelected = computed(() => {
     const visibleEmails = this.folderService.filteredEmails();
 
@@ -112,20 +96,29 @@ export class ToolbarComponent {
   });
 
 
+  ///// CAMBIO STATO SELEZIONE EMAILS
+  toggleSelectAll(event: MatCheckboxChange) {
+    const visibleEmails = this.folderService.filteredEmails();
+    const ids = visibleEmails.map(email => email.id);
+
+    this.emailService.setSelectedEmails(ids, event.checked);
+  }
+
+
   ///// CONTA EMAIL SELEZIONATE 
   selectedCount = computed(() => {
     return this.folderService
       .filteredEmails()
       .filter(email => email.selected && !email.is_deleted)
       .length;
-  })
+  });
 
 
   ///// POSSIBILITÀ DI ARCHIVIARE LE EMAIL
   canArchive = computed(() => {
     const folder = this.folderService.getSelectedFolder()();
     return folder !== 'trash' && folder !== 'archived';
-  })
+  });
 
 
   ///// SPOSTA LE EMAIL SELEZIONATE IN UNA CARTELLA SPECIFICA 

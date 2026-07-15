@@ -1,3 +1,37 @@
+## SEGNA COME PREFERITO (SPECIAL)
+```typescript
+  toggleStar(email: EmailInterface) {
+
+    const starred = !email.starred;
+
+    // il signal viene aggiornato localmente
+    this.emailsSignal.update(emails =>
+      emails.map(e =>
+        e.id === email.id
+          ? { ...e, starred } 
+          : e
+      )
+    );
+
+    // si aggiorna anche il mockapi.io con una richiesta HTTP PUT
+    this.http.put(
+      `${this.apiUrl}/${email.id}`,
+      {
+        ...email, 
+        starred
+      }
+    ).subscribe();
+
+      }
+```      
+Questo metodo aggiorna lo stato "starred" di un'email sia localmente nel signal che sul server mockapi.io tramite una richiesta `HTTP PUT`.
+
+### NB: `...e` : significa che mantengo tutte le proprietà dell'email originale, ma sovrascrivo la proprietà `starred` con il nuovo valore.
+
+### NB: `subscribe()` : vuoto perché non ho bisogno di fare nulla con la risposta, ma voglio comunque eseguire la richiesta `HTTP PUT` per aggiornare il mockapi.io
+
+
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ## REFACTORING
@@ -203,7 +237,8 @@ diventa:
 ```
 
 
- ## MODIFICA METODO ARCHIVIA EMAIL 
+ ## MODIFICA METODO ARCHIVIA EMAIL
+
  ```typescript
    archiveSelectedEmails() {
     this.moveSelectedEmails('archived');
@@ -214,10 +249,10 @@ diventa:
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
 ## SPOSTARE LE EMAIL SELEZIONATE IN UNA CARTELLA SPECIFICA (es. "work", "personal", "spam", ecc.)
 
   ## METODO GENERICO PER SPOSTARE LE EMAIL SELEZIONATE IN UNA CARTELLA SPECIFICA 
+
   ```typescript
   moveSelectedEmails(targetFolder: string) {
     this.updateSelectedEmails({
@@ -228,13 +263,14 @@ diventa:
   ```
 ### NB: `targetFolder` è la cartella di destinazione, ad esempio "work", "personal", "spam", ecc.
 
-Questo metodo può essere utilizzato per spostare LE email selezionate in qualsiasi cartella specificata,e può essere richiamato da altre parti del codice, come ad esempio il componente della toolbar, 
+Questo metodo può essere utilizzato per spostare LE email selezionate in qualsiasi cartella specificata, e può essere richiamato da altre parti del codice, come ad esempio il componente della toolbar, 
 per implementare la funzionalità di spostamento delle email in una cartella specifica.
 
 Questo metodo sfrutta il metodo privato `updateSelectedEmails` per aggiornare la proprietà `folder` delle email selezionate, spostandole nella cartella `target` specificata. Inoltre, imposta `is_deleted` su false per assicurarsi che le email non siano contrassegnate come eliminate durante lo spostamento.
 
 
-## Piccola MODIFICA del metodo "SPOSTARE LE EMAIL SELEZIONATE"
+## PICCOLA MODIFICA del metodo "SPOSTARE LE EMAIL SELEZIONATE"
+
   ```typescript
   moveSelectedEmails(folder: MovableFolder) {
     this.updateSelectedEmails({
@@ -250,4 +286,23 @@ Ho modificato il tipo del parametro da `string` a `MovableFolder` per garantire 
 Successivamente, ho aggiornato il metodo `moveTo` nel componente `ToolbarComponent` per utilizzare il tipo `MovableFolder` come parametro, garantendo così la coerenza tra il servizio e il componente.
 
 
+## SECONDA PICCOLA MODIFICA 
+
+```typescript
+  moveSelectedEmails(folder: string) {
+    this.updateSelectedEmails({
+      folder,  // significa che la proprietà folder delle email selezionate viene aggiornata con il valore passato come parametro
+      is_deleted: false
+    });
+  }
+```
+Di nuovo, da MovableFolder a string, perché non voglio limitare le cartelle a quelle definite in `MOVABLE_FOLDERS`, ma voglio permettere di spostare le email in qualsiasi cartella, anche quelle personalizzate dall'utente. 
+
+Per questo motivo, ho modificato il tipo del parametro della funzione `moveSelectedEmails` da `MovableFolder` a `string`, consentendo così una maggiore flessibilità nello spostamento delle email selezionate in qualsiasi cartella desiderata.
+
+Inoltre, ho aggiornato il metodo `moveTo` nel componente `ToolbarComponent` per accettare un parametro di tipo `string`, garantendo così la coerenza tra il servizio e il componente.
+
+`MovableFolder` è utile per limitare le cartelle a quelle definite in `MOVABLE_FOLDERS`, ma in questo caso voglio permettere di spostare le email in qualsiasi cartella, anche quelle personalizzate dall'utente.
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+

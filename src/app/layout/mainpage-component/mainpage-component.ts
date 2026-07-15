@@ -26,22 +26,8 @@ import { ComposeDialog } from '../../shared/compose-dialog/compose-dialog';
   styleUrls: ['./mainpage-component.scss'],
 })
 
+
 export class MainpageComponent {
-
-  allEmails: Signal<EmailInterface[]>;
-
-  currentIndex = signal<number | null>(null);
-
-
-  selectedEmail = computed<EmailInterface | null>(() => {
-    const index = this.currentIndex();
-    if (index === null) return null;
-    return this.allEmails()[index];
-  });
-
-  // constructor(private emailService: EmailService) {
-  //   this.allEmails = this.emailService.getEmails();
-  // }
 
   constructor(
     private emailService: EmailService,
@@ -55,13 +41,30 @@ export class MainpageComponent {
 
   }
 
+  ///// SIGNAL CHE CONTIENE TUTTE LE EMAIL VISIBILI NELLA LISTA DELLE EMAIL
+  allEmails: Signal<EmailInterface[]>;
+
+
+  ///// INDICE DELL'EMAIL SELEZIONATA NELLA LISTA DELLE EMAIL VISIBILI
+  currentIndex = signal<number | null>(null);
+
+
+  ///// EMAIL SELEZIONATA (SIGNAL CHE CONTIENE L'EMAIL SELEZIONATA NELLA LISTA DELLE EMAIL VISIBILI)
+  selectedEmail = computed<EmailInterface | null>(() => {
+    const index = this.currentIndex();
+    if (index === null) return null;
+    return this.allEmails()[index];
+  });
+
+
   ///// EMAIL SELEZIONATA
   onEmailSelected(email: EmailInterface) {
     const index = this.allEmails().findIndex(e => e.id === email.id);
     this.currentIndex.set(index);
   }
 
-  //// EMAIL SUCCESSIVA
+
+  ///// EMAIL SUCCESSIVA
   nextEmail() {
     const index = this.currentIndex();
 
@@ -70,7 +73,8 @@ export class MainpageComponent {
     }
   }
 
-  //// EMAIL PRECEDENTE
+
+  ///// EMAIL PRECEDENTE
   previousEmail() {
     const index = this.currentIndex();
 
@@ -79,10 +83,11 @@ export class MainpageComponent {
     }
   }
 
-  ///// INOLTRO
+
+  ///// INOLTRA EMAIL
   onForward(email: EmailInterface) {
-    
-    this.emailService.setFordwardEmail(email);
+
+    this.emailService.setForwardEmail(email);
 
     this.dialog.open(ComposeDialog, {
       width: '500px'
@@ -90,28 +95,17 @@ export class MainpageComponent {
   }
 
 
-
-  ///// RISPOSTA
+  ///// RISPOSTA EMAIL
   onReply(email: EmailInterface) {
-    this.emailService.setReplyEmail(email);  // Setta la bozza di risposta nel servizio EmailService
-    // Il dialog di risposta di default è più piccolo rispetto al dialog di composizione email, quindi lo apriamo con una larghezza maggiore per dare più spazio all'utente per scrivere la risposta.
-    // const dialogRef = 
+    this.emailService.setReplyEmail(email);
     this.dialog.open(ComposeDialog, {
       width: '500px'
-    }); // Apre il dialogo di composizione email, che leggerà la bozza di risposta dal servizio EmailService
-
-    // Ho commentato questa parte perché ho spostato la pulizia del signal replyDraft nel metodo ngOnDestroy del componente ComposeDialog, 
-    // così che venga pulito automaticamente quando il dialog viene chiuso, evitando di doverlo fare manualmente qui.
-    // dialogRef.afterClosed().subscribe(() => {
-    //  this.emailService.clearReplyDraft();  // Pulisco il signal replyDraft dopo la chiusura del dialog, così che la prossima volta che apro il dialog non ci siano dati residui della bozza di risposta precedente
-    // })
+    });
   }
 
 
   //// ELIMINA EMAIL SELEZIONATE
   onDeleteSelected() {
-    //1) // const confirmed = confirm('Are you sure you want to delete this email?');
-    // if (!confirmed) return;
 
     const hasSelect = this.allEmails().some(email => email.selected);
 
@@ -119,7 +113,8 @@ export class MainpageComponent {
       return;
     }
 
-    const dialogRef = this.dialog.open(ConfirmDialog, {   //2) 
+
+    const dialogRef = this.dialog.open(ConfirmDialog, {
       autoFocus: false,
       data: {
         message: 'Are you sure to want to <strong>DELETE</strong> these messages?'
@@ -133,7 +128,7 @@ export class MainpageComponent {
 
         this.snackBar.open('Emails deleted', '', {
           duration: 3000,
-          panelClass: ['custom-snackbar'] // Aggiungi la classe personalizzata qui (styles.scss)
+          panelClass: ['custom-snackbar']
         });
       }
     });
@@ -171,7 +166,7 @@ export class MainpageComponent {
 
         this.snackBar.open('Emails restored', '', {
           duration: 3000,
-          panelClass: ['custom-snackbar'] // Aggiungi la classe personalizzata qui (styles.scss)
+          panelClass: ['custom-snackbar']
         });
       }
     });
@@ -185,10 +180,9 @@ export class MainpageComponent {
 
     this.snackBar.open('Email sent', '', {
       duration: 3000,
-      panelClass: ['custom-snackbar'] // Aggiungi la classe personalizzata qui (styles.scss)
+      panelClass: ['custom-snackbar']
     });
   }
-
 
 
   ///// FARE IL LOGOUT
@@ -221,7 +215,7 @@ export class MainpageComponent {
 
         this.snackBar.open('Emails archived', '', {
           duration: 3000,
-          panelClass: ['custom-snackbar'] // Aggiungi la classe personalizzata qui (styles.scss)
+          panelClass: ['custom-snackbar']
         });
       }
     });
@@ -233,13 +227,6 @@ export class MainpageComponent {
   availableFolders = computed(() => {
 
     const currentFolder = this.folderService.getSelectedFolder()();
-
-    // return this.folderService.getFolders()().filter(
-    //   (f): f is FolderInterface & { id: MovableFolder } =>
-    //     MOVABLE_FOLDERS.includes(
-    //       f.id as MovableFolder
-    //     ) && f.id !== currentFolder
-    // );
 
     return this.folderService.getFolders()().filter(folder =>
       folder.id !== currentFolder && folder.movable !== false
@@ -270,7 +257,7 @@ export class MainpageComponent {
 
         this.snackBar.open(`Emails moved to ${folder.toUpperCase()}`, '', {
           duration: 3000,
-          panelClass: ['custom-snackbar'] // Aggiungi la classe personalizzata qui (styles.scss)
+          panelClass: ['custom-snackbar']
         });
       }
     });

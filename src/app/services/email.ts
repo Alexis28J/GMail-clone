@@ -1,7 +1,5 @@
 import { Injectable, signal } from '@angular/core';
 import { EmailInterface } from '../interface/email-interface';
-// import { effect } from '@angular/core';
-// import { AuthService } from './auth';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpClient } from '@angular/common/http';
 
@@ -11,24 +9,24 @@ import { HttpClient } from '@angular/common/http';
 
 export class EmailService {
 
-  //// API URL
+  constructor(private snackBar: MatSnackBar, private http: HttpClient) {
+    this.loadEmails(); // Carica le email dal mockapi.io all'avvio del servizio
+  };
+
+
+  ///// API URL
   private apiUrl =
     'https://6a477fc3abfcbaade1188ff8.mockapi.io/api/gclone/emails';
 
 
+  ///// SIGNAL CHE CONTERRA' LE EMAIL
   private emailsSignal = signal<EmailInterface[]>([]);
 
 
-  //// PRENDERE LE EMAIL
+  ///// PRENDERE LE EMAIL
   getEmails() {
     return this.emailsSignal;
   }
-
-
-  //// CONSTRUCTOR EFFETTO
-  constructor(private snackBar: MatSnackBar, private http: HttpClient) {
-    this.loadEmails(); // Carica le email dal mockapi.io all'avvio del servizio
-  };
 
 
   ///// CARICA EMAIL DAL MOCKAPI.IO
@@ -36,8 +34,8 @@ export class EmailService {
   // false perché all'avvio non stiamo caricando le email, ma le carichiamo subito dopo con loadEmails()
 
   loadEmails() {
-
-    this.loading.set(true);
+    // Ho aggiunto un signal loading per mostrare un indicatore di caricamento durante il recupero delle email dal mockapi.io
+    this.loading.set(true); // setto il signal loading a true per mostrare l'indicatore di caricamento
 
     this.http.get<EmailInterface[]>(this.apiUrl)
       .subscribe({
@@ -116,7 +114,7 @@ export class EmailService {
   }
 
 
-  ///// SELEZIONA / DESELEZIONA EMAIL PER ID (array di ids)
+  ///// SELEZIONA / DESELEZIONA EMAIL PER ID (array di ids) (per selezionare più email contemporaneamente)
   setSelectedEmails(ids: string[], selected: boolean) {
     this.emailsSignal.update(emails =>
       emails.map(email =>
@@ -181,8 +179,6 @@ export class EmailService {
         starred
       }
     ).subscribe();
-    // subcribe() vuoto perché non ci interessa fare nulla dopo la risposta, 
-    // ma è necessario per eseguire la richiesta HTTP
   }
 
 
@@ -191,6 +187,7 @@ export class EmailService {
   // restoreSelectedEmails() (RIPRISTINA LE EMAIL SELEZIONATE)
   // archiveSelectedEmails() (ARCHIVIA LE EMAIL SELEZIONATE) 
 
+  ///// FUNZIONE PRIVATA CHE AGGIORNA LE EMAIL SELEZIONATE CON LE MODIFICHE PASSATE COME PARAMETRO
   private updateSelectedEmails(changes: Partial<EmailInterface>) {
 
     const selectedEmails = this.emailsSignal().filter(e => e.selected);
@@ -218,22 +215,21 @@ export class EmailService {
     });
   }
 
+  ///// FUNZIONI PUBBLICHE CHE CHIAMANO LA FUNZIONE PRIVATA updateSelectedEmails() CON LE MODIFICHE CORRISPONDENTI:
+
+  ///// ELIMINA LE EMAIL SELEZIONATE
   deleteSelectedEmails() {
     this.updateSelectedEmails({
       is_deleted: true
     });
   }
 
+  ///// RIPRISTINA LE EMAIL SELEZIONATE
   restoreSelectedEmails() {
     this.updateSelectedEmails({
       is_deleted: false
     });
   }
-
-  archiveSelectedEmails() {
-    this.moveSelectedEmails('archived');
-  }
-
 
   ///// SPOSTARE LE EMAIL SELEZIONATE
   moveSelectedEmails(folder: string) {
@@ -243,20 +239,21 @@ export class EmailService {
     });
   }
 
+  ///// ARCHIVIA LE EMAIL SELEZIONATE
+  archiveSelectedEmails() {
+    this.moveSelectedEmails('archived');
+  }
+
+
+  ///////////////////////////////////REPLY E FORWARD EMAIL///////////////////////////////////////////////
+
+  ///// SIGNAL CHE CONTERRA' LA BOZZA DI EMAIL (REPLY O FORWARD)
+  composeDraft = signal<Partial<EmailInterface> | null>(null);
+
 
   ///// CREARE RISPOSTA EMAIL (REPLY) A PARTIRE DALLA EMAIL ORIGINALE
+  setReplyEmail(originalEmail: EmailInterface) {
 
-  // Per primo creo un signal per la bozza di risposta, che può essere un oggetto parziale di EmailInterface o null
-  // Questo signal conterrà i dati da precompilare nel dialog. replyDraft è un signal che contiene la bozza di risposta corrente, se presente, altrimenti null
-  // replyDraft = signal<Partial<EmailInterface> | null>(null);
-  // Partial<EmailInterface> perché non tutte le proprietà sono necessarie per la bozza di risposta
-  //| null perché inizialmente non c'è nessuna bozza di risposta
-  //(null) indica che non c'è nessuna bozza di risposta attiva
-
-
-  setReplyEmail(originalEmail: EmailInterface) {   //Funzione per impostare la bozza di risposta a partire dall'email originale
-
-    //this.replyDraft.set({
     this.composeDraft.set({
       recipient: originalEmail.sender,
 
@@ -273,25 +270,12 @@ export class EmailService {
     });
   }
 
-  // Pulire il signal
-  // Altrimenti succede un problema. 
-  // Reply a una mail. Chiudo il dialog. Nuova Compose. Mi ritrovo ancora i dati della reply.
-  //clearReplyDraft() {
-    //this.replyDraft.set(null);
-  //} // ngOnDestroy() del componente ComposeDialog chiama questa funzione per pulire il signal replyDraft quando il dialog viene chiuso, 
-  // così che la prossima volta che apro il dialog non ci siano dati residui della bozza di risposta precedente
 
+  /////INOLTRARE EMAIL (FORWARD) A PARTIRE DALLA EMAIL ORIGINALE
+  setForwardEmail(originalEmail: EmailInterface) {
 
-  ////////////////////INOLTRARE EMAIL (FORWARD) A PARTIRE DALLA EMAIL ORIGINALE
+    const date = new Date(originalEmail.timestamp);
 
-  // Aggiungo un signal per il forward
-  //forwardDraft = signal<Partial<EmailInterface> | null>(null);
-
-  setFordwardEmail(originalEmail: EmailInterface) {
-
-    const date = new Date(originalEmail.timestamp); //timestamp viene visualizzato in un formato leggibile nel dialog, ma viene salvato come stringa ISO nel database. 
-    
-    //this.forwardDraft.set({
     this.composeDraft.set({
 
       recipient: '',
@@ -311,25 +295,13 @@ export class EmailService {
 
       ${originalEmail.body}
       `
-    }); // \n va a capo nel dialog ma non nel database, perché il database salva la stringa così com'è, con \n come carattere speciale.
-  } 
+    });
+  }
 
-  //clearForwardDraft() {
-    //this.forwardDraft.set(null);
-  //}
 
-  //REFACTORING: 1 solo signal per la bozza di email, che può essere una bozza di risposta o una bozza di inoltro.
-  // In questo modo non ho bisogno di due signals separati, ma posso usare un solo signal per gestire entrambe le situazioni.
-  // Questo semplifica il codice e riduce la duplicazione.
-  
-  composeDraft = signal<Partial<EmailInterface> | null>(null);
-
+  ///// PULISCE IL SIGNAL composeDraft (evita residui di dati)
   clearComposeDraft() {
     this.composeDraft.set(null);
   }
 
 }
-
-
-
-
