@@ -18,3 +18,5 @@ Ma a condizione che isTrashView sia true, il pulsante di ripristino sarà visibi
 - `matMenu` è un riferimento locale al menu stesso. Sia `moveMenu` che `matMenu` fanno riferimento allo stesso menu. Sono nomi che posso scegliere liberamente. 
 
 -  Il ciclo `@for` genera dinamicamente i bottoni per le cartelle disponibili grazie all'`input` `availableFolders` di `ToolbarComponent`.
+
+- `[indeterminate]` provviene dal componente `MatCheckbox` di `Angular Material` ed è un stato che indica che solo alcuni elementi sono selezionati.

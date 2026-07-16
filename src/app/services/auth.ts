@@ -33,7 +33,7 @@ export class AuthService {
     }
 
 
-    // FUNZIONE PER REGISTRARE UN NUOVO UTENTE
+    ///// FUNZIONE PER REGISTRARE UN NUOVO UTENTE
 
     register(username: string, email: string, password: string): { success: boolean; message?: string } {
 
@@ -73,7 +73,7 @@ export class AuthService {
     }
 
 
-    // FUNZIONE PER EFFETTUARE IL LOGIN
+    ///// FUNZIONE PER EFFETTUARE IL LOGIN
 
     login(email: string, password: string): { success: boolean, message?: string } {
 
@@ -93,7 +93,7 @@ export class AuthService {
     }
 
 
-    // FUNZIONE PER EFFETTUARE IL LOGOUT
+    ///// FUNZIONE PER EFFETTUARE IL LOGOUT
 
     logout() {
         this.currentUserSignal.set(null);

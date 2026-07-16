@@ -13,15 +13,6 @@
 }
 
 
-// mark per evidenziare le parole chiave nella lista delle email
-::ng-deep mark {
-  background-color: rgb(236, 184, 184);
-  padding: 0 2px;
-  border-radius: 2px;
-}
-
-
-
 //////////////CHECKBOX////////////////////
 
 
@@ -29,14 +20,12 @@
   background-color: rgb(235, 223, 223);
 }
 
-// .selected input[type="checkbox"] {
-//   accent-color: rgb(242, 210, 210); 
-// }
 
 .select-all-checkbox {
   margin-left: 8px;
   margin-right: 8px;
 }
+
 
 /////////////////DETTAGLI////////////////////
 
@@ -112,13 +101,3 @@
 
 
 
-////////////////////////////COMMENTI/////////////////////////////////
-
-
-//.selected è una classe CSS che viene applicata all'elemento .email-item quando l'email è selezionata. 
-
-//In questo caso, cambia lo sfondo dell'email per indicare visivamente che è stata selezionata.
-
-//[class.selected] è una sintassi Angular che permette di aggiungere o rimuovere dinamicamente la classe CSS selected in base al risultato della funzione isSelected(email).
-
-// .selected { background-color: rgb(221, 200, 200); }  //colore di sfondo per l'email selezionata

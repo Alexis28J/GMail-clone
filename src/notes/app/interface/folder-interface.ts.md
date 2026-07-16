@@ -16,3 +16,12 @@ Questo tipo viene utilizzato per garantire che solo valori validi vengano assegn
 
 Quindi, quando si crea un oggetto che implementa l'interfaccia `FolderInterface`,
 la proprietà id deve essere uno dei valori specificati nel tipo `FolderId`, altrimenti TypeScript genererà un errore di tipo.
+
+
+La proprietà `movable` indica se la cartella può essere spostata o meno. Se è impostata su `true`, significa che la cartella può essere spostata in un'altra posizione. 
+Se è impostata su `false` o non è presente, significa che la cartella non può essere spostata.
+Questa proprietà è utile per determinare se l'utente può modificare la posizione della cartella all'interno dell'interfaccia utente o se la cartella è fissa in una posizione specifica.
+
+La proprietà `system` indica se la cartella è di sistema. Se è impostata su `true`, significa che la cartella è una cartella di sistema e potrebbe avere restrizioni particolari (vedi `folderService`).
+Se è impostata su `false` o non è presente, significa che la cartella non è di sistema.
+Questa proprietà è utile per distinguere tra cartelle di sistema e cartelle personalizzate create dall'utente, e può influenzare il comportamento dell'applicazione in base al tipo di cartella.

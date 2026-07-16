@@ -22,7 +22,7 @@
   border-radius: 50%;
 }
 
-/// Tutti i Checkbox
+///// CHECKBOX SELEZIONA TUTTO /////
 .select-all-checkbox {
   border-radius: 50%;
   transition: background-color 0.2s ease;
@@ -34,6 +34,7 @@
 }
 
 
+///// CONTAINER BOTTONI SINISTRA /////
 .btn-container-left {
   display: flex;
   align-items: center;
@@ -41,22 +42,27 @@
 }
 
 
+////// CONTAINER BOTTONI CENTRO /////
 .btn-container-center {
   display: flex;
   gap: 40px;
   justify-content: space-evenly;
 }
 
-.btn-group {
-  display: flex;
-  gap: 30px;
-}
 
+///// CONTAINER BOTTONI DESTRA /////
 .btn-container-right {
   display: flex;
   gap: 5px;
 }
 
+///// GRUPPO BOTTONI /////
+.btn-group {
+  display: flex;
+  gap: 30px;
+}
+
+////// BOTTONI PREVIOUS E NEXT /////
 .previous-next-btn {
   background-color: rgb(221, 200, 200);
   border-radius: 4px;
@@ -67,6 +73,8 @@
   border-radius: 4px;
 }
 
+
+///// SPAZIO TRA I BOTTONI E IL CONTAINER DELLA SELEZIONE /////
 .spacer {
   display: flex;
   flex: 1;
@@ -74,13 +82,14 @@
 }
 
 
-
+////// CONTAINER SELEZIONE /////
 .selection-container {
   display: flex;
   align-items: center;
   gap: 6px;
 }
 
+///// CONTATORE DI SELEZIONE /////
 .selection-counter {
   font-size: 14px;
   font-weight: 500;

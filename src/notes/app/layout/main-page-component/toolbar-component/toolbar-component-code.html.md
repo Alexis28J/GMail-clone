@@ -20,3 +20,10 @@
 
 Ho commentato il codice precedente per usare il ciclo dinamico. In questo modo, il menu si aggiorna automaticamente in base alle cartelle disponibili grazie all'input availableFolders.
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+```html
+<!-- <input type="checkbox" [checked]="allSelected" (change)="toggleSelectAll($event)"  matTooltip="Select All" matTooltipPosition="above" /> -->
+```
+
+Ho sostituito `l'input type='checkbox'` con `mat-checkbox` perché offre uno stile coerente con `Angular Material`.

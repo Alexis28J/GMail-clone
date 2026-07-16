@@ -55,7 +55,9 @@ export class SidebarComponent {
 
   /////  GESTIONE CARTELLE  ///////
 
+  ///// SIGNAL PER MOSTRARE O NASCONDERE LE CARTELLE
   showMoreFolders = signal(false);
+
 
   ///// CARTELLE VISIBILI
   visibleSystemFolders = computed(() => {

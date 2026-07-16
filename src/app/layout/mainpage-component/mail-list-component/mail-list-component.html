@@ -2,29 +2,20 @@
 
 <div class="email-item" (click)="selectEmail(email)" [class.selected]="email.selected">
 
-  <!-- <input type="checkbox" (click)="$event.stopPropagation()" [checked]="isSelected(email)"
-    (change)="toggleSelection(email)" /> -->
-
-  <!-- <input type="checkbox" (click)="$event.stopPropagation()" [(ngModel)]="email.selected" /> -->
-  <!-- <mat-checkbox (click)="$event.stopPropagation()" [(ngModel)]="email.selected"></mat-checkbox> -->
   <mat-checkbox (click)="$event.stopPropagation()" [checked]="email.selected"
     (change)="onSelectionChange(email, $event)" class="select-all-checkbox"></mat-checkbox>
 
   <div class="email-details">
-    <!-- <div class="email-subject">{{email.subject}}</div> -->
+
     <div class="email-subject" [innerHTML]="highlight(email.subject)"></div>
-
-    <!-- <div class="email-sender">{{email.sender}}</div> -->
     <div class="email-sender" [innerHTML]="highlight(email.sender)"></div>
-
     <div class="email-timestamp">{{email.timestamp | date:'short'}}</div>
+
   </div>
 
   <!------------------------------- PREFERITI ---------------------------------------------->
 
   <div class="star-label-group">
-    <!-- <span class="star" (click)="toggleStar(email); $event.stopPropagation()">
-      {{ email.starred ? '⭐' : '☆' }}</span> -->
 
     <mat-icon (click)="toggleStar(email)">
       {{ email.starred ? 'star' : 'star_border' }}
@@ -36,7 +27,7 @@
 
   </div>
 
-  <!-- ------------------------ MESSAGGI VUOTI -------------------------------->
+  <!-------------------------------- MESSAGGI VUOTI -------------------------------->
 </div>
 
 } @empty {

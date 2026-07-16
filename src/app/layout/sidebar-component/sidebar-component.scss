@@ -8,27 +8,30 @@
     background: rgb(248, 240, 240);
 }
 
+
+//////HEADER/////
 .sidebar-header {
-    flex-shrink: 0; // previene che l'header si riduca quando lo spazio è limitato
+    flex-shrink: 0;
     padding-top: 20px;
 }
 
+
+//////CONTENT/////
 .sidebar-content {
-    flex: 1;  // permette al contenuto di occupare tutto lo spazio disponibile tra l'header e il footer
+    flex: 1;
     overflow-y: auto;
 
-    // nasconde la scrollbar in tutti i browser
-    -ms-overflow-style: none;
-    /* Internet Explorer e Edge */
-    scrollbar-width: none;
-    /* Firefox */
+    // Nascondo la scrollbar in...
+    -ms-overflow-style: none; // Internet Explorer e Edge
+    scrollbar-width: none; // Firefox
 }
 
 .sidebar-content::-webkit-scrollbar {
-    display: none;
-    /* Chrome, Safari e Opera */
+    display: none; // Chrome, Safari e Opera 
 }
 
+
+/////BOTTONE COMPOSE/////
 .compose-btn {
     height: 53px;
     margin-bottom: 16px;
@@ -55,46 +58,22 @@
     background-color: rgb(248, 221, 221);
 }
 
-// .menu-item {            
-//     height: 40px;
 
-//     display: flex;
-//     align-items: center;
-//     justify-content: space-between;
-
-//     padding: 0 16px 0 24px; 
-
-//     border-radius: 8px;
-
-//     cursor: pointer;
-// }
-
-
-// .menu-item:hover {    
-//     background-color: rgb(248, 221, 221);
-// }
-
-// .menu-left {
-//     display: flex;
-//     align-items: center;
-//     gap: 16px;
-// }
-
+/////NUMERO EMAIL NON LETTE/////
 .count {
-    // numero di email non lette
     font-size: 12px;
     font-weight: 600;
     color: black;
 }
 
 
+/////BOTTONE TOGGLE/////
 .toggle-btn {
     width: 100%;
 
     display: flex;
-    justify-content: baseline;
     align-items: center;
-    gap: 8px; 
+    gap: 8px;
 
     padding: 8px 16px;
 
@@ -106,9 +85,7 @@
 
     color: #5f6368;
     font-size: 14px;
-    // il bottone tende a spostarsi verso il basso quando viene cliccato,
-    // quindi imposto un bordo trasparente per evitare questo comportamento
-    border-bottom: solid 2px transparent;  //funziona perché il bordo trasparente occupa lo stesso spazio del bordo colorato che appare al click
+    border-bottom: solid 2px transparent;
 }
 
 .toggle-btn:hover {
@@ -117,12 +94,16 @@
     border-bottom: solid 2px rgb(222, 175, 175);
 }
 
+
+/////LINEA DIVISORIA/////
 .divider {
     height: 1px;
     margin: 16px 12px;
     background: rgba(0, 0, 0, 0.15);
 }
 
+
+/////CARTELLE CUSTOM/////
 .custom-folders {
     display: flex;
     justify-content: space-evenly;
@@ -139,6 +120,8 @@
     color: #5f6368;
 }
 
+
+/////BOTTONE AGGIUNGI CARTELLA/////
 .add-folder-btn {
     width: 26px;
     height: 26px;
@@ -157,7 +140,8 @@
     border-radius: 50%;
     box-shadow: 0 1px 3px rgb(222, 175, 175);
     background-color: rgb(248, 221, 221);
-    // se voglio che l'icona sia centrata all'interno dell'hover, devo usare display: flex e justify-content: center e align-items: center
+
+    // se voglio che l'icona sia centrata all'interno dell'hover
     display: flex;
     justify-content: center;
     align-items: center;

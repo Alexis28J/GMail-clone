@@ -11,10 +11,13 @@ import { MatIcon } from "@angular/material/icon";
 })
 export class FolderListComponent {
 
+  ///// INPUT PER RICEVERE DAL PADRE L'ARRAY DI CARTELLE DA VISUALIZZARE
   @Input() folders: FolderInterface[] = [];
 
+  ///// OUTPUT PER INVIARE EVENTO AL PADRE QUANDO VIENE SELEZIONATA UNA CARTELLA
   @Output() folderSelected = new EventEmitter<string>();
 
+  ///// INVIA EVENTO AL PADRE QUANDO VIENE SELEZIONATA UNA CARTELLA
   onSelect(folderId: string) {
     this.folderSelected.emit(folderId);
   }

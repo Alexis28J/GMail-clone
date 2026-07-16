@@ -25,26 +25,31 @@ export class HeaderComponent {
     this.currentUser = this.authService.getCurrentUser();
   }
 
+  ///// NAVIGAZIONE AL LOGIN
   goToLogin() {
     if (this.router.url !== '/login') {
       this.router.navigate(['/login']);
     }
   }
 
+  ///// NAVIGAZIONE AL REGISTER
   goToRegister() {
     //this.router.navigate(['/login']);
     this.router.navigate(['/register']);
   }
 
+  ///// FUNZIONE DI LOGOUT
   logout() {
     this.authService.logout();
     this.router.navigate(['/login']);
   }
 
+  ///// FUNZIONE DI RICERCA
   onSearch(value: string) {
     this.folderService.setSearchTerm(value);
   }
 
+  ///// FUNZIONE DI FILTRO (PULSANTI CHECKBOX)
   toggleFilter(type: 'subject' | 'sender' | 'date', event: any) {
     this.folderService.setFilter(type, event.target.checked);
   }

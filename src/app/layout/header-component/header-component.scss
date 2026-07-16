@@ -10,55 +10,6 @@
     border-bottom: 1px solid #e0e0e0;
 }
 
-
-// Menu dei filtri
-::ng-deep .filter-menu {
-    background-color: rgb(248, 240, 240);
-    padding: 12px 16px;
-    border-radius: 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-//Angular Material mette lo sfondo sul panel interno (.mat-mdc-menu-panel), quindi per sicurezza:
-::ng-deep .mat-mdc-menu-panel {
-    background-color: rgb(248, 240, 240) !important;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-}
-
-::ng-deep .filter-menu {
-    background-color: rgb(248, 240, 240);
-    padding: 0 16px;
-    margin-bottom: 12px;
-    border-radius: 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    min-width: 180px;
-}
-
-::ng-deep .filter-title {
-    font-weight: 600;
-    margin-bottom: 6px;
-    font-size: 16px;
-    color: #555;
-}
-
-::ng-deep .filter-menu label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 14px;
-    cursor: pointer;
-}
-
-
-.filter-menu input[type="checkbox"] {
-    accent-color: rgb(242, 210, 210);
-}
-
 ///////////////////////////////////////////////SINISTRA//////////////////////////////////////////////
 
 .header-left {
@@ -100,6 +51,7 @@
     margin: 0 32px;
 }
 
+
 .search-box {
     width: 100%;
     max-width: 600px;
@@ -115,6 +67,7 @@
     border-radius: 24px;
     border: 2px solid black;
 }
+
 
 .search-box input {
     flex: 1;
@@ -136,7 +89,6 @@
     padding-left: 8px;
 }
 
-
 ////////////////////////////////////////////////DESTRA///////////////////////////////////////////////////
 
 .header-right {
@@ -144,6 +96,7 @@
     align-items: center;
     gap: 12px;
 }
+
 
 .icon-btn {
     width: 40px;
@@ -157,9 +110,11 @@
     cursor: pointer;
 }
 
+
 .icon-btn:hover {
     background-color: rgb(248, 221, 221);
 }
+
 
 .user-avatar {
     width: 40px;
@@ -187,28 +142,3 @@
     justify-content: center;
     font-weight: bold;
 }
-
-
-////////////////////////////////////////////COMMENTI///////////////////////////////////////////////////////
-/// 
-/// padding: 0 16px; // 0px verticale, 16px orizzontale
-/// 
-/// background: transparent; // Rimuove il bordo e lo sfondo del pulsante
-/// 
-/// cursor: pointer; // Cambia il cursore quando si passa sopra il pulsante
-/// 
-/// flex: 1; // Occupa tutto lo spazio disponibile tra sinistra e destra
-/// 
-/// padding: 4px 16px; // 4px verticale, 16px orizzontale
-/// 
-/// .search-icon { padding-left: 8px; 
-/// // Aggiunge uno spazio tra l'icona e il bordo sinistro della casella di ricerca
-/// 
-/// .icon-btn:hover {background-color: rgb(248, 221, 221);} 
-/// // Aggiunge un effetto hover per i pulsanti delle icone, cambiando il colore di sfondo quando si passa sopra.
-
-
-// Angular Material mette lo sfondo sul panel interno (.mat-mdc-menu-panel), quindi per sicurezza:
-// ::ng-deep .mat-mdc-menu-panel {...}
-// ::ng-deep serve perché mat-menu vive fuori dal tuo componente e quindi non eredita gli stili del tuo componente. 
-// Senza ::ng-deep, gli stili definiti nel tuo componente non si applicherebbero al mat-menu.

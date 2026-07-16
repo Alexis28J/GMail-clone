@@ -17,9 +17,11 @@ export class Folder {
   }
 
 
+  ///// SIGNAL PER TENERE TRACCIA DELLA CARTELLA SELEZIONATA (INBOX, STARRED, SPAM, TRASH, ETC.)
   private selectedFolder = signal<string>('inbox');
 
 
+  ///// FOLDERS DI SISTEMA (NON MODIFICABILI DALL'UTENTE) 
   private systemFolders: FolderInterface[] = [
     { id: 'inbox', name: 'Inbox', icon: 'inbox', movable: true, system: true },
     { id: 'starred', name: 'Special', icon: 'star', movable: false, system: true },

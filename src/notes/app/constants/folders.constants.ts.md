@@ -10,6 +10,8 @@ In questo caso, il file `folders.constants.ts` contiene una costante chiamata `M
 
 In altre parole, TypeScript inferirà (deducerà) il tipo dell'array come una tupla di stringhe specifiche ('inbox', 'work', 'personal', 'spam', 'archived', 'snoozed') invece di un array generico di stringhe. 
 
+### NB: Una `tupla` che è il linguaggio usato da `Angular` è una sequenza di elementi con un numero fisso di elementi e in cui ogni posizione ha un tipo di dato specifico.
+
 Questo permette di avere un controllo più rigoroso sui valori che possono essere utilizzati in altre parti del codice, migliorando la sicurezza del tipo e riducendo gli errori.
 
 

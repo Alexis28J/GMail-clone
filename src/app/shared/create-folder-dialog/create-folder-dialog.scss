@@ -4,10 +4,13 @@
     gap: 16px;
 }
 
+
 .full-width {
     width: 100%;
 }
 
+
+///// DIALOG CONTENT
 mat-dialog-content {
     min-width: 350px;
     padding-top: 10px;
@@ -15,7 +18,7 @@ mat-dialog-content {
 }
 
 
-
+///// TITOLO DIALOG
 .dialog-title {
     display: flex;
     align-items: center;
@@ -23,10 +26,14 @@ mat-dialog-content {
     background: rgb(236, 226, 226);
 }
 
+
+///// INPUT NOME CARTELLA (RIQUADRO)
 mat-form-field {
     padding-top: 10px;
 }
 
+
+///// BOTTONE CANCEL
 .cancel-btn {
     color: rgb(241, 133, 133) !important;
     font-weight: bold;
@@ -36,6 +43,8 @@ mat-form-field {
     background-color: rgb(248, 221, 221);
 }
 
+
+///// BOTTONE CREA
 .create-btn {
     font-weight: bold;
     color: white !important;
@@ -47,6 +56,8 @@ mat-form-field {
     background-color: red !important;
 }
 
+
+///// PREVIEW IN TEMPO REALE DEL NOME CARTELLA
 .preview {
     display: flex;
     flex-direction: row;

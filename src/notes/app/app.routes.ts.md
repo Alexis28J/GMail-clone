@@ -59,6 +59,6 @@ In questo modo, possiamo avere un layout coerente per tutte le pagine dell'appli
 
 
 ## NB: 
-- main-layout-component.ts è il componente principale che gestisce il layout dell'applicazione. Include l'header e la sidebar, e utilizza il router-outlet per visualizzare i componenti figli in base alla navigazione dell'utente.
-- mainpage-component.ts è il componente principale che viene visualizzato all'interno del layout principale. Viene caricato quando l'utente accede alla sezione "app" dell'applicazione, dopo aver effettuato il login.
-- mainpage-component è il componente figlio del MainLayoutComponent e viene visualizzato all'interno del router-outlet. Contiene la logica e la struttura della pagina principale dell'applicazione, che può includere altre funzionalità e componenti specifici per l'applicazione stessa.
+- `main-layout-component.ts` è il componente principale che gestisce il layout dell'applicazione. Include `l'header` e la `sidebar`, e utilizza il `router-outlet` per visualizzare i componenti figli in base alla navigazione dell'utente.
+- `mainpage-component.ts` è il componente principale che viene visualizzato all'interno del layout principale. Viene caricato quando l'utente accede alla sezione "app" dell'applicazione, dopo aver effettuato il login.
+- `mainpage-component` è il componente figlio del `MainLayoutComponent` e viene visualizzato all'interno del `router-outlet`. Contiene la logica e la struttura della pagina principale dell'applicazione, che può includere altre funzionalità e componenti specifici per l'applicazione stessa.

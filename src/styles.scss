@@ -31,7 +31,8 @@ body {
   // Set a default background, font and text colors for the application using
   // Angular Material's system-level CSS variables. Learn more about these
   // variables at https://material.angular.dev/guide/system-variables
-  background-color: var(--mat-sys-surface);
+  // background-color: var(--mat-sys-surface);
+  background-color: rgb(248, 240, 240);
   color: var(--mat-sys-on-surface);
   font: var(--mat-sys-body-medium);
 
@@ -42,21 +43,72 @@ body {
 
 /* You can add global styles to this file, and also import other style files */
 
-// CUSTOM SNACKBAR
-// container 
+//////////////////////////////////////////////// CUSTOM SNACKBAR//////////////////////////////////////////////////
+
+//container 
 .custom-snackbar .mdc-snackbar__surface {
   background-color: rgb(227, 191, 191) !important;
   border-radius: 8px;
   text-align: center;
 }
 
-// testo 
+//testo 
 .custom-snackbar .mdc-snackbar__label {
   font-size: 16px !important;
 }
 
+///////////////////////////////////////////MENU FILTRI/////////////////////////////////////////////////////////////
 
-// CUSTOM CHECKBOX
+.filter-menu {
+  background-color: rgb(248, 240, 240);
+  padding: 0 16px;
+  margin-bottom: 12px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 180px;
+}
+
+
+.filter-title {
+  font-weight: 600;
+  margin-bottom: 6px;
+  font-size: 16px;
+  color: #555;
+}
+
+
+.filter-menu label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+
+.mat-mdc-menu-panel {
+  background-color: rgb(248, 240, 240) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+
+.filter-menu input[type="checkbox"] {
+  accent-color: rgb(242, 210, 210);
+}
+
+//////////////////////////////////////SEARCH TERM////////////////////////////////////////////////////////////////
+// mark per evidenziare le parole chiave nella lista delle email
+mark {
+  background-color: rgb(236, 184, 184);
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
+/////////////////////////////////////// CUSTOM CHECKBOX///////////////////////////////////////////////////////////
+
 .mdc-checkbox__background {
   border: outset 2px black !important;
   //  transform: scale(0.9);
@@ -101,6 +153,8 @@ body {
 }
 
 
+//////////////////////////////////////////SPINNER E PROGRESS BAR///////////////////////////////////////////////////
+
 // Cambio colore dello spinner
 .mdc-circular-progress__indeterminate-circle-graphic {
   stroke: rgb(221, 200, 200) !important;
@@ -119,6 +173,8 @@ body {
   border-color: rgb(231, 157, 157) !important;
 }
 
+
+//////////////////////////////////////////INPUT FIELDS/////////////////////////////////////////////////////////////
 
 // bordo del campo di input e  testo dell'etichetta (mat-label) 
 /* Colore del bordo in stato normale (apparenza outline) */

@@ -1,4 +1,5 @@
 @if(emailService.loading()){
+<!----------------- SPINNER E LOADING BAR ------------------>
 <div class="loading-container">
   <mat-spinner diameter="50"></mat-spinner>
   <mat-progress-bar mode="indeterminate"></mat-progress-bar>
@@ -10,7 +11,7 @@
 @if(email){
 
 <div class="email-viewer">
-
+<!------------------------------- HEADER ------------------------------------>
   <div class="emailViewer-header">
     <div>
       <h2>{{email.subject}}</h2>
@@ -19,20 +20,20 @@
       <p class="emailViewer-fromTo">To: {{email.recipient}}</p>
     </div>
   </div>
-
+<!------------------------ BODY (CONTENUTO) ------------------------------------>
   <div class="emailViewer-body">
     <p>{{email.body}}</p>
   </div>
 
 </div>
-
+<!------------------------ ACTIONS BUTTONS ------------------------------------>
 <div class="emailViewer-actions">
   <button (click)="onReply()">↩ Reply</button>
   <button (click)="onForward()">➡ Forward</button>
 </div>
 
 } @else {
-
+<!------------------------ NESSUN EMAIL SELEZIONATO (EMPTY STATE) ------------------------------------>
 <div class="emailViewer-empty">
   <div class="emailViewer-empty-icon">📩</div>
   <h3>No Email Selected</h3>

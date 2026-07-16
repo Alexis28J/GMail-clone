@@ -18,6 +18,7 @@ export class ComposeDialog implements OnDestroy {
 
   constructor() {
 
+    ///// EFFETTO PER SINCRONIZZARE LA BOZZA DI COMPOSIZIONE CON IL SERVIZIO EMAIL
     effect(() => {
 
       const draft = this.emailService.composeDraft();

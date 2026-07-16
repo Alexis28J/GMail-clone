@@ -1,9 +1,8 @@
 <section class="toolbar">
 
-    <!-- GRUPPO BOTTONI SINISTRA -->
+    <!-------------------------------------- GRUPPO BOTTONI SINISTRA ----------------------------------------------->
     <div class="btn-container-left">
         <div class="selection-container">
-            <!-- <input type="checkbox" [checked]="allSelected" (change)="toggleSelectAll($event)"  matTooltip="Select All" matTooltipPosition="above" /> -->
             <mat-checkbox [checked]="allSelected()" [indeterminate]="isPartiallySelected()"
                 (change)="toggleSelectAll($event)" matTooltip="Select All" matTooltipPosition="below"
                 class="select-all-checkbox"></mat-checkbox>
