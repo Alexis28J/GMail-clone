@@ -173,3 +173,94 @@ const dialogRef = this.dialog.open(ComposeDialog, {
     })
 ```    
 In un primo momento ho usato il metodo `clearReplyDraft()` per pulire il signal `replyDraft` dopo la chiusura del `dialog`, ma ho deciso di spostare quella logica nel metodo `ngOnDestroy` del componente `ComposeDialog`, così che venga pulito automaticamente quando il `dialog` viene chiuso, evitando di doverlo fare manualmente qui.
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+## CANCELLAZIONE DEFINITIVA DI UN'EMAIL
+
+```typescript 
+  onActualDelete() {
+    const hasSelect =
+      this.allEmails().some(email => email.selected && email.is_deleted);  // verifica se ci sono email selezionate e si trovano in "Trash"
+
+    if (!hasSelect) {
+      return
+    }
+
+    const dialogRef = this.dialog.open(
+      ConfirmDialog, {
+      autoFocus: false,
+      data: {
+        message: 'Are you sure to <strong>PERMANENTLY DELETE</strong> these messages?'
+      }
+    }
+    );
+
+    // Se l'utente conferma la cancellazione, chiama il metodo actualDeleteSelectedEmails() del servizio EmailService per eliminare definitivamente le email selezionate
+    dialogRef.afterClosed().subscribe(result => {  
+      if (result === true) {
+        this.emailService.actualDeleteSelectedEmails();
+        this.currentIndex.set(null);
+
+        this.snackBar.open(
+          'Emails permanently deleted',
+          '',
+          {
+            duration: 3000,
+            panelClass: ['custom-snackbar']
+          }
+        );
+      }
+    });
+  }
+```  
+
+Su `emailService`, ho creato la funzione `actualDeleteSelectedEmails()` per eliminare definitivamente le email selezionate, che sono già state spostate nel cestino `(is_deleted = true)`.
+
+Dopo aver creato quel metodo, ho aggiunto il metodo `onActualDelete()` nel `MainpageComponent` per gestire l'evento di eliminazione definitiva delle email selezionate. 
+Questo metodo viene chiamato quando l'utente conferma (click su "procede") l'eliminazione permanente delle email dal cestino. 
+
+Successivamente, ho aggiornato il `ToolbarComponent` per emettere l'evento `actualDelete` al `MainpageComponent` quando l'utente clicca sul pulsante "Delete permanently" nel `toolbar`. In questo modo, il flusso di eliminazione definitiva delle email selezionate è completo e funzionale.
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+## MARCA COME SPAM LE EMAIL SELEZIONATE
+
+```typescript 
+  onMarkAsSpam() {
+
+    const hasSelect = this.allEmails().some(email => email.selected);   // verifica se ci sono email selezionate
+
+    if (!hasSelect) {
+      return;
+    }
+
+    const dialogRef = this.dialog.open(ConfirmDialog, {
+      autoFocus: false,
+      data: {
+        message: 'Are you sure to want to <strong>MARK AS SPAM</strong> these messages?'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === true) {
+        this.emailService.markSelectedEmailsAsSpam();
+        this.currentIndex.set(null);
+
+        this.snackBar.open('Emails marked as SPAM', '', {
+          duration: 3000,
+          panelClass: ['custom-snackbar']
+        });
+      }
+    });
+
+  }
+```
+
+  Ho creato una funzione `onMarkAsSpam()` che mostra un dialog di conferma prima di marcare le email selezionate come spam. Se l'utente conferma, viene chiamato il metodo `markSelectedEmailsAsSpam()` del servizio `emailService` e viene mostrato uno `snackbar` di conferma.
+
+  Successivamente, ho aggiornato il `ToolbarComponent` per emettere l'evento `actualDelete` al `MainpageComponent` quando l'utente clicca sul pulsante "Delete permanently" nel `toolbar`. In questo modo, il flusso di eliminazione definitiva delle email selezionate è completo e funzionale.
+  E nel suo template, ho collegato al pulsante "Mark as spam" la funzione `onAsSpam()` che emette l'evento `asSpam` al componente padre.
+
+  Finalmente, nel `mainpage-component.html`, nel selettore di `app-toolbar-component`, ho aggiunto l'evento `(asSpam)="onMarkAsSpam()"` per gestire la segnalazione delle email come `spam`.

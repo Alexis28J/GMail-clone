@@ -34,6 +34,8 @@ export class ToolbarComponent {
   @Output() restore = new EventEmitter<void>();
   @Output() archive = new EventEmitter<void>();
   @Output() moveRequested = new EventEmitter<string>();
+  @Output() actualDelete = new EventEmitter<void>(); 
+  @Output() asSpam = new EventEmitter<void>();
 
 
   ////// EMETTE EVENTI AL COMPONENTE PADRE (MainPageComponent) PER NAVIGARE TRA LE EMAIL
@@ -126,5 +128,16 @@ export class ToolbarComponent {
     this.moveRequested.emit(folder);
   }
 
-}
 
+  ///// EMETTE EVENTI AL COMPONENTE PADRE (MainPageComponent) PER ELIMINARE LE EMAIL SELEZIONATE IN MODO DEFINITIVO
+  onActualDelete(){
+    this.actualDelete.emit();
+  }
+
+  ///// EMETTE EVENTI AL COMPONENTE PADRE (MainPageComponent) PER SEGNALARE LE EMAIL COME SPAM
+  onAsSpam() {
+    this.asSpam.emit();
+  }
+
+
+}

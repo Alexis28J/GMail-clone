@@ -176,17 +176,17 @@ export class Folder {
           return false;
         }
 
-        const day = date.getDate().toString();  // giorno del mese (1-31)
-        const dayPadded = day.padStart(2, '0'); // giorno del mese con padding (01-31)
+        const day = date.getDate().toString();
+        const dayPadded = day.padStart(2, '0');
 
-        const month = (date.getMonth() + 1).toString(); // gennaio = 1 
-        const monthPadded = month.padStart(2, '0');  // gennaio = 01
+        const month = (date.getMonth() + 1).toString();
+        const monthPadded = month.padStart(2, '0');
 
-        const monthNameIT = date   // nome del mese in italiano (gennaio, febbraio, ...)
+        const monthNameIT = date
           .toLocaleString('it', { month: 'long' })
           .toLowerCase();
 
-        const monthNameEN = date   // nome del mese in inglese (january, february, ...)
+        const monthNameEN = date
           .toLocaleString('en', { month: 'long' })
           .toLowerCase();
 

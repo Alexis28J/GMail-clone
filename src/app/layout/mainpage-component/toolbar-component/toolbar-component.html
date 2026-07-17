@@ -33,14 +33,24 @@
             </button>
             }
 
-            <button mat-icon-button class="Btn-noBorder" matTooltip="Spam" matTooltipPosition="below">
+            <button mat-icon-button class="Btn-noBorder" matTooltip="Spam" matTooltipPosition="below"
+                (click)="onAsSpam()">
                 <mat-icon>report</mat-icon>
             </button>
 
+            @if(!isTrashView){
             <button mat-icon-button class="Btn-noBorder" matTooltip="Delete" matTooltipPosition="below"
                 (click)="onDelete()">
                 <mat-icon>delete</mat-icon>
             </button>
+            }
+
+            @if(isTrashView){
+            <button mat-icon-button class="Btn-noBorder" matTooltip="Delete permanently" (click)="onActualDelete()">
+                <mat-icon>delete_forever</mat-icon>
+            </button>
+
+            }
 
             @if (isTrashView) {
             <button mat-icon-button class="Btn-noBorder" matTooltip="Restore" matTooltipPosition="below"
@@ -49,6 +59,7 @@
             </button>
             }
         </div>
+
 
         <div class="spacer"></div>
 

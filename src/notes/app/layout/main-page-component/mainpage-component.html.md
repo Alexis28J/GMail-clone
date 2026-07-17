@@ -39,3 +39,8 @@ Si usa le parentesi quadre perché si tratta di un binding di proprietà e non d
 
 
 - `[availableFolders]` è la lista delle cartelle disponibili per lo spostamento delle email.
+
+
+- `(actualDelete)="onActualDelete()"`: Ho aggiunto l'evento `actualDelete` nel `ToolbarComponent` per gestire l'eliminazione definitiva delle email selezionate 
+Questo evento chiama il metodo `onActualDelete()` nel `MainpageComponent`.
+Questo evento viene emesso quando l'utente clicca sul pulsante `"Delete permanently"` nel `toolbar`. Il pulsante solo visibile nel `trash`.

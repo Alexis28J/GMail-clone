@@ -1,8 +1,9 @@
 <div class="main-page-container">
 
     <app-toolbar-component (nextMail)="nextEmail()" (prevMail)="previousEmail()" (delete)="onDeleteSelected()"
-        (restore)="onRestoreSelected()" [isTrashView]="isTrashView()" (archive)="onArchive()"
-        (moveRequested)="moveEmails($event)" [availableFolders]="availableFolders()"></app-toolbar-component>
+        (actualDelete)="onActualDelete()" (restore)="onRestoreSelected()" [isTrashView]="isTrashView()"
+        (archive)="onArchive()" (moveRequested)="moveEmails($event)" (asSpam)="onMarkAsSpam()"
+        [availableFolders]="availableFolders()"></app-toolbar-component>
 
     <div class="content">
 
@@ -19,3 +20,4 @@
     </div>
 
 </div>
+

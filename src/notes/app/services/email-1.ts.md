@@ -302,8 +302,7 @@ Ho MODIFICATO il codice per normalizzare i `timestamp` delle email, convertendo 
 
 
 
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ## ARCHIVIA EMAIL
 
@@ -323,6 +322,5 @@ In questo modo, le email selezionate vengono archiviate sia localmente che sul s
 
 ### NB: `e.id === email.id ?:` se l'id dell'email corrente (`e.id`) è uguale all'id dell'email selezionata (`email.id`), allora viene creato un nuovo oggetto email con le proprietà aggiornate, altrimenti l'email rimane invariata.
 ### Questo controllo sembra ridondante, ma è necessario per garantire che solo l'email selezionata venga modificata, mentre tutte le altre email rimangono invariate nell'array.
-
 
 

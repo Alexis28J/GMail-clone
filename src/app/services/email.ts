@@ -71,7 +71,6 @@ export class EmailService {
 
   ///// Versione aggiornata "INVIARE UNA NUOVA EMAIL" (con richiesta HTTP POST a mockapi.io)
   sendEmail(email: Partial<EmailInterface>) {
-
     const newEmail = {
       sender: email.sender || 'Me',
       recipient: email.recipient || '',
@@ -93,7 +92,6 @@ export class EmailService {
         ...emails
       ]);
     });
-
   }
 
 
@@ -187,11 +185,7 @@ export class EmailService {
     ).subscribe();
   }
 
-
-  ///// REFACTORING: 
-  // deleteSelectedEmails()  (ELIMINA LE EMAIL SELEZIONATE)
-  // restoreSelectedEmails() (RIPRISTINA LE EMAIL SELEZIONATE)
-  // archiveSelectedEmails() (ARCHIVIA LE EMAIL SELEZIONATE) 
+  ///////////////////////////////////FUNZIONI PRIVATE E PUBBLICHE PER LA GESTIONE DELLE EMAIL SELEZIONATE/////////////////////////////////////////
 
   ///// FUNZIONE PRIVATA CHE AGGIORNA LE EMAIL SELEZIONATE CON LE MODIFICHE PASSATE COME PARAMETRO
   private updateSelectedEmails(changes: Partial<EmailInterface>) {
@@ -221,7 +215,30 @@ export class EmailService {
     });
   }
 
-  ///// FUNZIONI PUBBLICHE CHE CHIAMANO LA FUNZIONE PRIVATA updateSelectedEmails() CON LE MODIFICHE CORRISPONDENTI:
+
+  ///// FUNZIONE PRIVATA CHE RIMUOVE LE EMAIL SELEZIONATE DAL MOCKAPI.IO E DAL SIGNAL
+  private removeSelectedEmails() {
+
+    const selectedEmails =
+      this.emailsSignal().filter(
+        email => email.selected && email.is_deleted
+      );
+
+    selectedEmails.forEach(email => {
+      this.http.delete(
+        `${this.apiUrl}/${email.id}`
+      ).subscribe(() => {
+        this.emailsSignal.update(emails =>
+          emails.filter(e => e.id !== email.id)
+        )
+      })
+    })
+
+  }
+
+
+  ///// FUNZIONI PUBBLICHE CHE CHIAMANO LA FUNZIONE PRIVATA updateSelectedEmails() 
+  ///// CON LE MODIFICHE CORRISPONDENTI:
 
   ///// ELIMINA LE EMAIL SELEZIONATE
   deleteSelectedEmails() {
@@ -250,8 +267,20 @@ export class EmailService {
     this.moveSelectedEmails('archived');
   }
 
+  ///// IMPOSTA COME SPAM 
+  markSelectedEmailsAsSpam() {
+    this.moveSelectedEmails('spam');
+  }
 
-  ///////////////////////////////////REPLY E FORWARD EMAIL///////////////////////////////////////////////
+
+  ///// FUNZIONE PUBBLICA CHE CHIAMA LA FUNZIONE PRIVATA removeSelectedEmails() 
+
+  ///// CANCELLAZIONE DEFINITIVA EMAIL SELEZIONATA
+  actualDeleteSelectedEmails() {
+    this.removeSelectedEmails();
+  }
+
+  //////////////////////////////////////////////////////REPLY E FORWARD EMAIL///////////////////////////////////////////////////////////////////
 
   ///// SIGNAL CHE CONTERRA' LA BOZZA DI EMAIL (REPLY O FORWARD)
   composeDraft = signal<Partial<EmailInterface> | null>(null);
@@ -309,5 +338,6 @@ export class EmailService {
   clearComposeDraft() {
     this.composeDraft.set(null);
   }
+
 
 }

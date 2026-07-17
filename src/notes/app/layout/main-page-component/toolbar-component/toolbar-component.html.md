@@ -20,3 +20,46 @@ Ma a condizione che isTrashView sia true, il pulsante di ripristino sarà visibi
 -  Il ciclo `@for` genera dinamicamente i bottoni per le cartelle disponibili grazie all'`input` `availableFolders` di `ToolbarComponent`.
 
 - `[indeterminate]` provviene dal componente `MatCheckbox` di `Angular Material` ed è un stato che indica che solo alcuni elementi sono selezionati.
+
+-     
+```html
+            @if(!isTrashView){
+            <button mat-icon-button class="Btn-noBorder" matTooltip="Delete" matTooltipPosition="below"
+                (click)="onDelete()">
+                <mat-icon>delete</mat-icon>
+            </button>
+            }  
+```
+
+Ho messo una condizione per la cancellazione logica, il quale previene la visualizzazione del pulsante "Delete" se siamo nella vista del cestino.
+
+
+
+- 
+```html
+            @if (isTrashView) {
+            <button mat-icon-button class="Btn-noBorder" matTooltip="Restore" matTooltipPosition="below"
+                (click)="onRestore()">
+                <mat-icon>restore_from_trash</mat-icon>
+            </button>
+            }
+        </div>
+```        
+        
+Ho messo una condizione per il ripristino delle email, il quale previene la visualizzazione del pulsante "Restore" se non siamo nella vista del cestino.
+
+
+
+- 
+```html
+            @if(isTrashView){
+            <button mat-icon-button  class="Btn-noBorder" matTooltip="Delete permanently" (click)="onActualDelete()">
+                <mat-icon>delete_forever</mat-icon>
+            </button>
+
+            }
+```
+
+Ho messo una condizione per l'eliminazione permanente (cancellazione fisica) delle email, il quale previene la visualizzazione del pulsante se non siamo nella vista del cestino
+
+

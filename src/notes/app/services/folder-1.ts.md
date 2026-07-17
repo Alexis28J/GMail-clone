@@ -331,6 +331,48 @@ Infine, tutti questi componenti della data vengono uniti in una singola stringa 
 
 ## MODIFICA FILTRO DATI
 
+```typescript
+      if (filters.date) {
+
+        const date =
+          typeof email.timestamp === 'number'  // Se il timestamp è un numero (Unix timestamp),
+            ? new Date(email.timestamp * 1000) // lo converto in millisecondi per creare un oggetto Date valido, questo perché il costruttore di Date accetta millisecondi, non secondi.
+            : new Date(email.timestamp); // Se il timestamp è una stringa, lo passo direttamente al costruttore di Date.
+
+        if (isNaN(date.getTime())) {  // Se la data non è valida, ritorna false per escludere questa email dai risultati
+          return false;
+        }
+
+        const day = date.getDate().toString();  // giorno del mese (1-31)
+        const dayPadded = day.padStart(2, '0'); // giorno del mese con padding (01-31)
+
+        const month = (date.getMonth() + 1).toString(); // gennaio = 1 
+        const monthPadded = month.padStart(2, '0');  // gennaio = 01
+
+        const monthNameIT = date   // nome del mese in italiano (gennaio, febbraio, ...)
+          .toLocaleString('it', { month: 'long' })
+          .toLowerCase();
+
+        const monthNameEN = date   // nome del mese in inglese (january, february, ...)
+          .toLocaleString('en', { month: 'long' })
+          .toLowerCase();
+
+        fields.push(
+          `
+        ${day}
+        ${dayPadded}
+        ${month}
+        ${monthPadded}
+        ${monthNameIT}
+        ${monthNameEN}
+        ${day}/${month}
+        ${dayPadded}/${monthPadded}
+          `
+        );
+
+      }
+```
+
 Ho SOSTITUITO la proprietà `timestamp` di tipo Date con una proprietà `timestamp` di tipo `string | number` per consentire una maggiore flessibilità nella gestione dei valori di timestamp. 
 
 In questo modo, il timestamp può essere rappresentato come una stringa o un numero, a seconda delle esigenze dell'applicazione.

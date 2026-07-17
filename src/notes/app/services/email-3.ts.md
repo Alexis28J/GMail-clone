@@ -140,3 +140,95 @@ In questo modo, la prossima volta che apro il `dialog`, non ci saranno dati resi
 `\n` va a capo nel dialog ma non nel database, perché il database salva la stringa così com'è, con `\n` come carattere speciale.
 
 ## NB: Ogni volta che si chiude il dialog, il signal viene pulito grazie al metodo `clearComposeDraft()` e dal lifecycle hook di `Angular`, `OnDestroy()` che si trova nel `ComposeDialogComponent`.
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+ ## ELIMINAZIONE DEFINITIVA DAL CESTINO
+
+ ```typescript
+  actualDeleteSelectedEmails() {
+
+    const selectedEmails =   
+      this.emailsSignal().filter(      // seleziona solo le email selezionate e che sono nel cestino
+        email => email.selected && email.is_deleted
+      );
+
+    selectedEmails.forEach(email => {   // Per ogni email selezionata e contrassegnata come eliminata,
+      this.http.delete(      // invia una richiesta HTTP DELETE a mockapi.io
+        `${this.apiUrl}/${email.id}`
+      ).subscribe(() => {
+        this.emailsSignal.update(emails => // Una volta completata la richiesta di eliminazione,
+          emails.filter(e => e.id !== email.id)  //  aggiorna il signal emailsSignal rimuovendo l'email eliminata dall'elenco delle email.
+        )  // In questo modo, l'interfaccia utente rifletterà immediatamente la rimozione dell'email senza dover ricaricare tutte le email dal server.
+      })
+    })
+
+  }
+  ```
+
+   Ho creato questa funzione per eliminare definitivamente le email selezionate, che sono già state spostate nel cestino `(is_deleted = true)`.
+
+   Dopo aver creato il metodo `actualDeleteSelectedEmails()`, ho aggiunto il metodo `onActualDelete()` nel `MainpageComponent` per gestire l'evento di eliminazione definitiva delle email selezionate. 
+   Questo metodo viene chiamato quando l'utente conferma (click su "procede") l'eliminazione permanente delle email dal cestino. 
+   
+   Successivamente, ho aggiornato il `ToolbarComponent` per emettere l'evento `actualDelete` al `MainpageComponent` quando l'utente clicca sul pulsante "Delete permanently" nel `toolbar`. In questo modo, il flusso di eliminazione definitiva delle email selezionate è completo e funzionale.
+
+
+## REFACTORING
+
+```typescript
+  private removeSelectedEmails() {  //Lo stesso codice che c'era in actualDeleteSelectedEmails()
+
+    const selectedEmails =
+      this.emailsSignal().filter(
+        email => email.selected && email.is_deleted
+      );
+
+    selectedEmails.forEach(email => {
+      this.http.delete(
+        `${this.apiUrl}/${email.id}`
+      ).subscribe(() => {
+        this.emailsSignal.update(emails =>
+          emails.filter(e => e.id !== email.id)
+        )
+      })
+    })
+
+  }
+```
+Ho deciso di fare un refactoring della funzione `"actualDeleteSelectedEmails()"` in una funzione privata `"removeSelectedEmails()"`, in modo da poterla richiamare anche da altre funzioni pubbliche (ad esempio per la cancellazione definitiva delle email selezionate) e altre funzioni che posso implementare in futuro (ad esempio per la cancellazione definitiva delle email ma fatta dal mail viewer). 
+
+
+```typescript
+  actualDeleteSelectedEmails() {
+    this.removeSelectedEmails();
+  }
+```
+Quindi, la funzione `actualDeleteSelectedEmails()` chiama la funzione privata `removeSelectedEmails()` per eliminare definitivamente le email selezionate dal `mockapi.io` e dal `signal`.
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+## MARCA LE EMAIL SELEZIONATE COME SPAM
+
+```typescript
+  markSelectedEmailsAsSpam() {
+    this.moveSelectedEmails('spam');
+  }
+```
+
+Ho creato una funzione separata per marcare le email come `spam`, in quanto potrebbe essere utile avere un'azione specifica per questa operazione, distinta dallo spostamento in una cartella generica.
+
+Questa funzione chiama la funzione `moveSelectedEmails()` con il parametro `'spam'`, che rappresenta la cartella in cui le email selezionate verranno spostate.
+
+La funzione `moveSelectedEmails()` chiama a sua volta la funzione `privata updateSelectedEmails()` per aggiornare le email selezionate con le modifiche necessarie, in questo caso impostando la cartella su `'spam'` e assicurandosi che l'attributo `is_deleted` sia impostato su `false`.
+
+Poi su `mainpage-component.ts`, ho creato una funzione che chiama questa funzione (`markSelectedEmailsAsSpam()`) per spostare le email selezionate nella cartella `spam`, oltre a mostrare un messaggio di conferma tramite snackbar. In questo modo, quando l'utente seleziona una o più email e clicca sul pulsante `"Segnala come spam"`, le email vengono spostate nella cartella spam e l'utente riceve un feedback visivo dell'azione completata con successo.
+
+Successivamente, su `toolbar-component.ts`, ho messo un evento al componente padre (`MainPageComponent`) per eliminare le email selezionate in modo definitivo, chiamando la funzione privata `removeSelectedEmails()` del servizio `EmailService`.
+E nel suo template, ho collegato al pulsante "Mark as spam" la funzione `onAsSpam()` che emette l'evento `asSpam` al componente padre.
+
+Finalmente, nel `mainpage-component.html`, nel selettore di `app-toolbar-component`, ho aggiunto l'evento `(asSpam)="onMarkAsSpam()"` per gestire la segnalazione delle email come `spam`.
+
+
+
+

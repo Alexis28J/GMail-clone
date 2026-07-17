@@ -264,6 +264,71 @@ export class MainpageComponent {
   }
 
 
+  ///// CANCELLAZIONE DEFINITIVA 
+  onActualDelete() {
+    const hasSelect =
+      this.allEmails().some(email => email.selected && email.is_deleted);
+
+    if (!hasSelect) {
+      return
+    }
+
+    const dialogRef = this.dialog.open(
+      ConfirmDialog, {
+      autoFocus: false,
+      data: {
+        message: 'Are you sure to <strong>PERMANENTLY DELETE</strong> these messages?'
+      }
+    }
+    );
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === true) {
+        this.emailService.actualDeleteSelectedEmails();
+        this.currentIndex.set(null);
+
+        this.snackBar.open(
+          'Emails permanently deleted',
+          '',
+          {
+            duration: 3000,
+            panelClass: ['custom-snackbar']
+          }
+        );
+      }
+    });
+  }
+
+  ///// MARCA COME SPAM EMAIL SELEZIONATE
+  onMarkAsSpam() {
+
+    const hasSelect = this.allEmails().some(email => email.selected); 
+
+    if (!hasSelect) {
+      return;
+    }
+
+    const dialogRef = this.dialog.open(ConfirmDialog, {
+      autoFocus: false,
+      data: {
+        message: 'Are you sure to want to <strong>MARK AS SPAM</strong> these messages?'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === true) {
+        this.emailService.markSelectedEmailsAsSpam();
+        this.currentIndex.set(null);
+
+        this.snackBar.open('Emails marked as SPAM', '', {
+          duration: 3000,
+          panelClass: ['custom-snackbar']
+        });
+      }
+    });
+
+  }
+
 }
 
 

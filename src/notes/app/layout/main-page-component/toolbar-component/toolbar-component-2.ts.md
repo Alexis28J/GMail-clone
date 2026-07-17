@@ -85,3 +85,33 @@ Il ciclo `@for` genera dinamicamente i bottoni per le cartelle disponibili grazi
 
 Nel `folderInterface`, ho modificato il tipo di id da string a `folderId` che è di tipo `MovableFolder`, perciò anche su `toolbar-component.ts` ho cambiato il tipo di `availableFolders` da `string` a `MovableFolder`.
 Altrimenti avrei avuto un errore di tipo incompatibile tra i due tipi.
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+## CANCELLAZIONE DEFINITIVA DI UN'EMAIL
+
+
+`@Output() actualDelete = new EventEmitter<void>();`
+
+```typescript
+  onActualDelete(){
+    this.actualDelete.emit();
+  }
+```  
+
+Su `emailService`, ho creato la funzione `actualDeleteSelectedEmails()` per eliminare definitivamente le email selezionate, che sono già state spostate nel cestino `(is_deleted = true)`.
+
+Dopo aver creato quel metodo, ho aggiunto il metodo `onActualDelete()` nel `MainpageComponent` per gestire l'evento di eliminazione definitiva delle email selezionate. 
+Questo metodo viene chiamato quando l'utente conferma (click su `"proceed"`) l'eliminazione permanente delle email dal cestino. 
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+## MARCA COME SPAM LE EMAIL SELEZIONATE
+
+Ho creato un output per l'evento `"asSpam"` che emette un evento al componente padre (`MainPageComponent`) quando l'utente seleziona l'opzione di segnalare le email come spam. Questo permette al componente padre di gestire l'azione di segnalazione delle email come spam in modo appropriato.
+
+L'evento `asSpam` viene emesso quando l'utente clicca sul pulsante `"Segnala come spam"` nella `toolbar`. Il componente padre (`MainPageComponent`) ascolta questo evento e gestisce la logica per spostare le email selezionate nella cartella `"spam"`.
+
+La funzione `onAsSpam()` emette l'evento `asSpam`, che può essere intercettato dal componente padre che poi esegue la logica dal servizio `EmailService` (grazie a `markSelectedEmailsAsSpam()`) per spostare le email selezionate nella cartella `"spam"`.
