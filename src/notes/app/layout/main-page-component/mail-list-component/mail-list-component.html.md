@@ -58,6 +58,14 @@ Pertanto anche questo blocco è stato sostituito:
       {{ email.starred ? '⭐' : '☆' }}</span> -->
 ```
 
-- Un'altra modifica che ho fatto, è sostituire il metodo di evidenziazione con `[innerHTML]`.
+- Un'altra MODIFICA che ho fatto, è sostituire il metodo di evidenziazione con `[innerHTML]`.
   Prima con `<div class="email-subject">{{email.subject}}</div>` /  `<div class="email-sender">{{email.sender}}</div>` il testo veniva visualizzato normalmente, non evidenziava le parole chiave.
   Ora utilizza `[innerHTML]` per evidenziare le parole chiave. 
+
+
+- Ho SOSTITUITO il formato del timestamp. Ora mostra solo mese e giorno. Ho chiamato il metodo `formatTimestamp` per gestire correttamente i `timestamp numerici`.
+
+```html
+<!-- <div class="email-timestamp">{{email.timestamp | date:'medium'}}</div> -->
+<div class="email-timestamp">{{ formatTimestamp(email.timestamp) | date:'MMM d' }}</div>
+```

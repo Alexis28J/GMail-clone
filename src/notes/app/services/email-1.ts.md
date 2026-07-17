@@ -252,7 +252,56 @@ Nel metodo `loadEmails()`, `next` serve per gestire la risposta positiva della r
 
 In caso di successo, le email vengono aggiornate nel segnale `emailsSignal` e viene mostrato un messaggio di conferma tramite `MatSnackBar`. In caso di errore, viene mostrato un messaggio di errore sempre tramite `MatSnackBar`.
 
-Ho aggiunto un segnale loading per indicare lo stato di caricamento delle email. Questo segnale viene impostato su true all'inizio del metodo `loadEmails()` e su false al termine della richiesta, sia in caso di successo che di errore.
+
+## AGGIUNTA INDICATORE DI CARICAMENTO (SPINNER E LOADING BAR)
+`loading = signal(false)`
+Ho AGGIUNTO un segnale `loading` per indicare lo stato di caricamento delle email. Questo segnale viene impostato su true all'inizio del metodo `loadEmails()` e su false al termine della richiesta, sia in caso di successo che di errore.
+
+Serve per mostrare un indicatore di caricamento (ad esempio uno `spinner`) durante il recupero delle email dal `mockapi.io`.
+E' impostato su false all'inizio, perché all'avvio non stiamo caricando le email, ma le carichiamo subito dopo con `loadEmails()`.
+
+```typescript
+loadEmails() {
+    this.loading.set(true); 
+    ....
+    ....
+    complete: () => {
+      this.loading.set(false);
+    },
+    error: () => {
+      this.loading.set(false);  //ho aggiunto questo per assicurarmi che l'indicatore di caricamento venga nascosto anche in caso di errore
+      this.snackBar.open(
+        'Error during refresh',
+        '',...) 
+        ...}
+        ...}
+```    
+All'inizio del metodo `loadEmails()`, setto il signal loading a true per mostrare l'indicatore di caricamento.
+
+
+## MODIFICA DEL METODO LOAD EMAILS
+
+Ho AGGIUNTO questo pezzo di codice:
+
+```typescript
+next: emails => {
+
+  const normalizedEmails = emails.map(email => ({
+    ...email,
+    timestamp:
+      typeof email.timestamp === 'number'
+        ? email.timestamp * 1000
+        : email.timestamp
+  }));
+
+  this.emailsSignal.set(normalizedEmails);
+
+}
+```
+Ho MODIFICATO il codice per normalizzare i `timestamp` delle email, convertendo i valori numerici in millisecondi e mantenendo i valori stringa invariati. Questo garantisce che i `timestamp` siano coerenti e correttamente interpretati come date, indipendentemente dal formato originale.
+
+
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

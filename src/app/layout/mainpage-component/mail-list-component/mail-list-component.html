@@ -9,7 +9,7 @@
 
     <div class="email-subject" [innerHTML]="highlight(email.subject)"></div>
     <div class="email-sender" [innerHTML]="highlight(email.sender)"></div>
-    <div class="email-timestamp">{{email.timestamp | date:'short'}}</div>
+    <div class="email-timestamp">{{ formatTimestamp(email.timestamp) | date:'MMM d' }}</div>
 
   </div>
 

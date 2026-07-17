@@ -13,7 +13,7 @@ export class Folder {
 
   constructor(private emailService: EmailService, private authService: AuthService, private http: HttpClient
   ) {
-    this.loadFolders();  
+    this.loadFolders();
   }
 
 
@@ -151,7 +151,6 @@ export class Folder {
     }
 
 
-
     ///// FILTRO SEARCH (VERSIONE MULTIKEYWORD) E FILTRO MENU FILTRI (SUBJECT, SENDER, DATE)
     if (!search) return result;
 
@@ -164,25 +163,47 @@ export class Folder {
       if (filters.subject) fields.push(email.subject);
       if (filters.sender) fields.push(email.sender);
 
+
+      ///// Filtro per data (correzione)
       if (filters.date) {
-        const date = typeof email.timestamp === 'string' ? new Date(email.timestamp) : email.timestamp;
 
-        const fullDate = date.toISOString(); // 2026-06-14
-        const year = date.getFullYear().toString(); // 2026
+        const date =
+          typeof email.timestamp === 'number'
+            ? new Date(email.timestamp * 1000)
+            : new Date(email.timestamp);
 
-        const month = (date.getMonth() + 1).toString().padStart(2, '0'); // 06
-        const monthRaw = (date.getMonth() + 1).toString(); // 6
+        if (isNaN(date.getTime())) {
+          return false;
+        }
 
-        const day = date.getDate().toString().padStart(2, '0'); // 14
-        const dayRaw = date.getDate().toString(); // 14
+        const day = date.getDate().toString();  // giorno del mese (1-31)
+        const dayPadded = day.padStart(2, '0'); // giorno del mese con padding (01-31)
 
-        const monthName = date.toLocaleString('en', { month: 'long' }).toLowerCase(); // june
-        const monthNameIT = date.toLocaleString('it', { month: 'long' }).toLowerCase(); // giugno
+        const month = (date.getMonth() + 1).toString(); // gennaio = 1 
+        const monthPadded = month.padStart(2, '0');  // gennaio = 01
 
-        fields.push(`${fullDate} ${year} ${month} ${monthRaw} ${day} ${dayRaw} ${monthName} ${monthNameIT}`);
+        const monthNameIT = date   // nome del mese in italiano (gennaio, febbraio, ...)
+          .toLocaleString('it', { month: 'long' })
+          .toLowerCase();
+
+        const monthNameEN = date   // nome del mese in inglese (january, february, ...)
+          .toLocaleString('en', { month: 'long' })
+          .toLowerCase();
+
+        fields.push(
+          `
+        ${day}
+        ${dayPadded}
+        ${month}
+        ${monthPadded}
+        ${monthNameIT}
+        ${monthNameEN}
+        ${day}/${month}
+        ${dayPadded}/${monthPadded}
+          `
+        );
 
       }
-
 
       /////fallback se tutto è disattivato/////
       if (fields.length === 0) {

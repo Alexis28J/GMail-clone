@@ -41,6 +41,18 @@ In parole semplici, il primo metodo è più generico, mentre il secondo è più 
 Quindi con il riferimento locale #searchInput e con l'evento (keyup.enter), possiamo eseguire la ricerca premendo Invio o cliccando sull'icona di ricerca.
 
 
-- Ho aggiunto `[checked]="..."` a ciascun checkbox per legarlo allo stato dei filtri nel servizio Folder. 
+- Ho AGGIUNTO `[checked]="..."` a ciascun checkbox per legarlo allo stato dei filtri nel servizio Folder. 
 Questo permette di mantenere sincronizzato lo stato dei checkbox con i filtri attivi nel servizio.
 Cio significa che quando lo stato dei filtri cambia nel servizio, i checkbox nel template vengono aggiornati automaticamente. 
+
+
+## MODIFICA
+
+```HTML
+<input type="text" placeholder="Search" #searchInput (input)="onSearch(searchInput.value)" (keyup.enter)="onSearch(searchInput.value)" />
+```
+
+La differenza tra `(input)` e `(keyup.enter)` è che `(input)` viene attivato ad ogni modifica del valore dell'input, mentre `(keyup.enter)` viene attivato solo quando si preme il tasto Invio.
+In questo modo, l'utente può scegliere se avviare la ricerca ad ogni modifica del campo di input o solo premendo Invio.
+
+Questo tipo di approccio migliora l'esperienza utente. E' più flessibile.

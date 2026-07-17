@@ -12,7 +12,15 @@ Serve per mostrare o nascondere la password. Ho deciso di utilizzare le icone di
 ## INDICATORE DI FORZA DELLA PASSWORD E DELLE REGOLE: 
 Serve per mostrare la forza della password inserita dall'utente. In questo caso, viene considerata "Weak" se la lunghezza della password è inferiore a 6 caratteri e "Strong" altrimenti.
 
-- Ho commentato la parte precedente e ho aggiunto una nuova implementazione utilizzando i metodi getPasswordStrength() e getPasswordStrengthColor() del componente.
+-     
+```html
+            <!-------------------------  INDICATORE DI FORZA DELLA PASSWORD e DELLE REGOLE  -------------------->
+            <!-- <p>
+            Strength:
+            {{ password.length < 6 ? 'Weak' : 'Strong' }} </p> -->
+```
+
+Ho commentato la parte precedente e ho aggiunto una nuova implementazione utilizzando i metodi getPasswordStrength() e getPasswordStrengthColor() del componente.
 In questo modo, la forza della password viene calcolata dinamicamente in base alla lunghezza della password inserita dall'utente.
 - Inoltre, ho aggiunto delle regole visive per indicare se la password soddisfa determinati criteri, come la presenza di lettere maiuscole, minuscole, numeri e caratteri speciali.
 

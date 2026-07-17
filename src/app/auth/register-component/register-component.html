@@ -8,16 +8,10 @@
 
         <input [(ngModel)]="email" placeholder="Email" />
 
-        <!---------------------- PASSWORD ---------------------->
+        <!--------------------------------------------- PASSWORD --------------------------------------------->
 
         <div class="input-group">
             <input [(ngModel)]="password" [type]="showPassword ? 'text' : 'password'" placeholder="Password" />
-
-
-            <!--------------------  INDICATORE DI FORZA DELLA PASSWORD e DELLE REGOLE  -------------------->
-            <!-- <p>
-            Strength:
-            {{ password.length < 6 ? 'Weak' : 'Strong' }} </p> -->
 
             <div class="pass-indicator-container">
                 @if (password) {
@@ -36,25 +30,19 @@
                         {{ getPasswordStrength() }}
                     </span>
                 </p>
+                
                 }
 
             </div>
 
-
-            <!---------------------- CONFERMA DELLA PASSWORD ---------------------->
+            <!---------------------------- CONFERMA DELLA PASSWORD --------------------------------->
+            
             <div class="confirm-password">
                 <input [(ngModel)]="confirmPassword" [type]="showPassword ? 'text' : 'password'"
                     placeholder="Repeat Password" />
             </div>
 
-
-            <!---------------- MOSTRA ERRORE LIVE --------------------------->
-
-
-            <!-- @if (!username || username.trim().length === 0) {
-        <p class="error">Username is required</p>
-        } -->
-
+            <!------------------------------ MOSTRA ERRORE LIVE ------------------------------------->
 
             @if (username && username.trim().length < 3) { <p class="error">Min 3 characters</p>
                 }
@@ -64,10 +52,9 @@
                 <p class="error">Passwords do not match</p>
                 }
 
+            <!--------------------- VISIBILITÀ DELLA PASSWORD ------------------------>
 
-                <!------------------ VISIBILITÀ DELLA PASSWORD ------------------------>
                 <button type="button" (click)="togglePasswordVisibility()">
-                    <!-- {{ showPassword ? '🙈' : '👁️' }} -->
                     <mat-icon>
                         {{ showPassword ? 'visibility_off' : 'visibility' }}
                     </mat-icon>
@@ -75,8 +62,7 @@
 
         </div>
 
-
-        <!-- DISABILITA IL PULSANTE DI REGISTRAZIONE SE I CAMPI NON SONO COMPLETI -->
+        <!------------------ DISABILITA IL PULSANTE DI REGISTRAZIONE SE I CAMPI NON SONO COMPLETI ----------------->
         <button class="primary-btn" [disabled]="!username || !email || !password || password !== confirmPassword"
             (click)="onRegister()">Register
         </button>

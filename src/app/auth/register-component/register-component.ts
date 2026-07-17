@@ -24,26 +24,26 @@ export class RegisterComponent {
 
   constructor(private authService: AuthService, private router: Router) { };
 
-  // GESTIONE DELLA VISIBILITÀ DELLA PASSWORD
+  ///// GESTIONE DELLA VISIBILITÀ DELLA PASSWORD
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
   }
 
 
-  // GESTIONE DELLA NAVIGAZIONE ALLA PAGINA DI LOGIN
+  ///// GESTIONE DELLA NAVIGAZIONE ALLA PAGINA DI LOGIN
   goToLogin() {
     this.router.navigate(['/login']);
   }
 
 
-  // VALIDAZIONE DELLA PASSWORD CON REGEX (sequenza di caratteri che definisce un pattern)
+  ///// VALIDAZIONE DELLA PASSWORD CON REGEX (sequenza di caratteri che definisce un pattern)
   isPasswordValid(password: string): boolean {
     return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(password);  //con carattere speciale
     //return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(password);  // senza carattere speciale
   }
 
 
-  // FUNZIONI DI CONTROLLO DELLA PASSWORD
+  ///// FUNZIONI DI CONTROLLO DELLA PASSWORD
   hasLowercase() {
     return /[a-z]/.test(this.password);
   }
@@ -61,7 +61,7 @@ export class RegisterComponent {
   }
 
 
-  // GESTIONE DELLA FORZA DELLA PASSWORD  
+  ///// GESTIONE DELLA FORZA DELLA PASSWORD
   getPasswordStrength(): string {
 
     let score = 2;
@@ -74,7 +74,7 @@ export class RegisterComponent {
 
     if (score < 4) return 'Weak';
     if (score < 6) return 'Medium';
-    return 'Strong';  
+    return 'Strong';
   }
 
   getPasswordStrengthColor(): string {
@@ -85,30 +85,25 @@ export class RegisterComponent {
   }
 
 
-  // GESTIONE DELLA CONFERMA DELLA PASSWORD 
+  ///// GESTIONE DELLA CONFERMA DELLA PASSWORD
   confirmPassword = '';
 
 
-  /// GESTIONE DELLA REGISTRAZIONE
+  ///// GESTIONE DELLA REGISTRAZIONE
   onRegister() {
 
     this.error.set(null);
     this.success.set(null);
 
 
-    // GESTIONE DELLA VALIDAZIONE DELL'USERNAME
-    // if (!this.username || this.username.trim().length === 0) {
-    //   this.error.set('Username is required');
-    //   return;
-    // }
-
+    ///// GESTIONE DELLA VALIDAZIONE DELL'USERNAME
     if (!this.username || this.username.trim().length < 3) {
       this.error.set('Username must be at least 3 characters long');
       return;
     }
 
 
-    // GESTIONE DELLA VALIDAZIONE DELLA PASSWORD
+    ///// GESTIONE DELLA VALIDAZIONE DELLA PASSWORD
     if (!this.isPasswordValid(this.password)) {
       //this.error.set('Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.');
       this.error.set('Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number.');

@@ -1,5 +1,5 @@
 :root {
-  --primary: rgb(221, 200, 200); 
+  --primary: rgb(221, 200, 200);
   --primary-dark: rgb(200, 170, 170);
   --primary-light: rgb(240, 225, 225);
 }
@@ -10,22 +10,7 @@ h2 {
 }
 
 
-input {
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-  outline: none;
-  transition: 0.2s;
-}
-
-input:focus {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 2px var(--primary-light);
-}
-
-
-/* CENTRA PAGINA */
+///// CENTRA PAGINA
 .auth-container {
   height: 100vh;
   display: flex;
@@ -34,10 +19,10 @@ input:focus {
   background: linear-gradient(135deg,
       var(--primary-light),
       white);
-
 }
 
-/* CARD */
+
+///// CARD 
 .auth-card {
   background: white;
   padding: 30px;
@@ -55,27 +40,27 @@ input:focus {
 }
 
 
-/* INPUT */
+///// INPUT
 input {
   padding: 10px;
   border-radius: 8px;
   border: 1px solid #ccc;
-  outline: none;
   font-size: 14px;
+  outline: none;
+  transition: 0.2s;
 }
 
 input:focus {
-  border-color: #1976d2;
+  border-color: rgb(234, 162, 162);
+  box-shadow: inset 0 1px 2px rgb(234, 162, 162), 0 1px 2px rgb(234, 162, 162);
 }
 
-/* PASSWORD */
 .input-group {
   display: flex;
   flex-direction: column;
   justify-content: center;
   border: 1px solid #ccc;
   border-radius: 8px;
-  //padding-right: 8px;
 }
 
 .input-group input {
@@ -90,7 +75,8 @@ input:focus {
   color: #666;
 }
 
-/* PULSANTE */
+
+///// PULSANTE DI REGISTRAZIONE
 .primary-btn {
   background: var(--primary);
   color: #333;
@@ -100,7 +86,6 @@ input:focus {
   cursor: pointer;
   font-weight: bold;
   transition: 0.2s;
-
 }
 
 .primary-btn:hover {
@@ -110,56 +95,16 @@ input:focus {
 .primary-btn:disabled {
   background: #ddd;
   cursor: not-allowed;
-
-}
-
-/* CONFERMA PASSWORD */
-.confirm-password {
-  margin-top: 10px;
-  border-bottom: 1px solid #ccc;  
-  border-top: 1px solid #ccc;  
-  
 }
 
 
-/* ERRORI */
-.error {
-  color: #d32f2f;
-  font-size: 13px;
-  text-align: center;
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 10px;
-  margin-bottom: 10px;
-}
-
-.success {
-  color: #2e7d32;
-  font-size: 13px;
-}
-
-
-/* LINKS */
-.switch {
-  text-align: center;
-  font-size: 14px;
-}
-
-.switch a {
-  color: rgb(234, 155, 155);
-  cursor: pointer;
-  font-weight: 500;
-}
-
-
-/* REGOLE PASSWORD */
+///// REGOLE PASSWORD
 .pass-indicator-container {
-display: flex;
-flex-direction: row; 
-justify-content: space-between;
-border-top: 1px solid #ccc;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-top: 1px solid #ccc;
 }
-
-
 
 .password-rules {
   list-style: circle;
@@ -179,4 +124,48 @@ border-top: 1px solid #ccc;
   font-size: 13px;
   font-weight: bold;
   padding: 30px 20px 10px 10px;
+}
+
+
+///// CONFERMA PASSWORD
+.confirm-password {
+  margin-top: 10px;
+  border-bottom: 1px solid #ccc;
+  border-top: 1px solid #ccc;
+}
+
+.confirm-password input {
+  border: none;
+  width: 94%;
+  padding: 10px;
+  font-size: 14px;
+}
+
+
+///// ERRORE E SUCCESSO
+.error {
+  color: #d32f2f;
+  font-size: 13px;
+  text-align: center;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+
+.success {
+  color: #2e7d32;
+  font-size: 13px;
+}
+
+
+///// LINK A LOGIN
+.switch {
+  text-align: center;
+  font-size: 14px;
+}
+
+.switch a {
+  color: rgb(234, 155, 155);
+  cursor: pointer;
+  font-weight: 500;
 }

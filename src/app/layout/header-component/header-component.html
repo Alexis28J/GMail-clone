@@ -11,9 +11,8 @@
 
     <div class="header-center">
         <div class="search-box">
-            <!-- <input type="text" placeholder="Search" (input)="onSearch($event.target.value)"/> -->
-            <!-- <input type="text" placeholder="Search" #searchInput (input)="onSearch(searchInput.value)"/> -->
-            <input type="text" placeholder="Search" #searchInput (keyup.enter)="onSearch(searchInput.value)" />
+            <input type="text" placeholder="Search" #searchInput (input)="onSearch(searchInput.value)"
+                (keyup.enter)="onSearch(searchInput.value)" />
 
             <button class="icon-btn" matTooltip="Filter by" matTooltipPosition="below"
                 [matMenuTriggerFor]="filterMenu"><mat-icon fontSet="material-symbols-outlined"

@@ -21,20 +21,21 @@ export class LoginComponent {
   error = signal<string | null>(null)
   success = signal<string | null>(null);
 
-  constructor(private authService: AuthService, private router: Router) {};
+  constructor(private authService: AuthService, private router: Router) { };
 
-  /// GESTIONE DEL MESSAGGIO DI SUCCESSO DOPO LA REGISTRAZIONE
+  ///// GESTIONE DEL MESSAGGIO DI SUCCESSO DOPO LA REGISTRAZIONE
   ngOnInit() {
-    //console.log('STATE:', window.history.state);
+
     const message = window.history.state?.successMessage;
 
     if (message) {
       this.success.set(message);
     }
+
   }
 
 
-  /// GESTIONE DEL LOGIN 
+  ///// GESTIONE DEL LOGIN 
   onLogin() {
 
     const result = this.authService.login(this.email, this.password);
@@ -48,13 +49,13 @@ export class LoginComponent {
   }
 
 
-  // NAVIGAZIONE ALLA PAGINA DI REGISTRAZIONE
+  ///// NAVIGAZIONE ALLA PAGINA DI REGISTRAZIONE
   goToRegister() {
     this.router.navigate(['/register']);
   }
 
 
-  // GESTIONE DELLA VISIBILITÀ DELLA PASSWORD
+  ///// GESTIONE DELLA VISIBILITÀ DELLA PASSWORD
   showPassword = false;
 
   togglePasswordVisibility() {

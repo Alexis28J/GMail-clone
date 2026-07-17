@@ -12,4 +12,3 @@ Lo spinner ha una dimensione di 50px e la barra di caricamento è indeterminata 
 Ho messo anche il messaggio di "Loading emails...".
 
 
-

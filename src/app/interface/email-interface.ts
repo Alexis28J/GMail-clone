@@ -5,7 +5,7 @@ export interface EmailInterface {
   recipient: string;
   subject: string;
   body: string;
-  timestamp: Date;
+  timestamp: string | number;
   starred: boolean;
   label: string;
 
@@ -14,6 +14,8 @@ export interface EmailInterface {
   selected?: boolean;
   is_deleted: boolean;
 }
+
+
 
 
 

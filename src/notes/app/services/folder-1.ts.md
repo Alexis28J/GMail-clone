@@ -329,4 +329,17 @@ indipendentemente dal formato in cui è stato salvato.
 Infine, tutti questi componenti della data vengono uniti in una singola stringa e aggiunti all'array `fields` in modo che possano essere considerati nella ricerca delle parole chiave.
 
 
+## MODIFICA FILTRO DATI
+
+Ho SOSTITUITO la proprietà `timestamp` di tipo Date con una proprietà `timestamp` di tipo `string | number` per consentire una maggiore flessibilità nella gestione dei valori di timestamp. 
+
+In questo modo, il timestamp può essere rappresentato come una stringa o un numero, a seconda delle esigenze dell'applicazione.
+
+Inoltre, ho deciso di NON INCLUDERE l'anno nel filtro per data, in quanto potrebbe essere troppo restrittivo e limitare i risultati della ricerca. In questo modo, gli utenti possono cercare email basate solo sul giorno e sul mese, indipendentemente dall'anno in cui sono state inviate o ricevute. Questo approccio rende la ricerca più flessibile e aumenta le possibilità di trovare email pertinenti anche se l'anno non è specificato.
+
+Nel `mail-list-component.ts`, ho aggiunto la logica per formattare il `timestamp` in modo che sia coerente con il filtro per data. 
+Nel `mail-list-component.html`, ho modificato il `pipe` del `timestamp` per visualizzarlo in un formato leggibile.
+Ora, quando si visualizzano le email, il timestamp viene formattato correttamente e può essere confrontato con i termini di ricerca basati sulla data.
+
+
 

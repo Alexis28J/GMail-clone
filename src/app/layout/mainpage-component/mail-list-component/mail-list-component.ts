@@ -98,5 +98,16 @@ export class MailListComponent {
   onSelectionChange(email: EmailInterface, event: MatCheckboxChange) {
     this.emailService.toggleEmailSelection(email.id, event.checked);
   }
+
+
+  ///////////////////////////////////FORMATTING IL TIMESTAMP///////////////////////////////////////////////
+
+  formatTimestamp(timestamp: string | number): string | number {
+
+    return typeof timestamp === 'number'
+      ? timestamp * 1000
+      : timestamp;
+  }
+
 }
 

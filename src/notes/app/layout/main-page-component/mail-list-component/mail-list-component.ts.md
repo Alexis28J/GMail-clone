@@ -90,3 +90,17 @@ L'evento viene passato come parametro all'handler, consentendo di accedere alle 
 All'interno dell'handler, viene chiamato il metodo `toggleEmailSelection(email.id, event.checked)` del servizio emailService. Questo metodo aggiorna lo stato di selezione dell'email specifica in base al valore della checkbox `(event.checked)`, che indica se l'email è stata selezionata o deselezionata.
 
 In questo modo, l'handler gestisce la logica di selezione delle email e mantiene sincronizzato lo stato di selezione tra la lista delle email e il servizio emailService.
+
+
+## FORMATTING IL TIMESTAMP
+
+```TYPESCRIPT
+  formatTimestamp(timestamp: string | number): string | number {
+
+    return typeof timestamp === 'number' // typeof è un operatore che restituisce una stringa che indica il tipo di una variabile. In questo caso, controlla se il timestamp è un numero.
+      ? timestamp * 1000 // Se il timestamp è un numero, lo moltiplica per 1000 per convertirlo in millisecondi (dato che i timestamp in secondi devono essere convertiti in millisecondi per essere utilizzati con la classe Date).
+      : timestamp;  // Se il timestamp non è un numero, lo restituisce così com'è. Questo è utile per gestire timestamp che sono già in formato stringa o in un altro formato.
+  }
+  ```
+  Questo metodo converte il timestamp in millisecondi se è un numero, altrimenti lo restituisce così com'è. 
+  Questo è utile per garantire che il timestamp sia nel formato corretto per la visualizzazione.

@@ -30,17 +30,23 @@ export class EmailService {
 
 
   ///// CARICA EMAIL DAL MOCKAPI.IO
-  loading = signal(false);  // serve per mostrare un indicatore di caricamento durante il recupero delle email
-  // false perché all'avvio non stiamo caricando le email, ma le carichiamo subito dopo con loadEmails()
+  loading = signal(false);
 
   loadEmails() {
-    // Ho aggiunto un signal loading per mostrare un indicatore di caricamento durante il recupero delle email dal mockapi.io
-    this.loading.set(true); // setto il signal loading a true per mostrare l'indicatore di caricamento
+    this.loading.set(true);
 
     this.http.get<EmailInterface[]>(this.apiUrl)
       .subscribe({
         next: emails => {
-          this.emailsSignal.set(emails);
+          const normalizedEmails = emails.map(email => ({
+            ...email,
+            timestamp:
+              typeof email.timestamp === 'number'
+                ? email.timestamp * 1000
+                : email.timestamp
+          }))
+
+          this.emailsSignal.set(normalizedEmails);
 
           this.snackBar.open(
             'Updated emails',
@@ -52,7 +58,7 @@ export class EmailService {
           this.loading.set(false);
         },
         error: () => {
-          this.loading.set(false);  //ho aggiunto questo per assicurarmi che l'indicatore di caricamento venga nascosto anche in caso di errore
+          this.loading.set(false);
           this.snackBar.open(
             'Error during refresh',
             '',
@@ -271,7 +277,7 @@ export class EmailService {
   }
 
 
-  /////INOLTRARE EMAIL (FORWARD) A PARTIRE DALLA EMAIL ORIGINALE
+  ///// INOLTRARE EMAIL (FORWARD) A PARTIRE DALLA EMAIL ORIGINALE
   setForwardEmail(originalEmail: EmailInterface) {
 
     const date = new Date(originalEmail.timestamp);
@@ -299,7 +305,7 @@ export class EmailService {
   }
 
 
-  ///// PULISCE IL SIGNAL composeDraft (evita residui di dati)
+  ///// PULIZIA SIGNAL composeDraft (evita residui di dati)
   clearComposeDraft() {
     this.composeDraft.set(null);
   }
