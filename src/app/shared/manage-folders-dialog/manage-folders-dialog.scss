@@ -1,0 +1,117 @@
+.manage-folders-dialog {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+:host {
+    display: block;
+}
+
+
+///// TITOLO
+.dialog-title {
+    display: flex;
+    gap: 8px;
+    background: rgb(236, 226, 226);
+    padding: 22px 22px;
+    margin-top: -2px;
+    font-weight: 500;
+    font-size: 22px;
+}
+
+
+///// CONTENITORE DI RIGA DI FOLDER
+mat-dialog-content {
+    min-width: 350px;
+    max-height: 350px;
+}
+
+
+///// RIGA DI FOLDER
+.folder-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 12px 16px;
+
+    border-radius: 12px;
+
+    margin-bottom: 8px;
+
+    transition: background-color .2s ease;
+}
+
+.folder-row:hover {
+    background-color: rgb(248, 221, 221);
+}
+
+
+///// INFORMAZIONI DEI FOLDER (NOME, ICONA)
+.folder-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+
+.folder-name {
+    font-size: 16px;
+    font-weight: 500;
+    color: #202124;
+}
+
+
+///// PULSANTI DI AZIONE (MODIFICA, ELIMINA)/////
+.folder-actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    opacity: 0;
+    transition: opacity .2s ease;
+}
+
+.folder-row:hover .folder-actions {
+    opacity: 1;
+}
+
+
+///// BOTTONE DI MODIFICA
+.edit-btn {
+    color: #5f6368;
+}
+
+.edit-btn:hover {
+    background: rgba(217, 48, 37, 0.12);
+    color: rgb(241, 133, 133);
+}
+
+
+///// BOTTONE DI ELIMINA
+.delete-btn {
+    color: #5f6368;
+}
+
+.delete-btn:hover {
+    background: rgba(217, 48, 37, 0.12);
+    color: #d93025;
+}
+
+
+///// BOTTONE CHIUDI
+.close-btn {
+    color: rgb(241, 133, 133) !important;
+    font-weight: bold;
+    border: none;
+}
+
+.close-btn:hover {
+    background-color: rgb(248, 221, 221);
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background-color .2s ease;
+}
+
+
+
+

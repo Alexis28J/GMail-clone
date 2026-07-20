@@ -17,10 +17,11 @@
 }
 
 .Btn-noBorder:hover {
-  padding-top: 4px;
+  padding-top: 6px;
   background-color: rgb(248, 221, 221);
   border-radius: 50%;
 }
+
 
 ///// CHECKBOX SELEZIONA TUTTO /////
 .select-all-checkbox {
@@ -56,16 +57,22 @@
   gap: 5px;
 }
 
+
 ///// GRUPPO BOTTONI /////
 .btn-group {
   display: flex;
   gap: 30px;
 }
 
+
 ////// BOTTONI PREVIOUS E NEXT /////
 .previous-next-btn {
+  border: 3px outset black;
   background-color: rgb(221, 200, 200);
   border-radius: 4px;
+  width: 32px;
+  height: 32px;
+  padding: 0;
 }
 
 .previous-next-btn:hover {
@@ -88,6 +95,7 @@
   align-items: center;
   gap: 6px;
 }
+
 
 ///// CONTATORE DI SELEZIONE /////
 .selection-counter {

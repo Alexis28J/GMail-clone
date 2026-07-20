@@ -3,7 +3,7 @@
     <app-toolbar-component (nextMail)="nextEmail()" (prevMail)="previousEmail()" (delete)="onDeleteSelected()"
         (actualDelete)="onActualDelete()" (restore)="onRestoreSelected()" [isTrashView]="isTrashView()"
         (archive)="onArchive()" (moveRequested)="moveEmails($event)" (asSpam)="onMarkAsSpam()"
-        [availableFolders]="availableFolders()"></app-toolbar-component>
+        (manageFolders)="openManageFolders()" [availableFolders]="availableFolders()"></app-toolbar-component>
 
     <div class="content">
 
@@ -20,4 +20,3 @@
     </div>
 
 </div>
-

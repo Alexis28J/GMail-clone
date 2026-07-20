@@ -1,0 +1,45 @@
+<div class="manage-folders-dialog">
+    <h2 mat-dialog-title class="dialog-title">
+        <mat-icon>folder_copy</mat-icon>
+        <span>Manage folders</span>
+    </h2>
+
+    <mat-dialog-content>
+
+        @for(folder of folders(); track folder.id){
+
+        <div class="folder-row">
+
+            <div class="folder-info">
+                <mat-icon>folder</mat-icon>
+                <span class="folder-name">{{folder.name}}</span>
+            </div>
+
+
+            <div class="folder-actions">
+                <button mat-icon-button class="edit-btn" (click)="editFolder(folder)" matTooltip="Rename folder"
+                    matTooltipPosition="above">
+                    <mat-icon>edit</mat-icon>
+                </button>
+
+                <button mat-icon-button class="delete-btn" color="warn" (click)="deleteFolder(folder)"
+                    matTooltip="Delete folder" matTooltipPosition="below">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </div>
+
+        </div>
+
+        }
+
+    </mat-dialog-content>
+
+
+    <mat-dialog-actions align="end">
+
+        <button mat-stroked-button mat-dialog-close class="close-btn">
+            Close
+        </button>
+
+    </mat-dialog-actions>
+</div>

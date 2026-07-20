@@ -338,6 +338,37 @@ export class EmailService {
   clearComposeDraft() {
     this.composeDraft.set(null);
   }
+  
+
+  ///// SPOSTA LE EMAIL DAL FOLDER ELIMINATO ALL'INBOX
+  moveEmailsFromDeletedFolder(folderId: string) {
+    const emailsToMove =
+      this.emailsSignal().filter(
+        e => e.folder === folderId
+      );
+
+    emailsToMove.forEach(email => {
+      this.http.put(
+        `${this.apiUrl}/${email.id}`,
+        {
+          ...email,
+          folder: 'inbox'
+        }
+      )
+        .subscribe(() => {
+          this.emailsSignal.update(emails =>
+            emails.map(e =>
+              e.id === email.id
+                ? {
+                  ...e,
+                  folder: 'inbox'
+                }
+                : e
+            )
+          );
+        });
+    });
+  }
 
 
 }

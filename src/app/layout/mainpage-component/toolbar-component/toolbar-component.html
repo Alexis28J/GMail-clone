@@ -111,15 +111,20 @@
             </mat-menu>
 
 
-            <!------------------------------LABEL & MORE ------------------------------------ -->
+            <!------------------------------ FOLDERS & LABELS ------------------------------------ -->
 
-            <button mat-icon-button class="Btn-noBorder" matTooltip="Label" matTooltipPosition="below">
+            <button mat-icon-button class="Btn-noBorder" matTooltip="Folders" matTooltipPosition="below"
+                (click)="onManageFolders()">
+                <mat-icon>folder_copy</mat-icon>
+            </button>
+
+            <button mat-icon-button class="Btn-noBorder" matTooltip="Labels" matTooltipPosition="below">
                 <mat-icon>label</mat-icon>
             </button>
 
-            <button mat-icon-button class="Btn-noBorder" matTooltip="More" matTooltipPosition="below">
+            <!-- <button mat-icon-button class="Btn-noBorder" matTooltip="More" matTooltipPosition="below">
                 <mat-icon>more_vert</mat-icon>
-            </button>
+            </button> -->
 
         </div>
     </div>

@@ -6,20 +6,22 @@ import { EmailService } from '../../../services/email';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatMenuItem, MatMenuTrigger, MatMenu } from "@angular/material/menu";
-import { MovableFolder } from '../../../constants/folders.constants';
 import { FolderInterface } from '../../../interface/folder-interface';
+import { MatDialog } from '@angular/material/dialog';
+import { ManageFoldersDialog } from '../../../shared/manage-folders-dialog/manage-folders-dialog';
+import { MatButtonModule } from "@angular/material/button";
 
 
 @Component({
   selector: 'app-toolbar-component',
-  imports: [MatIcon, MatTooltipModule, MatCheckboxModule, MatMenuItem, MatMenuTrigger, MatMenu],
+  imports: [MatIcon, MatTooltipModule, MatCheckboxModule, MatMenuItem, MatMenuTrigger, MatMenu, MatButtonModule],
   templateUrl: './toolbar-component.html',
   styleUrls: ['./toolbar-component.scss'],
 })
 
 export class ToolbarComponent {
 
-  constructor(public folderService: Folder, private emailService: EmailService) { }
+  constructor(public folderService: Folder, private emailService: EmailService, private dialog: MatDialog) { }
 
   @Input() canGoNext = true;
   @Input() canGoPrev = true;
@@ -34,8 +36,9 @@ export class ToolbarComponent {
   @Output() restore = new EventEmitter<void>();
   @Output() archive = new EventEmitter<void>();
   @Output() moveRequested = new EventEmitter<string>();
-  @Output() actualDelete = new EventEmitter<void>(); 
+  @Output() actualDelete = new EventEmitter<void>();
   @Output() asSpam = new EventEmitter<void>();
+  @Output() manageFolders = new EventEmitter<void>();
 
 
   ////// EMETTE EVENTI AL COMPONENTE PADRE (MainPageComponent) PER NAVIGARE TRA LE EMAIL
@@ -85,7 +88,7 @@ export class ToolbarComponent {
   });
 
 
-  ////// VERIFICA SE ALCUNE EMAIL VISIBILI SONO SELEZIONATE
+  ///// VERIFICA SE ALCUNE EMAIL VISIBILI SONO SELEZIONATE
   isPartiallySelected = computed(() => {
     const visibleEmails = this.folderService.filteredEmails();
 
@@ -130,14 +133,20 @@ export class ToolbarComponent {
 
 
   ///// EMETTE EVENTI AL COMPONENTE PADRE (MainPageComponent) PER ELIMINARE LE EMAIL SELEZIONATE IN MODO DEFINITIVO
-  onActualDelete(){
+  onActualDelete() {
     this.actualDelete.emit();
   }
+
 
   ///// EMETTE EVENTI AL COMPONENTE PADRE (MainPageComponent) PER SEGNALARE LE EMAIL COME SPAM
   onAsSpam() {
     this.asSpam.emit();
   }
 
+
+  ///// EMETTE EVENTI AL COMPONENTE PADRE (MainPageComponent) PER APRIRE LA DIALOG PER GESTIRE I FOLDER CUSTOM
+  onManageFolders() {
+    this.manageFolders.emit();
+  }
 
 }

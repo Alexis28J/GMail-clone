@@ -200,3 +200,18 @@ mark {
 .mat-mdc-form-field.mat-focused .mat-mdc-floating-label {
   color: rgb(231, 147, 147) !important;
 }
+
+
+/////////////////////////////////////////////ICONA E PULSANTI/////////////////////////////////////////////////////////
+
+/* Rimuove l'effetto ripple persistente dai pulsanti di tipo "icon" */
+.mat-mdc-icon-button:hover .mat-mdc-button-persistent-ripple {
+  opacity: 0 !important;
+}
+
+
+/* Rimuove l'effetto ripple persistente dai pulsanti di tipo "button" */
+.mdc-button__ripple { 
+  display: none !important;
+}
+

@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MovableFolder } from '../../constants/folders.constants';
 import { ComposeDialog } from '../../shared/compose-dialog/compose-dialog';
+import { ManageFoldersDialog } from '../../shared/manage-folders-dialog/manage-folders-dialog';
 
 
 @Component({
@@ -328,6 +329,18 @@ export class MainpageComponent {
     });
 
   }
+
+
+  ///// APRE LA DIALOG PER GESTIRE I FOLDER CUSTOM
+    openManageFolders() {
+      this.dialog.open(
+        ManageFoldersDialog,
+        {
+          autoFocus: false,
+          width: '500px',
+        }
+      );
+    }
 
 }
 

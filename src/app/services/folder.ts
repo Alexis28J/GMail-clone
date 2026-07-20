@@ -258,7 +258,9 @@ export class Folder {
       this.folderApiUrl,
       {
         name,
-        icon: 'folder'
+        icon: 'folder',
+        system: false,
+        movable: true
       }
     ).subscribe(folder => {
       this.foldersSignal.update(folders => [
@@ -284,6 +286,59 @@ export class Folder {
 
       });
 
+  }
+
+
+  ///// RINOMINA CARTELLA PERSONALIZZATA
+  updateFolder(folderId: string, newName: string) {
+    const exists = this.foldersSignal().some(
+      folder =>
+        folder.id !== folderId &&
+        folder.name.toLowerCase() === newName.toLowerCase()
+    );
+
+    if (exists) {
+      console.error('Folder already exists');
+      return;
+    }
+
+    this.http.put<FolderInterface>(
+      `${this.folderApiUrl}/${folderId}`,
+      {
+        name: newName,
+        icon: 'folder'
+      }
+    ).subscribe(updatedFolder => {
+      this.foldersSignal.update(folders =>
+        folders.map(folder => folder.id === folderId
+          ? {
+            ...folder,
+            ...updatedFolder
+          }
+          : folder
+        )
+      )
+    });
+  }
+
+
+  ///// ELIMINA FOLDER CUSTOM
+  deleteFolder(folderId: string) {
+
+    this.emailService.moveEmailsFromDeletedFolder(folderId);
+
+    this.http.delete(`${this.folderApiUrl}/${folderId}`)
+      .subscribe(() => {
+        this.foldersSignal.update(
+          folders =>
+            folders.filter(folder => folder.id !== folderId)
+        );
+
+        if (this.selectedFolder() === folderId) {
+          this.selectedFolder.set('inbox');
+        }
+
+      });
   }
 
 
