@@ -72,9 +72,44 @@ Ora, nel componente `SidebarComponent`, ho creato il metodo `openCreateFolderDia
 
 ### `subscribe()` è un metodo che permette di ascoltare gli eventi emessi da un `Observable`. In questo caso, viene utilizzato per ascoltare l'evento di chiusura del dialogo e ottenere il risultato della creazione della cartella.
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+## GESTIONE LISTA DELLE CARTELLE SYSTEM E CUSTOM
+
+```typescript
+  ///////  GESTIONE LISTA DI CARTELLE  ///////
+
+  ///// SIGNAL PER MOSTRARE O NASCONDERE LE CARTELLE
+  showMoreFolders = signal(false);
 
 
-## GESTIONE DELLE CARTELLE
+  ///// CARTELLE VISIBILI
+  visibleSystemFolders = computed(() => {
+    return this.folders()
+      .filter(folder => folder.system)
+      .slice(0, 4);
+  });
+
+
+  ///// CARTELLE NASCOSTE
+  hiddenSystemFolders = computed(() => {
+    return this.folders()
+      .filter(folder => folder.system)
+      .slice(4);
+  });
+
+
+  ///// CARTELLE PERSONALIZZATE
+  customFolders = computed(() =>
+    this.folders().filter(folder => folder.system !== true)
+  );
+
+
+  ///// CI SONO ALTRE CARTELLE?
+  hasMoreFolders = computed(() =>
+    this.folders().filter(f => f.system).length > 4
+  );
+```
 
 1. `showMoreFolders = signal(false);`
 `showMoreFolders` è un `signal` che indica se mostrare o meno le cartelle nascoste. Inizialmente è impostato su `false`, quindi le cartelle nascoste non saranno visibili.
@@ -127,3 +162,51 @@ Questo `computed` serve per capire se ci sono più di 4 cartelle di sistema, in 
 
 `true` se ci sono più di 4 cartelle di sistema e quindi ci sono cartelle nascoste.
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+## REFACTORING GESTIONE LISTA DI FOLDER SYSTEM E CUSTOM
+
+```typescript
+  ///// REFACTORING GESTIONE LISTE DI CARTELLE  /////
+
+  ///// SIGNAL PER MOSTRARE O NASCONDERE LE CARTELLE DI SISTEMA E PERSONALIZZATE
+  showMoreSystemFolders = signal(false); // Signal per mostrare o nascondere le cartelle di sistema
+  showMoreCustomFolders = signal(false); // Signal per mostrare o nascondere le cartelle personalizzate
+
+ // false = cartelle nascoste, true = cartelle visibili
+ // vengono inizializzate a false perché all'inizio non vogliamo mostrare le cartelle nascoste
+
+
+  ///// GRUPPO FOLDER DI SISTEMA
+  systemFolderGroup = computed(() => {
+    const folders = this.folders()
+      .filter(folder => folder.system);
+
+    return {
+      visible: folders.slice(0, 4),
+      hidden: folders.slice(4),
+      hasMore: folders.length > 4
+    };
+  });
+
+
+  ///// GRUPPO FOLDER CUSTOM
+  customFolderGroup = computed(() => {
+    const folders = this.folders()
+      .filter(folder => !folder.system)
+
+    return {
+      visible: folders.slice(0, 4),
+      hidden: folders.slice(4),
+      hasMore: folders.length > 4
+    }
+  });
+```
+
+Ho fatto un `refactoring` del codice per gestire meglio la visualizzazione delle cartelle di sistema e personalizzate. 
+
+Ora utilizzo dei `computed properties` per raggruppare le cartelle visibili e nascoste, e dei signal per gestire lo stato di espansione delle liste.
+
+La differenza principale è che ora il codice è più leggibile e modulare, e permette di gestire facilmente l'aggiunta di nuove cartelle senza dover modificare la logica di visualizzazione.
+
+Avrei potuto fare un refactoring ancora più spinto creando un `unico computed` per gestire sia le cartelle di sistema che quelle personalizzate, ma ho preferito mantenerle separate per chiarezza e leggibilità del codice.

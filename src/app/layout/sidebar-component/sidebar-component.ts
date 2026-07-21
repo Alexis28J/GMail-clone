@@ -53,40 +53,40 @@ export class SidebarComponent {
   }
 
 
-  /////  GESTIONE CARTELLE  ///////
 
-  ///// SIGNAL PER MOSTRARE O NASCONDERE LE CARTELLE
-  showMoreFolders = signal(false);
+  ///// REFACTORING GESTIONE LISTE DI CARTELLE  /////
+
+  ///// SIGNAL PER MOSTRARE O NASCONDERE LE CARTELLE DI SISTEMA E PERSONALIZZATE
+  showMoreSystemFolders = signal(false);
+  showMoreCustomFolders = signal(false);
 
 
-  ///// CARTELLE VISIBILI
-  visibleSystemFolders = computed(() => {
-    return this.folders()
-      .filter(folder => folder.system)
-      .slice(0, 4);
+  ///// GRUPPO FOLDER DI SISTEMA
+  systemFolderGroup = computed(() => {
+    const folders = this.folders()
+      .filter(folder => folder.system);
+
+    return {
+      visible: folders.slice(0, 4),
+      hidden: folders.slice(4),
+      hasMore: folders.length > 4
+    };
   });
 
 
-  ///// CARTELLE NASCOSTE
-  hiddenSystemFolders = computed(() => {
-    return this.folders()
-      .filter(folder => folder.system)
-      .slice(4);
+  ///// GRUPPO FOLDER CUSTOM
+  customFolderGroup = computed(() => {
+    const folders = this.folders()
+      .filter(folder => !folder.system)
+
+    return {
+      visible: folders.slice(0, 4),
+      hidden: folders.slice(4),
+      hasMore: folders.length > 4
+    }
   });
-
-
-  ///// CARTELLE PERSONALIZZATE
-  customFolders = computed(() =>
-    this.folders().filter(folder => folder.system !== true)
-  );
-
-
-  ///// CI SONO ALTRE CARTELLE?
-  hasMoreFolders = computed(() =>
-    this.folders().filter(f => f.system).length > 4
-  );
-
 }
+
 
 
 

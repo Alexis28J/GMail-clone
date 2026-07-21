@@ -13,19 +13,30 @@
 
     <!------------------------------- SYSTEM FOLDERS ---------------------------------------->
     <div class="sidebar-content">
-        <app-folder-list-component [folders]="visibleSystemFolders()"
+
+        <app-folder-list-component [folders]="systemFolderGroup().visible"
             (folderSelected)="onFolderSelected($event)"></app-folder-list-component>
 
-        <button class="toggle-btn" (click)="showMoreFolders.set(!showMoreFolders())">
+
+        @if(systemFolderGroup().hasMore) {
+
+        <button class="toggle-btn" (click)="showMoreSystemFolders.set(!showMoreSystemFolders())">
+
             <mat-icon>
-                {{ showMoreFolders() ? 'expand_less' : 'expand_more' }}
+                {{ showMoreSystemFolders() ? 'expand_less' : 'expand_more' }}
             </mat-icon>
 
-            <span>{{ showMoreFolders() ? 'Show less' : 'Show more' }}</span>
+            <span>
+                {{ showMoreSystemFolders() ? 'Show less' : 'Show more' }}
+            </span>
+
         </button>
 
-        @if (showMoreFolders()) {
-        <app-folder-list-component [folders]="hiddenSystemFolders()"
+        }
+
+        @if (showMoreSystemFolders()) {
+
+        <app-folder-list-component [folders]="systemFolderGroup().hidden"
             (folderSelected)="onFolderSelected($event)"></app-folder-list-component>
         }
 
@@ -38,15 +49,36 @@
             <span>Custom folders</span>
 
             <button class="add-folder-btn" (click)="openCreateFolderDialog()">
-
                 <mat-icon>add</mat-icon>
-
             </button>
 
         </div>
 
-        <app-folder-list-component [folders]="customFolders()" (folderSelected)="onFolderSelected($event)">
+        <app-folder-list-component [folders]="customFolderGroup().visible" (folderSelected)="onFolderSelected($event)">
         </app-folder-list-component>
+
+        @if (customFolderGroup().hasMore){
+
+        <button class="toggle-btn" (click)="showMoreCustomFolders.set(!showMoreCustomFolders())">
+
+            <mat-icon>
+                {{ showMoreCustomFolders() ? 'expand_less' : 'expand_more'}}
+            </mat-icon>
+
+            <span>
+                {{ showMoreCustomFolders() ? 'Show less' : 'Show more'}}
+            </span>
+
+        </button>
+
+        }
+
+        @if (showMoreCustomFolders()){
+
+        <app-folder-list-component [folders]="customFolderGroup().hidden"
+            (folderSelected)="onFolderSelected($event)"></app-folder-list-component>
+
+        }
 
     </div>
 

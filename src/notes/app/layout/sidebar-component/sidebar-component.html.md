@@ -61,9 +61,49 @@ In sintesi, `(folderSelected)="onFolderSelected($event)"` significa che stiamo a
 
 Nel nostro caso, il componente genitore `SidebarComponent` riceve l'evento `folderSelected` dal componente figlio `FolderListComponent` e gestisce l'evento tramite il metodo `onFolderSelected`. 
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+## MODIFICA (GESTIONE LISTA FOLDER SYSTEM E CUSTOM)
 
-## MODIFICA
+```html
+    <!------------------------------- SYSTEM FOLDERS ---------------------------------------->
+    <div class="sidebar-content">
+        <app-folder-list-component [folders]="visibleSystemFolders()"
+            (folderSelected)="onFolderSelected($event)"></app-folder-list-component>
+
+        <button class="toggle-btn" (click)="showMoreFolders.set(!showMoreFolders())">
+            <mat-icon>
+                {{ showMoreFolders() ? 'expand_less' : 'expand_more' }}
+            </mat-icon>
+
+            <span>{{ showMoreFolders() ? 'Show less' : 'Show more' }}</span>
+        </button>
+
+        @if (showMoreFolders()) {
+        <app-folder-list-component [folders]="hiddenSystemFolders()"
+            (folderSelected)="onFolderSelected($event)"></app-folder-list-component>
+        }
+
+....
+
+        <!------------------------------- CUSTOM FOLDERS ---------------------------------------->
+        <div class="custom-folders">
+
+            <span>Custom folders</span>
+
+            <button class="add-folder-btn" (click)="openCreateFolderDialog()">
+
+                <mat-icon>add</mat-icon>
+
+            </button>
+
+        </div>
+
+        <app-folder-list-component [folders]="customFolders()" (folderSelected)="onFolderSelected($event)">
+        </app-folder-list-component>
+
+    </div>
+```
 
 Ho suddiviso i folder in `system` e `custom`. In questo modo è più chiaro. Nella sezione `system` ci sono le cartelle di default e quelle nascoste affinché non occupino spazio nella sidebar. La sezione dei `custom` contiene le cartelle create dall'utente.
 
@@ -77,5 +117,43 @@ Per farlo utilizzo due metodi: `visibleSystemFolders()` e `hiddenSystemFolders()
 
 `'expand_more'` e `'expand_less'` sono le icone utilizzate per indicare l'espansione o la contrazione della lista.
 
-- 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+## SECONDA MODIFICA (GESTIONE LISTA FOLDER SYSTEM E CUSTOM)
+
+```html
+    <!------------------------------- SYSTEM FOLDERS ---------------------------------------->
+    <div class="sidebar-content">
+
+        <app-folder-list-component [folders]="systemFolderGroup().visible"
+            (folderSelected)="onFolderSelected($event)"></app-folder-list-component>
+
+...
+
+...
+
+        <!------------------------------- CUSTOM FOLDERS ---------------------------------------->
+        <div class="custom-folders">
+
+            <span>Custom folders</span>
+
+            <button class="add-folder-btn" (click)="openCreateFolderDialog()">
+                <mat-icon>add</mat-icon>
+            </button>
+
+        </div>
+
+        <app-folder-list-component [folders]="customFolderGroup().visible" (folderSelected)="onFolderSelected($event)">
+        </app-folder-list-component>
+....
+
+    </div>
+```
+
+Ho sostituito la parte di gestione delle cartelle con un approccio basato su `signal` e `computed properties`.
+
+Questo mi permette di avere un codice più leggibile e modulare. Inoltre, facilita l'aggiunta di nuove cartelle senza modificare la logica di visualizzazione.
+
+`(click)="showMoreSystemFolders.set(!showMoreSystemFolders())"`: significa che al click del pulsante viene invertito il valore del signal `showMoreSystemFolders`.
+Cioè se era `false (nascosto)` diventa `true (visibile)` e `viceversa`. 
+Lo stesso vale per `showMoreCustomFolders`. 

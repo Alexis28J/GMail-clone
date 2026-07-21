@@ -185,6 +185,7 @@ export class EmailService {
     ).subscribe();
   }
 
+  
   ///////////////////////////////////FUNZIONI PRIVATE E PUBBLICHE PER LA GESTIONE DELLE EMAIL SELEZIONATE/////////////////////////////////////////
 
   ///// FUNZIONE PRIVATA CHE AGGIORNA LE EMAIL SELEZIONATE CON LE MODIFICHE PASSATE COME PARAMETRO
