@@ -1,9 +1,12 @@
 <div class="manage-folders-dialog">
+
+    <!------------------------------------- TITOLO -------------------------------------------->
     <h2 mat-dialog-title class="dialog-title">
         <mat-icon>folder_copy</mat-icon>
         <span>Manage folders</span>
     </h2>
 
+    <!---------------------------------  CONTENUTO -------------------------------------------->
     <mat-dialog-content>
 
         @for(folder of folders(); track folder.id){
@@ -15,7 +18,7 @@
                 <span class="folder-name">{{folder.name}}</span>
             </div>
 
-
+            <!-------------------------------------- PULSANTI -------------------------------------------->
             <div class="folder-actions">
                 <button mat-icon-button class="edit-btn" (click)="editFolder(folder)" matTooltip="Rename folder"
                     matTooltipPosition="above">
@@ -34,7 +37,7 @@
 
     </mat-dialog-content>
 
-
+    <!-- PULSANTE CLOSE -->
     <mat-dialog-actions align="end">
 
         <button mat-stroked-button mat-dialog-close class="close-btn">

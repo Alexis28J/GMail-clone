@@ -1,0 +1,53 @@
+<div class="rename-dialog">
+
+    <!------------------------------------ TITOLO ------------------------------------------>
+
+    <h2 mat-dialog-title class="dialog-title">
+
+        <mat-icon>edit</mat-icon>
+        <span>Rename folder</span>
+
+    </h2>
+
+    <!------------------------------------ CONTENUTO -------------------------------------------->
+    <mat-dialog-content>
+
+        <mat-form-field appearance="outline" class="full-width">
+
+            <mat-label>
+                Folder name
+            </mat-label>
+
+            <input matInput maxlength="20" [(ngModel)]="folderName" cdkFocusInitial>
+            <mat-hint align="end">{{folderName.length}} / 20</mat-hint>
+
+        </mat-form-field>
+
+    </mat-dialog-content>
+
+    <!------------------------------------ AZIONI -------------------------------------------->
+    <mat-dialog-actions align="end">
+
+        <!-- PREVIEW IN TEMPO REALE -->
+        <div class="preview">
+
+            <mat-icon>folder</mat-icon>
+
+            <span>
+                {{ folderName || 'New Folder' }}
+            </span>
+
+        </div>
+
+        <!-- PULSANTI -->
+        <button mat-button mat-dialog-close class="cancel-btn">
+            Cancel
+        </button>
+
+        <button mat-button [mat-dialog-close]="folderName" class="save-btn" [disabled]="!folderName.trim()">
+            Save
+        </button>
+
+    </mat-dialog-actions>
+
+</div>

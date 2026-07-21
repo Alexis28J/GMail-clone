@@ -3,7 +3,6 @@
     <h2 mat-dialog-title class="dialog-title">
 
         <mat-icon>create_new_folder</mat-icon>
-
         <span>Create new folder</span>
 
     </h2>
@@ -16,9 +15,9 @@
 
             <mat-label>Folder name</mat-label>
 
-            <input matInput maxlength="30" cdkFocusInitial [(ngModel)]='folderName'>
+            <input matInput maxlength="20" cdkFocusInitial [(ngModel)]='folderName'>
 
-            <mat-hint align="end">{{folderName.length}} / 30</mat-hint>
+            <mat-hint align="end">{{folderName.length}} / 20</mat-hint>
 
         </mat-form-field>
 
@@ -48,8 +47,6 @@
             Create
         </button>
 
-
     </mat-dialog-actions>
 
 </div>
-

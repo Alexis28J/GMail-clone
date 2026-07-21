@@ -303,7 +303,7 @@ export class MainpageComponent {
   ///// MARCA COME SPAM EMAIL SELEZIONATE
   onMarkAsSpam() {
 
-    const hasSelect = this.allEmails().some(email => email.selected); 
+    const hasSelect = this.allEmails().some(email => email.selected);
 
     if (!hasSelect) {
       return;
@@ -332,15 +332,15 @@ export class MainpageComponent {
 
 
   ///// APRE LA DIALOG PER GESTIRE I FOLDER CUSTOM
-    openManageFolders() {
-      this.dialog.open(
-        ManageFoldersDialog,
-        {
-          autoFocus: false,
-          width: '500px',
-        }
-      );
-    }
+  openManageFolders() {
+    this.dialog.open(
+      ManageFoldersDialog,
+      {
+        autoFocus: false,
+        width: '500px',
+      }
+    );
+  }
 
 }
 

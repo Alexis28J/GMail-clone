@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatAnchor } from "@angular/material/button";
 import { MatIcon } from "@angular/material/icon";
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-create-folder-dialog',
@@ -16,6 +17,7 @@ import { MatIcon } from "@angular/material/icon";
 export class CreateFolderDialog {
 
   folderName = '';
+  private snackbar = inject(MatSnackBar);
 
   ///// INIEZIONE DELLA DIPENDENZA PER IL DIALOGO
   dialogRef = inject(MatDialogRef<CreateFolderDialog>);
@@ -28,6 +30,14 @@ export class CreateFolderDialog {
     }
 
     this.dialogRef.close(this.folderName);
+    
+    this.snackbar.open(
+      `Folder "${this.folderName}" created`,
+      '',
+      {
+        duration: 3000,
+        panelClass: ['custom-snackbar'],
+      });
   }
 
 

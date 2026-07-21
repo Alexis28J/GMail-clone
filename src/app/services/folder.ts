@@ -298,8 +298,11 @@ export class Folder {
     );
 
     if (exists) {
-      console.error('Folder already exists');
+      
+     // dialog di Angular Material per mostrare un messaggio di errore
+      alert(`Folder with name "${newName}" already exists.`);
       return;
+
     }
 
     this.http.put<FolderInterface>(
@@ -325,7 +328,7 @@ export class Folder {
   ///// ELIMINA FOLDER CUSTOM
   deleteFolder(folderId: string) {
 
-    this.emailService.moveEmailsFromDeletedFolder(folderId);
+    this.emailService.moveEmailsFromDeletedFolder(folderId); // Questa riga deve essere eseguita prima della chiamata HTTP per eliminare la cartella, in modo da spostare le email associate alla cartella eliminata nella cartella "inbox".
 
     this.http.delete(`${this.folderApiUrl}/${folderId}`)
       .subscribe(() => {

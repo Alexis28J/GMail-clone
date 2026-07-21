@@ -115,3 +115,19 @@ Ho creato un output per l'evento `"asSpam"` che emette un evento al componente p
 L'evento `asSpam` viene emesso quando l'utente clicca sul pulsante `"Segnala come spam"` nella `toolbar`. Il componente padre (`MainPageComponent`) ascolta questo evento e gestisce la logica per spostare le email selezionate nella cartella `"spam"`.
 
 La funzione `onAsSpam()` emette l'evento `asSpam`, che può essere intercettato dal componente padre che poi esegue la logica dal servizio `EmailService` (grazie a `markSelectedEmailsAsSpam()`) per spostare le email selezionate nella cartella `"spam"`.
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+## GESTIONE FOLDER CUSTOM
+
+```TYPESCRIPT
+  onManageFolders() {
+    this.manageFolders.emit();
+  }
+```
+Ho aggiunto `l'Output manageFolders` per emettere un evento al componente padre (`MainPageComponent`) quando l'utente clicca sul pulsante `"Manage Folders"`. 
+
+Il metodo `onManageFolders()` emette questo evento, permettendo al `MainPageComponent` di gestire l'apertura della dialog per la gestione dei folder custom.
+
+Inoltre, su `toolbar-component.html`, ho aggiunto un event binding `(click)="onManageFolders()"` al pulsante `"Manage Folders"` per collegare il click del pulsante all'emissione dell'evento.
+

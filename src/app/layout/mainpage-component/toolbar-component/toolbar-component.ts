@@ -7,8 +7,6 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatMenuItem, MatMenuTrigger, MatMenu } from "@angular/material/menu";
 import { FolderInterface } from '../../../interface/folder-interface';
-import { MatDialog } from '@angular/material/dialog';
-import { ManageFoldersDialog } from '../../../shared/manage-folders-dialog/manage-folders-dialog';
 import { MatButtonModule } from "@angular/material/button";
 
 
@@ -21,13 +19,12 @@ import { MatButtonModule } from "@angular/material/button";
 
 export class ToolbarComponent {
 
-  constructor(public folderService: Folder, private emailService: EmailService, private dialog: MatDialog) { }
+  constructor(public folderService: Folder, private emailService: EmailService) { }
 
   @Input() canGoNext = true;
   @Input() canGoPrev = true;
   @Input() isTrashView = false;
   @Input() availableFolders: FolderInterface[] = [];
-
 
 
   @Output() nextMail = new EventEmitter<void>();
@@ -64,6 +61,21 @@ export class ToolbarComponent {
   ///// EMETTE EVENTI AL COMPONENTE PADRE (MainPageComponent) PER ARCHIVIARE LE EMAIL SELEZIONATE
   onArchive() {
     this.archive.emit();
+  }
+
+  ///// EMETTE EVENTI AL COMPONENTE PADRE (MainPageComponent) PER ELIMINARE LE EMAIL SELEZIONATE IN MODO DEFINITIVO
+  onActualDelete() {
+    this.actualDelete.emit();
+  }
+
+  ///// EMETTE EVENTI AL COMPONENTE PADRE (MainPageComponent) PER SEGNALARE LE EMAIL COME SPAM
+  onAsSpam() {
+    this.asSpam.emit();
+  }
+
+  ///// EMETTE EVENTI AL COMPONENTE PADRE (MainPageComponent) PER APRIRE LA DIALOG PER GESTIRE I FOLDER CUSTOM
+  onManageFolders() {
+    this.manageFolders.emit();
   }
 
 
@@ -131,22 +143,5 @@ export class ToolbarComponent {
     this.moveRequested.emit(folder);
   }
 
-
-  ///// EMETTE EVENTI AL COMPONENTE PADRE (MainPageComponent) PER ELIMINARE LE EMAIL SELEZIONATE IN MODO DEFINITIVO
-  onActualDelete() {
-    this.actualDelete.emit();
-  }
-
-
-  ///// EMETTE EVENTI AL COMPONENTE PADRE (MainPageComponent) PER SEGNALARE LE EMAIL COME SPAM
-  onAsSpam() {
-    this.asSpam.emit();
-  }
-
-
-  ///// EMETTE EVENTI AL COMPONENTE PADRE (MainPageComponent) PER APRIRE LA DIALOG PER GESTIRE I FOLDER CUSTOM
-  onManageFolders() {
-    this.manageFolders.emit();
-  }
 
 }
