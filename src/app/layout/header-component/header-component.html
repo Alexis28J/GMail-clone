@@ -55,9 +55,20 @@
 
 
     <div class="header-right">
-        <button class="icon-btn" matTooltip="Settings" matTooltipPosition="below">
+       <!--------------------------------Pulsante "Settings" ------------------------------------>
+        <button class="icon-btn" matTooltip="Settings" matTooltipPosition="below" mat-icon-button
+            [matMenuTriggerFor]="settingsMenu">
             <mat-icon fontSet="material-symbols-outlined">settings</mat-icon>
         </button>
+
+        <mat-menu #settingsMenu="matMenu" class="settings-menu-panel">
+            <button mat-menu-item (click)="openSignatureDialog()">
+                <mat-icon>draw</mat-icon>
+                <span>Email Signature</span>
+            </button>
+        </mat-menu>
+
+
 
         <button class="icon-btn" matTooltip="Notifications" matTooltipPosition="below">
             <mat-icon fontSet="material-symbols-outlined">notifications</mat-icon>

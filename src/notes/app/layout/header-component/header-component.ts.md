@@ -15,6 +15,9 @@ Definisco le proprietà `isLoggedIn` e `currentUser`, che vengono inizializzate 
 Queste proprietà vengono utilizzate per determinare se l'utente è autenticato e per ottenere le informazioni sull'utente corrente.
 Poi definisco il costruttore del componente, che accetta come parametri le istanze dei servizi `AuthService` e Router.
 
+### Perché isLoggedIn e currentUser sono messi prima del costruttore? 
+ Perché vengono inizializzati nel `costruttore` e quindi devono essere dichiarati prima di essere utilizzati. In `TypeScript`, le proprietà della classe devono essere dichiarate prima di essere utilizzate nel costruttore o in altri metodi della classe. Questo garantisce che il compilatore sappia che queste proprietà esistono e può quindi generare il codice corretto.
+
 
 ### NB: `public` vuol dire che la proprietà `folderService` è accessibile anche dal template del componente `HeaderComponent`.
 

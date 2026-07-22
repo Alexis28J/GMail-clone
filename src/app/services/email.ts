@@ -2,6 +2,7 @@ import { Injectable, signal } from '@angular/core';
 import { EmailInterface } from '../interface/email-interface';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpClient } from '@angular/common/http';
+import { SignatureService } from './signature';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,11 @@ import { HttpClient } from '@angular/common/http';
 
 export class EmailService {
 
-  constructor(private snackBar: MatSnackBar, private http: HttpClient) {
+  constructor(
+    private snackBar: MatSnackBar,
+    private http: HttpClient,
+    private signatureService: SignatureService
+  ) {
     this.loadEmails(); // Carica le email dal mockapi.io all'avvio del servizio
   };
 
@@ -185,7 +190,7 @@ export class EmailService {
     ).subscribe();
   }
 
-  
+
   ///////////////////////////////////FUNZIONI PRIVATE E PUBBLICHE PER LA GESTIONE DELLE EMAIL SELEZIONATE/////////////////////////////////////////
 
   ///// FUNZIONE PRIVATA CHE AGGIORNA LE EMAIL SELEZIONATE CON LE MODIFICHE PASSATE COME PARAMETRO
@@ -297,12 +302,13 @@ export class EmailService {
         ? originalEmail.subject
         : `Re: ${originalEmail.subject}`,
 
-      body: `
-      ---------------------------------------------------------------\n
-      From: ${originalEmail.sender}
+      body: `${this.getSignature()}
+
+---------------------------------------------------------------
+From: ${originalEmail.sender}
       
-      ${originalEmail.body}
-      `
+"${originalEmail.body}"
+`
     });
   }
 
@@ -320,17 +326,17 @@ export class EmailService {
         ? originalEmail.subject
         : `Fwd: ${originalEmail.subject}`,
 
-      body: ` 
-      ---------------------------------------------------------------\n
-      Forwarded message 
+      body: `${this.getSignature()}
+      
+---------------------------------------------------------------
+Forwarded message 
+From: ${originalEmail.sender}
+To: ${originalEmail.recipient}
+Date: ${date.toLocaleString()}
+Subject: ${originalEmail.subject}
 
-      From: ${originalEmail.sender}\n
-      To: ${originalEmail.recipient}\n
-      Date: ${date.toLocaleString()}\n
-      Subject: ${originalEmail.subject}\n
-
-      ${originalEmail.body}
-      `
+"${originalEmail.body}"
+`
     });
   }
 
@@ -339,8 +345,21 @@ export class EmailService {
   clearComposeDraft() {
     this.composeDraft.set(null);
   }
-  
 
+
+  ///// FUNZIONE HELPER PER OTTENERE LA FIRMA DALLA CLASSE SignatureService
+  private getSignature() {
+
+    const signature = this.signatureService.getSignatureText();
+
+    if (!signature) {
+      return '';
+    }
+
+    return `---------------------------------------------------------------${signature} `;
+  }
+
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///// SPOSTA LE EMAIL DAL FOLDER ELIMINATO ALL'INBOX
   moveEmailsFromDeletedFolder(folderId: string) {
     const emailsToMove =
@@ -370,6 +389,7 @@ export class EmailService {
         });
     });
   }
+
 
 
 }

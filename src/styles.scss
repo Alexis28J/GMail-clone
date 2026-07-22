@@ -215,3 +215,13 @@ mark {
   display: none !important;
 }
 
+
+/* Cambia colore dello sfondo dei menu item al passaggio del mouse */
+.mat-mdc-menu-item:hover {
+  background-color: rgb(248, 221, 221) !important;
+  border-radius: 10px !important;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+  transition: background-color .2s ease;
+}
+
+

@@ -7,6 +7,8 @@ import { Router } from '@angular/router'
 import { AuthService } from '../../services/auth';
 import { RouterModule } from '@angular/router';
 import { Folder } from '../../services/folder';
+import { MatDialog } from '@angular/material/dialog';
+import { SignatureDialog } from '../../shared/signature-dialog/signature-dialog';
 
 @Component({
   selector: 'app-header-component',
@@ -16,11 +18,11 @@ import { Folder } from '../../services/folder';
 })
 
 export class HeaderComponent {
-
-  isLoggedIn;
+ 
+  isLoggedIn; 
   currentUser;
 
-  constructor(private authService: AuthService, private router: Router, public folderService: Folder) {
+  constructor(private authService: AuthService, private router: Router, public folderService: Folder, private dialog: MatDialog) {
     this.isLoggedIn = this.authService.isLoggedIn;
     this.currentUser = this.authService.getCurrentUser();
   }
@@ -54,6 +56,17 @@ export class HeaderComponent {
     this.folderService.setFilter(type, event.target.checked);
   }
 
+
+  ///// APRI IL DIALOGO DELLA FIRMA DIGITALE
+  openSignatureDialog() {
+    this.dialog.open(
+      SignatureDialog, 
+      {
+        width: '550px'
+      }
+    );
+  }
+  
 }
 
 

@@ -19,7 +19,6 @@ import { CreateFolderDialog } from '../../shared/create-folder-dialog/create-fol
 export class SidebarComponent {
 
   private folderService = inject(Folder);
-
   private dialog = inject(MatDialog)
 
   folders = this.folderService.getFolders();

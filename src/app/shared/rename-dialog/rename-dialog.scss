@@ -1,19 +1,8 @@
+///// CONTAINER RENAME DIALOG
 .rename-dialog {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.full-width {
-  width: 100%;
-}
-
-
-///// DIALOG CONTENT
-mat-dialog-content {
-  min-width: 350px;
-  padding-top: 10px;
-  margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 }
 
 
@@ -27,9 +16,23 @@ mat-dialog-content {
 }
 
 
+///// DIALOG CONTENT
+mat-dialog-content {
+    min-width: 350px;
+    padding-top: 10px;
+    margin-top: 10px;
+}
+
+
 ///// INPUT NOME CARTELLA (RIQUADRO)
 mat-form-field {
     padding-top: 10px;
+}
+
+
+///// GRANDEZZA DEL RIQUADRO INPUT (RINOMINA CARTELLA)
+.full-width {
+    width: 100%;
 }
 
 

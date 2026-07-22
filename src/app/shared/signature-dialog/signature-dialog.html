@@ -1,0 +1,65 @@
+<div class="signature-dialog">
+
+    <!-- TITOLO -->
+    <h2 mat-dialog-title class="signature-title">
+        <mat-icon>draw</mat-icon>
+        <span>Email Signature</span>
+    </h2>
+
+
+    <mat-dialog-content>
+
+        <!-- DESCRIZIONE DELLA FUNZIONALITÀ -->
+        <p class="description">
+            This signature will automatically be appended to new emails, replies and forwarded messages.
+        </p>
+
+
+        <!-- AREA DI TESTO PER LA FIRMA -->
+        <mat-form-field appearance="outline">
+
+            <mat-label>Signature</mat-label>
+
+            <textarea matInput rows="6" [(ngModel)]="signature">
+        </textarea>
+
+            <!-- Limite di caratteri -->
+            <mat-hint align="end">
+                {{ signature.length }}/1000
+            </mat-hint>
+
+        </mat-form-field>
+
+
+        <!-- ANTEPRIMA DELLA FIRMA -->
+        <div class="preview-section">
+
+            <h3>Preview</h3>
+
+            <div class="preview-box">
+                {{ signature }}
+            </div>
+
+        </div>
+
+        <!-- Toggle per abilitare la firma -->
+        <mat-slide-toggle [(ngModel)]="enabled">
+            Enable signature
+        </mat-slide-toggle>
+
+    </mat-dialog-content>
+
+
+    <!-- PULSANTI DELETE E SAVE -->
+    <mat-dialog-actions align="end">
+
+        <button mat-stroked-button color="warn" (click)="delete()" class="delete-btn">
+            Delete
+        </button>
+
+        <button mat-flat-button color="primary" (click)="save()" class="save-btn">
+            Save
+        </button>
+
+    </mat-dialog-actions>
+</div>
