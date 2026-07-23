@@ -18,8 +18,8 @@ import { SignatureDialog } from '../../shared/signature-dialog/signature-dialog'
 })
 
 export class HeaderComponent {
- 
-  isLoggedIn; 
+
+  isLoggedIn;
   currentUser;
 
   constructor(private authService: AuthService, private router: Router, public folderService: Folder, private dialog: MatDialog) {
@@ -34,11 +34,13 @@ export class HeaderComponent {
     }
   }
 
+
   ///// NAVIGAZIONE AL REGISTER
   goToRegister() {
     //this.router.navigate(['/login']);
     this.router.navigate(['/register']);
   }
+
 
   ///// FUNZIONE DI LOGOUT
   logout() {
@@ -46,10 +48,12 @@ export class HeaderComponent {
     this.router.navigate(['/login']);
   }
 
+
   ///// FUNZIONE DI RICERCA
   onSearch(value: string) {
     this.folderService.setSearchTerm(value);
   }
+
 
   ///// FUNZIONE DI FILTRO (PULSANTI CHECKBOX)
   toggleFilter(type: 'subject' | 'sender' | 'date', event: any) {
@@ -60,13 +64,21 @@ export class HeaderComponent {
   ///// APRI IL DIALOGO DELLA FIRMA DIGITALE
   openSignatureDialog() {
     this.dialog.open(
-      SignatureDialog, 
+      SignatureDialog,
       {
         width: '550px'
       }
     );
   }
-  
+
+
+  ///// FUNZIONE PER LA ROTAZIONE DELL'ICONA SETTINGS
+  isRotated = false;
+
+  rotateIcon() {
+    this.isRotated = !this.isRotated;
+  }
+
 }
 
 

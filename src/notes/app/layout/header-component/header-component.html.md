@@ -45,6 +45,7 @@ Quindi con il riferimento locale #searchInput e con l'evento (keyup.enter), poss
 Questo permette di mantenere sincronizzato lo stato dei checkbox con i filtri attivi nel servizio.
 Cio significa che quando lo stato dei filtri cambia nel servizio, i checkbox nel template vengono aggiornati automaticamente. 
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ## MODIFICA
 
@@ -56,3 +57,28 @@ La differenza tra `(input)` e `(keyup.enter)` è che `(input)` viene attivato ad
 In questo modo, l'utente può scegliere se avviare la ricerca ad ogni modifica del campo di input o solo premendo Invio.
 
 Questo tipo di approccio migliora l'esperienza utente. E' più flessibile.
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+## PULSANTE SETTINGS
+
+```HTML
+        <button class="icon-btn" matTooltip="Settings" matTooltipPosition="below" mat-icon-button
+            [matMenuTriggerFor]="settingsMenu" (click)="rotateIcon()">
+            <mat-icon fontSet="material-symbols-outlined" class="settings-icon" [class.rotated]="isRotated">settings</mat-icon>
+        </button>
+
+        <mat-menu #settingsMenu="matMenu" class="settings-menu-panel">
+            <button mat-menu-item (click)="openSignatureDialog()">
+                <mat-icon>draw</mat-icon>
+                <span>Email Signature</span>
+            </button>
+        </mat-menu>
+```
+La direttiva `matMenuTriggerFor` lega il pulsante al menu corrispondente che in questo caso è `settingsMenu`.
+`#settingsMenu` utilizza il riferimento `matMenu` per collegare il pulsante al menu corrispondente. 
+
+Al pulsante `"Settings"` se gli è collegato un evento click che chiama la funzione `rotateIcon()`. 
+Questo mi permette di ruotare l'icona delle impostazioni ogni volta che viene cliccato 
+
+`[class.rotated]="isRotated"` permette di applicare la classe `"rotated"` all'icona quando `isRotated` è `true`

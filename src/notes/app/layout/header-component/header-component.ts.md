@@ -47,3 +47,34 @@ Questo metodo chiama il metodo `setFilter()` del servizio `Folder` per impostare
 `event.target.checked` restituisce un valore booleano che indica se il checkbox è selezionato (true) o deselezionato (false). Questo valore viene passato al metodo `setFilter()` per aggiornare lo stato del filtro nel servizio `Folder`.
 
 ## NB: Ho messo come publico il servizio `Folder` in modo da poterlo utilizzare direttamente nel template del componente HeaderComponent. 
+
+
+##  PASSO 7: Menu Firma digitale nel pulsante Settings
+
+```TYPESCRIPT
+  openSignatureDialog() {
+    this.dialog.open(
+      SignatureDialog, 
+      {
+        width: '550px'
+      }
+    );
+  }
+```
+
+Questa funzione apre un dialogo per la firma digitale, utilizzando il servizio `MatDialog` di `Angular Material`. 
+Il dialogo viene aperto con una larghezza di 550 pixel. 
+
+Il dialogo, `SignatureDialog`, è un componente separato che gestisce l'interfaccia utente per la firma digitale.
+E consente agli utenti di visualizzare, modificare o eliminare la loro firma digitale all'interno dell'applicazione.
+
+
+```TYPESCRIPT 
+  isRotated = false;
+
+  rotateIcon() {
+    this.isRotated = !this.isRotated;
+  }
+```
+Questa funzione viene chiamata quando l'utente clicca sull'icona delle impostazioni. 
+Cambia lo stato di `isRotated` da `true a false` e viceversa, causando la rotazione dell'icona tramite CSS.

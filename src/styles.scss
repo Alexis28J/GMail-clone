@@ -225,3 +225,8 @@ mark {
 }
 
 
+/* Cambia colore del toggle quando è attivo e della sua traccia */
+:root {
+  --mat-sys-primary: rgb(231, 147, 147);
+  --mat-sys-primary-container: rgb(248, 221, 221);
+}

@@ -9,7 +9,7 @@ Utilizziamo il decoratore `@Component` per definire il componente `ComposeDialog
 
 `CommonModule` e `FormsModule` sono moduli di Angular che forniscono funzionalità comuni e supporto per la gestione dei moduli e dei dati del modulo. Li importiamo per poter utilizzare le funzionalità di binding dei dati e la gestione dei moduli nel nostro componente.
 
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ## INVIARE UNA NUOVA EMAIL
 
@@ -139,3 +139,32 @@ In questo caso, viene usato per pulire il `signal replyDraft` quando il dialog v
 `this.emailService.clearComposeDraft()`; 
 Pulisco il signal composeDraft quando il componente viene distrutto (cioè quando il dialog viene chiuso), così che la prossima volta che apro il dialog non ci siano dati residui della bozza di risposta o inoltro precedente.
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+## INSERIMENTO FIRMA DIGITALE NEL CORPO EMAIL
+
+```typescript
+
+constructor(private signatureService: SignatureService) {...}
+
+  ngOnInit() {  
+
+    const signature = this.signatureService.getSignatureText();
+
+
+    if (signature) {
+
+      this.body = `------------------------------------------------------------------${signature}`;
+
+    }
+
+  }
+```
+
+Nel constructor, ho messo come dipendenza il servizio `SignatureService` per poter accedere alla firma dell'utente e inserirla automaticamente nel corpo dell'email quando viene aperto il dialogo di composizione.
+
+La funzione ngOnInit viene chiamata quando il componente (`ComposeDialog`) viene inizializzato. In questo caso, viene utilizzata per inserire la firma dell'utente nel corpo dell'email, se presente.
+
+### NB: 
+La riga di separazione e la prima riga della firma ha uno spazio vuoto a sinistra. Questo è stato fatto per motivi estetici, in modo che la firma appaia leggermente indentata rispetto al resto del testo dell'email.
+Lo stesso succede per il testo citato del reply e del forward. 

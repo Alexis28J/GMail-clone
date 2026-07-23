@@ -21,7 +21,7 @@
             <mat-label>Signature</mat-label>
 
             <textarea matInput rows="6" [(ngModel)]="signature">
-        </textarea>
+            </textarea>
 
             <!-- Limite di caratteri -->
             <mat-hint align="end">
@@ -43,7 +43,7 @@
         </div>
 
         <!-- Toggle per abilitare la firma -->
-        <mat-slide-toggle [(ngModel)]="enabled">
+        <mat-slide-toggle [(ngModel)]="enabled" class="enable-toggle">
             Enable signature
         </mat-slide-toggle>
 
@@ -62,4 +62,5 @@
         </button>
 
     </mat-dialog-actions>
+
 </div>

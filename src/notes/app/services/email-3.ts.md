@@ -229,6 +229,34 @@ E nel suo template, ho collegato al pulsante "Mark as spam" la funzione `onAsSpa
 
 Finalmente, nel `mainpage-component.html`, nel selettore di `app-toolbar-component`, ho aggiunto l'evento `(asSpam)="onMarkAsSpam()"` per gestire la segnalazione delle email come `spam`.
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+## FIRMA DIGITALE
+
+```typescript
+constructor(
+    private snackBar: MatSnackBar,
+    private http: HttpClient,
+    private signatureService: SignatureService
+  ) {...}
+```
+
+Ho iniettato il servizio `SignatureService` nel costruttore di `EmailService` per poter accedere alla firma dell'utente quando si compone una nuova email, una risposta o un inoltro.
+
+Poi, ho creato un `helper privato getSignature()` che restituisce la firma dell'utente se è abilitata, altrimenti restituisce una stringa vuota. Questo metodo viene utilizzato quando si compone una nuova email, una risposta o un inoltro per aggiungere la firma alla bozza di email.
+
+```typescript
+  private getSignature() {
+
+    const signature = this.signatureService.getSignatureText();
+
+    if (!signature) {
+      return '';
+    }
+  }
+```
+Poi, ho aggiunto la firma alla risposta email, se la firma è abilitata, questa verrà aggiunta automaticamente al corpo della risposta email.
+  
+Ho fatto lo stesso per l'inoltro email (forward), in modo che la firma venga aggiunta automaticamente al corpo dell'email inoltrata, se la firma è abilitata.
 
 

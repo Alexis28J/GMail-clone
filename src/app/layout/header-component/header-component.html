@@ -55,10 +55,11 @@
 
 
     <div class="header-right">
-       <!--------------------------------Pulsante "Settings" ------------------------------------>
+        <!--------------------------------Pulsante "Settings" ------------------------------------>
         <button class="icon-btn" matTooltip="Settings" matTooltipPosition="below" mat-icon-button
-            [matMenuTriggerFor]="settingsMenu">
-            <mat-icon fontSet="material-symbols-outlined">settings</mat-icon>
+            [matMenuTriggerFor]="settingsMenu" (click)="rotateIcon()">
+            <mat-icon fontSet="material-symbols-outlined" class="settings-icon"
+                [class.rotated]="isRotated">settings</mat-icon>
         </button>
 
         <mat-menu #settingsMenu="matMenu" class="settings-menu-panel">
@@ -67,14 +68,13 @@
                 <span>Email Signature</span>
             </button>
         </mat-menu>
-
-
-
+        <!--  -->
         <button class="icon-btn" matTooltip="Notifications" matTooltipPosition="below">
             <mat-icon fontSet="material-symbols-outlined">notifications</mat-icon>
         </button>
 
 
+        <!-------------------------------------- ICONA AVATAR (SE E' LOGGATO O NO) ----------------------------->
         <div class="user-avatar">
 
             <button class="icon-btn" matTooltip="User" matTooltipPosition="below" [matMenuTriggerFor]="userMenu">

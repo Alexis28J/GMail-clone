@@ -37,7 +37,7 @@ export class ComposeDialog implements OnDestroy {
   /////////////////////// METODI DI CICLO DI VITA DEL COMPONENTE ///////////////////////////////
 
   ///// PULIZIA BOZZA COMPOSIZIONE EMAIL
-  ngOnDestroy() {  
+  ngOnDestroy() {
     this.emailService.clearComposeDraft();
   }
 
@@ -51,13 +51,10 @@ export class ComposeDialog implements OnDestroy {
 
 
   ///// INSERIMENTO FIRMA NEL CORPO DELL'EMAIL
-  // Questa funzione viene chiamata quando il componente viene inizializzato. Recupera la firma dall'oggetto SignatureService e, se presente, la aggiunge al corpo dell'email.
-  ngOnInit() {  
+  ngOnInit() {
 
     const signature = this.signatureService.getSignatureText();
 
-    // La riga di separazione e la prima riga della firma ha uno spazio vuoto a sinistra. Questo è stato fatto per motivi estetici, in modo che la firma appaia leggermente indentata rispetto al resto del testo dell'email.
-    //Lo stesso succede per il testo citato del reply e del forward. 
     if (signature) {
 
       this.body = `------------------------------------------------------------------${signature}`;
@@ -68,7 +65,7 @@ export class ComposeDialog implements OnDestroy {
 
 
   ////////////////////////////////////////METODI PERSONALIZZATI///////////////////////////////////////////
-  
+
   ///// INVIO EMAIL 
   send() {
 
@@ -92,7 +89,7 @@ export class ComposeDialog implements OnDestroy {
       { duration: 3000, panelClass: ['custom-snackbar'] }
     );
     this.dialogRef.close();
-    
+
   }
 
 

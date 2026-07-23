@@ -18,7 +18,7 @@ export class EmailService {
     this.loadEmails(); // Carica le email dal mockapi.io all'avvio del servizio
   };
 
-
+  
   ///// API URL
   private apiUrl =
     'https://6a477fc3abfcbaade1188ff8.mockapi.io/api/gclone/emails';

@@ -116,6 +116,20 @@
 }
 
 
+///// ICONA IMPOSTAZIONI CON ANIMAZIONE ROTAZIONE
+.settings-icon {
+  /* La transizione gestisce la durata e l'effetto dell'animazione */
+  transition: transform 0.4s ease-in-out;
+  cursor: pointer;
+}
+
+.settings-icon.rotated {
+  /* Ruota l'icona di 180 gradi (o 360) quando ha la classe 'ruota' */
+  transform: rotate(180deg);
+}
+/////
+/// 
+
 .user-avatar {
     width: 40px;
     height: 40px;
@@ -142,3 +156,4 @@
     justify-content: center;
     font-weight: bold;
 }
+

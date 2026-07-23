@@ -14,11 +14,15 @@ import { MatIcon } from "@angular/material/icon";
   templateUrl: './signature-dialog.html',
   styleUrls: ['./signature-dialog.scss'],
 })
+
 export class SignatureDialog {
 
+  ///// VARIABILI CHE CONTENGONO IL TESTO DELLA FIRMA E LO STATO DI ABILITAZIONE
   signature = '';
   enabled = false;
 
+
+  ///// COSTRUTTORE CHE INIETTA IL SERVIZIO DELLA FIRMA
   constructor(
     private signatureService: SignatureService
   ) {
@@ -29,11 +33,7 @@ export class SignatureDialog {
 
   ///// SALVA LA FIRMA E LO STATO DEL TOGGLE
   save() {
-
-    console.log('signature:', this.signature);
-    console.log('enabled:', this.enabled);
-
-    this.signatureService.saveSignature(
+    this.signatureService.saveSignature(  
       this.signature,
       this.enabled
     );
@@ -42,10 +42,11 @@ export class SignatureDialog {
 
   ///// ELIMINA LA FIRMA E LO STATO DEL TOGGLE
   delete() {
-    this.signatureService.deleteSignature();
-
+    this.signatureService.deleteSignature(); 
     this.signature = '';
     this.enabled = false;
   }
 
 }
+
+
