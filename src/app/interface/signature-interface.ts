@@ -1,5 +1,8 @@
 export interface SignatureInterface {
-    id?: string;
-    content?: string;
-    enabled?: boolean;
+    id: string;
+    name: string;
+    content: string;
 }
+
+
+

@@ -1,4 +1,5 @@
 import { Injectable, signal } from '@angular/core';
+import { SignatureInterface } from '../interface/signature-interface';
 
 @Injectable({
     providedIn: 'root'
@@ -6,66 +7,146 @@ import { Injectable, signal } from '@angular/core';
 
 export class SignatureService {
 
-    ///// SIGNAL CHE CONTIENE IL TESTO DELLA FIRMA E LO STATO DI ABILITAZIONE
-    signature = signal('');
+    ///// VARIABILI CHE CONTENGONO LO STATO DELLE FIRME
+    signatures = signal<SignatureInterface[]>([]);
+    activeSignatureId = signal<string | null>(null);
     enabled = signal(false);
 
 
-    ///// COSTRUTTORE CHE CARICA LA FIRMA DAL LOCAL STORAGE
+    ///// COSTRUTTORE CHE INIZIALIZZA LO STATO DELLE FIRME
     constructor() {
-        this.loadSignature();
+        this.load();
     }
 
 
-    ///// METODO PRIVATO CHE CARICA LA FIRMA DAL LOCAL STORAGE
-    private loadSignature() {
-        const savedSignature = localStorage.getItem('emailSignature');  
-        const enabled = localStorage.getItem('emailSignatureEnabled');  
+    ///// METODO CHE CARICA LO STATO DELLE FIRME DAL LOCAL STORAGE
+    private load() {
 
-        if (savedSignature) {  
-            this.signature.set(savedSignature); 
+        const signatures = localStorage.getItem('emailSignatures');
+        const activeId = localStorage.getItem('activeSignatureId');
+        const enabled = localStorage.getItem('emailSignatureEnabled');
+
+
+        if (signatures) {
+            this.signatures.set(
+                JSON.parse(signatures)
+            );
         }
-        this.enabled.set(enabled === 'true'); 
+
+        if (activeId) {
+            this.activeSignatureId.set(activeId);
+        }
+
+        this.enabled.set(
+            enabled === 'true'
+        );
     }
 
 
-    ///// METODO PUBBLICO CHE SALVA LA FIRMA NEL LOCAL STORAGE
-    saveSignature(
-        signature: string,
-        enabled: boolean
+    ///// METODO CHE SALVA LO STATO DELLE FIRME NEL LOCAL STORAGE
+    private persist() {
+
+        localStorage.setItem(
+            'emailSignatures',
+            JSON.stringify(this.signatures())
+        );
+
+        localStorage.setItem(
+            'activeSignatureId',
+            this.activeSignatureId() ?? ''
+        );
+
+        localStorage.setItem(
+            'emailSignatureEnabled',
+            String(this.enabled())
+        );
+    }
+
+
+    ///// METODO CHE AGGIUNGE UNA NUOVA FIRMA
+    addSignature(
+        name: string,
+        content: string
     ) {
-        localStorage.setItem( 
-            'emailSignature',  
-            signature  
+        const signature: SignatureInterface = {
+            id: crypto.randomUUID(),
+            name,
+            content
+        }
+
+        this.signatures.update(
+            signatures => [...signatures, signature]
         );
 
-        localStorage.setItem(  
-            'emailSignatureEnabled',  
-            String(enabled)  
-        );
+        if (!this.activeSignatureId()) {
+            this.activeSignatureId.set(signature.id);
+        }
 
-        this.signature.set(signature);   
-        this.enabled.set(enabled); 
+        this.persist();
     }
 
 
-    ///// METODO PUBBLICO CHE ELIMINA LA FIRMA DAL LOCAL STORAGE
-    deleteSignature() {
-        localStorage.removeItem('emailSignature');   
-        localStorage.removeItem('emailSignatureEnabled'); 
+    ///// METODO CHE AGGIORNA UNA FIRMA ESISTENTE
+    updateSignature(signature: SignatureInterface) {
+        this.signatures.update(
+            signatures =>
+                signatures.map(s =>
+                    s.id === signature.id
+                        ? signature
+                        : s)
+        );
 
-        this.signature.set('');  
-        this.enabled.set(false); 
+        this.persist();
     }
 
 
-    ///// METODO PUBBLICO CHE RESTITUISCE IL TESTO DELLA FIRMA SE ABILITATA, ALTRIMENTI UNA STRINGA VUOTA
+    ///// METODO CHE ELIMINA UNA FIRMA ESISTENTE
+    deleteSignature(id: string) {
+        this.signatures.update(
+            signatures =>
+                signatures.filter(
+                    s => s.id !== id
+                )
+        );
+
+        if (this.activeSignatureId() === id) {
+            const first = this.signatures()[0];
+
+            this.activeSignatureId.set(
+                first?.id ?? null
+            );
+        }
+
+        this.persist();
+    }
+
+
+    ///// METODO CHE IMPOSTA LA FIRMA DI DEFAULT
+    setActiveSignature(id: string) {
+        this.activeSignatureId.set(id);
+        this.persist();
+    }
+
+
+    ///// METODO CHE ATTIVA/DISATTIVA LA FIRMA
+    setEnabled(enabled: boolean) {
+        this.enabled.set(enabled);
+        this.persist();
+    }
+
+
+    ///// METODO CHE RESTITUISCE IL TESTO DELLA FIRMA ATTIVA
     getSignatureText(): string {
-        if (!this.enabled()) {  
+        if (!this.enabled()) {
             return '';
         }
-        return this.signature();
+
+        const active = this.signatures().find(
+            s => s.id === this.activeSignatureId()
+        );
+
+        return active?.content ?? '';
     }
 
-}
 
+}

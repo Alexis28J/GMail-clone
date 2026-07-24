@@ -6,6 +6,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { FormsModule } from '@angular/forms';
 import { MatIcon } from "@angular/material/icon";
+import { SignatureInterface } from '../../interface/signature-interface';
 
 @Component({
   selector: 'app-signature-dialog',
@@ -17,34 +18,99 @@ import { MatIcon } from "@angular/material/icon";
 
 export class SignatureDialog {
 
-  ///// VARIABILI CHE CONTENGONO IL TESTO DELLA FIRMA E LO STATO DI ABILITAZIONE
-  signature = '';
+  ///// VARIABILI CHE CONTENGONO LO STATO DELLA FIRMA SELEZIONATA
+  selectedId: string | null = null;
+  name = '';
+  content = '';
   enabled = false;
 
 
-  ///// COSTRUTTORE CHE INIETTA IL SERVIZIO DELLA FIRMA
+  ///// COSTRUTTORE CHE INIZIALIZZA LO STATO DELLA FIRMA SELEZIONATA
   constructor(
-    private signatureService: SignatureService
+    public signatureService: SignatureService
   ) {
-    this.signature = this.signatureService.signature();
     this.enabled = this.signatureService.enabled();
-  }
 
-
-  ///// SALVA LA FIRMA E LO STATO DEL TOGGLE
-  save() {
-    this.signatureService.saveSignature(  
-      this.signature,
-      this.enabled
+    const active = this.signatureService.signatures().find(
+      s => s.id === this.signatureService.activeSignatureId()
     );
+
+    if (active) {
+      this.selectSignature(active);
+    }
   }
 
 
-  ///// ELIMINA LA FIRMA E LO STATO DEL TOGGLE
+  ///// METODO CHE SELEZIONA UNA FIRMA 
+  selectSignature(
+    signature: SignatureInterface
+  ) {
+    this.selectedId = signature.id || null;
+    this.name = signature.name || '';
+    this.content = signature.content || '';
+  }
+
+
+  ///// METODO CHE CREA UNA NUOVA FIRMA
+  newSignature() {
+    this.selectedId = null;
+    this.name = '';
+    this.content = '';
+  }
+
+
+  ///// METODO CHE SALVA LA FIRMA SELEZIONATA
+  save() {
+
+    if (!this.name.trim()) {
+      return;
+    }
+
+    if (this.selectedId) {
+
+      this.signatureService.updateSignature({
+        id: this.selectedId,
+        name: this.name,
+        content: this.content
+      });
+
+    } else {
+
+      this.signatureService.addSignature(
+        this.name,
+        this.content
+      );
+
+    }
+
+  }
+
+
+  ///// METODO CHE ELIMINA LA FIRMA SELEZIONATA
   delete() {
-    this.signatureService.deleteSignature(); 
-    this.signature = '';
-    this.enabled = false;
+
+    if (!this.selectedId) {
+      return;
+    }
+
+    this.signatureService.deleteSignature(
+      this.selectedId
+    );
+
+    this.newSignature();
+
+  }
+
+
+  ///// METODO CHE IMPOSTA LA FIRMA DI DEFAULT
+  setDefault(id: string) {
+    this.signatureService.setActiveSignature(id);
+  }
+
+
+  ///// METODO CHE ATTIVA/DISATTIVA LA FIRMA
+  toggleEnabled() {
+    this.signatureService.setEnabled(this.enabled);
   }
 
 }

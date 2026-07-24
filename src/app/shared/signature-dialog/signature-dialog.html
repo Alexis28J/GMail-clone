@@ -1,66 +1,110 @@
-<div class="signature-dialog">
 
-    <!-- TITOLO -->
-    <h2 mat-dialog-title class="signature-title">
-        <mat-icon>draw</mat-icon>
-        <span>Email Signature</span>
-    </h2>
-
-
-    <mat-dialog-content>
-
-        <!-- DESCRIZIONE DELLA FUNZIONALITÀ -->
-        <p class="description">
-            This signature will automatically be appended to new emails, replies and forwarded messages.
-        </p>
+<!------------------------------------------ TITOLO ------------------------------------------------->
+<h2 mat-dialog-title class="signature-title">
+    <mat-icon>draw</mat-icon>
+    <span>Email Signatures</span>
+</h2>
 
 
-        <!-- AREA DI TESTO PER LA FIRMA -->
-        <mat-form-field appearance="outline">
+<!--------------------------------------- CONTENUTO ------------------------------------------------->
+<mat-dialog-content>
 
-            <mat-label>Signature</mat-label>
+    <div class="signature-layout">
 
-            <textarea matInput rows="6" [(ngModel)]="signature">
-            </textarea>
+        <!--------------------------- LISTA DELLE FIRME -------------------------------->
+        <div class="signature-list">
 
-            <!-- Limite di caratteri -->
-            <mat-hint align="end">
-                {{ signature.length }}/1000
-            </mat-hint>
-
-        </mat-form-field>
+            <!-- SWITCH DI ABILITAZIONE FIRMA -->
+            <mat-slide-toggle [(ngModel)]="enabled" (change)="toggleEnabled()">
+                Enable Signature
+            </mat-slide-toggle>
 
 
-        <!-- ANTEPRIMA DELLA FIRMA -->
-        <div class="preview-section">
+            <!-- CICLO PER CREARE GLI ELEMENTI DELLA LISTA DELLE FIRME -->
+            @for(signature of signatureService.signatures(); track signature.id) {
 
-            <h3>Preview</h3>
+            <div class="signature-item">
 
-            <div class="preview-box">
-                {{ signature }}
+                <input type="radio" name="defaultSignature"
+                    [checked]="signature.id === signatureService.activeSignatureId()"
+                    (change)="setDefault(signature.id)">
+
+                <button (click)="selectSignature(signature)">
+                    {{ signature.name }}
+                </button>
+
+            </div>
+
+            }
+
+            <button class="add-btn" mat-stroked-button color="primary" (click)="newSignature()">
+                <mat-icon>add</mat-icon>
+
+                Add Signature
+            </button>
+
+        </div>
+
+
+        <!-- LINEA DIVISORIA -->
+        <div class="spacer"></div>
+
+
+        <!---------------------------------------- EDITOR DELLA FIRMA ------------------------------------->
+        <div class="signature-editor">
+
+            <!-- DESCRIZIONE DELLA FUNZIONALITÀ -->
+            <p class="description">
+                This signature will automatically be appended to new emails, replies and forwarded messages.
+            </p>
+
+            <!-- INPUT DEL NOME DELLA FIRMA -->
+            <mat-form-field appearance="outline" subscriptSizing="dynamic">
+
+                <mat-label>Signature Name</mat-label>
+                <input matInput [(ngModel)]="name">
+
+            </mat-form-field>
+
+
+            <!-- INPUT DEL CONTENUTO DELLA FIRMA -->
+            <mat-form-field appearance="outline" subscriptSizing="dynamic">
+
+                <mat-label>Signature Content</mat-label>
+                <textarea matInput rows="6" [(ngModel)]="content">
+                    </textarea>
+
+            </mat-form-field>
+
+
+            <!-- ANTEPRIMA DELLA FIRMA -->
+            <div class="preview-section">
+
+                <h3>Preview</h3>
+
+                <div class="preview-box">
+                    {{ content }}
+                </div>
+
             </div>
 
         </div>
 
-        <!-- Toggle per abilitare la firma -->
-        <mat-slide-toggle [(ngModel)]="enabled" class="enable-toggle">
-            Enable signature
-        </mat-slide-toggle>
+    </div>
 
-    </mat-dialog-content>
+</mat-dialog-content>
 
 
-    <!-- PULSANTI DELETE E SAVE -->
-    <mat-dialog-actions align="end">
+<!-- PULSANTI DELETE E SAVE -->
+<mat-dialog-actions align="end">
 
-        <button mat-stroked-button color="warn" (click)="delete()" class="delete-btn">
-            Delete
-        </button>
+    <button mat-stroked-button color="warn" (click)="delete()" class="delete-btn">
+        Delete
+    </button>
 
-        <button mat-flat-button color="primary" (click)="save()" class="save-btn">
-            Save
-        </button>
+    <button mat-flat-button color="primary" (click)="save()" class="save-btn">
+        Save
+    </button>
 
-    </mat-dialog-actions>
+</mat-dialog-actions>
 
-</div>

@@ -230,3 +230,14 @@ mark {
   --mat-sys-primary: rgb(231, 147, 147);
   --mat-sys-primary-container: rgb(248, 221, 221);
 }
+
+
+/* Panel custom per il dialogo della firma */
+.signature-dialog-panel .mat-mdc-dialog-container {
+  width: 900px !important;
+}
+
+.signature-dialog-panel .mat-mdc-dialog-content {
+  max-height: 80vh !important;
+}
+

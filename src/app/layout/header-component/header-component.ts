@@ -27,6 +27,7 @@ export class HeaderComponent {
     this.currentUser = this.authService.getCurrentUser();
   }
 
+  
   ///// NAVIGAZIONE AL LOGIN
   goToLogin() {
     if (this.router.url !== '/login') {
@@ -63,12 +64,11 @@ export class HeaderComponent {
 
   ///// APRI IL DIALOGO DELLA FIRMA DIGITALE
   openSignatureDialog() {
-    this.dialog.open(
-      SignatureDialog,
-      {
-        width: '550px'
-      }
-    );
+    this.dialog.open(SignatureDialog, {
+      width: '900px',
+      maxWidth: '95vw',
+      panelClass: 'signature-dialog-panel'
+    });
   }
 
 

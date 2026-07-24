@@ -53,17 +53,15 @@ Questo metodo chiama il metodo `setFilter()` del servizio `Folder` per impostare
 
 ```TYPESCRIPT
   openSignatureDialog() {
-    this.dialog.open(
-      SignatureDialog, 
-      {
-        width: '550px'
-      }
-    );
+    this.dialog.open(SignatureDialog, {
+      width: '900px', // Imposta la larghezza del dialogo a 900px
+      maxWidth: '95vw', // Imposta la larghezza massima del dialogo al 95% della larghezza della finestra
+      panelClass: 'signature-dialog-panel' // Aggiunge una classe personalizzata per lo stile del dialogo (vedi style.css)
+    });
   }
 ```
 
 Questa funzione apre un dialogo per la firma digitale, utilizzando il servizio `MatDialog` di `Angular Material`. 
-Il dialogo viene aperto con una larghezza di 550 pixel. 
 
 Il dialogo, `SignatureDialog`, è un componente separato che gestisce l'interfaccia utente per la firma digitale.
 E consente agli utenti di visualizzare, modificare o eliminare la loro firma digitale all'interno dell'applicazione.
